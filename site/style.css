@@ -54,7 +54,6 @@ body {
   background: var(--bg);
   color: var(--text);
   font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--faint); }
@@ -62,6 +61,10 @@ a:hover { text-decoration-color: currentColor; }
 button { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); outline-offset: 2px; }
 .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+/* Tabular figures only where digits tick or line up (applied page-wide, Inter also spaces out hyphens). */
+.clock, .cdbox, .run em, .details td.when, .details td.left, .count, .bucket h3 .n, .cal-n, .info .when, .hero .when, .star-pill span, #ghStars { font-variant-numeric: tabular-nums; }
+/* Controls act like buttons: a double-click shouldn't select their text. */
+.row-main, .seg, .pill, .filter-btn, .run, .star, .icon-btn, .gh-btn, .cchip, .cal-cell, .sd-themes, .tabs { -webkit-user-select: none; user-select: none; }
 .muted { color: var(--muted); }
 .sw { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none; }
 
@@ -75,6 +78,11 @@ button { font: inherit; color: inherit; }
 .icon-btn { width: 34px; height: 34px; display: inline-grid; place-items: center; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; }
 .icon-btn:hover { color: var(--text); border-color: var(--faint); }
 .icon-btn svg { width: 17px; height: 17px; }
+.gh-btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 11px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; }
+.gh-btn:hover { color: var(--text); border-color: var(--faint); }
+.gh-btn svg { width: 16px; height: 16px; }
+.gh-btn b { color: var(--text); border-left: 1px solid var(--line); padding-left: 8px; font-weight: 700; }
+.gh-btn b[hidden] { display: none; }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -117,7 +125,7 @@ button { font: inherit; color: inherit; }
 .seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
 .seg button { border: 0; background: none; padding: 6px 12px; border-radius: 9px; cursor: pointer; color: var(--muted); font-weight: 600; font-size: 13.5px; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; }
 .seg button:hover { color: var(--text); }
-.seg button[aria-checked="true"], .seg button[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgb(0 0 0 / .08), 0 0 0 1px var(--line); }
+.seg button[aria-checked="true"], .seg button[aria-selected="true"] { background: var(--text); color: var(--bg); }
 .seg .sw { width: 7px; height: 7px; }
 .seg svg { width: 16px; height: 16px; }
 .seg.small button { padding: 4px 10px; font-size: 13px; }
@@ -125,7 +133,12 @@ button { font: inherit; color: inherit; }
 .views { flex: none; }
 #focus::-webkit-scrollbar { display: none; }
 
-.search { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--faint); flex: 0 1 280px; min-width: 0; }
+.search { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--faint); flex: 1 1 auto; max-width: 420px; min-width: 0; }
+.tb-actions { display: flex; gap: 8px; align-items: center; flex: none; }
+.tb-actions .star-pill { height: 38px; border-radius: 10px; }
+.filter-btn.on { color: var(--text); border-color: var(--text); }
+.filter-btn .chev { width: 14px; height: 14px; margin-left: -2px; }
+.filter-btn span { white-space: nowrap; max-width: 19ch; overflow: hidden; text-overflow: ellipsis; }
 .search:focus-within { border-color: var(--faint); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
 .search svg { width: 16px; height: 16px; flex: none; }
 .search input { border: 0; background: none; outline: none; flex: 1; min-width: 0; font: inherit; font-size: 14px; color: var(--text); }
@@ -150,6 +163,9 @@ button { font: inherit; color: inherit; }
 /* Filters popover */
 .popover { position: fixed; inset: auto; left: auto; margin: 0; width: 320px; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px 16px; background: var(--surface); color: var(--text); box-shadow: var(--pop-shadow); z-index: 20; }
 .popover::backdrop { background: rgb(0 0 0 / .4); }
+.popover { overflow-y: auto; }
+#areadlg { width: 400px; }
+#areaList { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
 .popover .opt { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
 .popover .opt input { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; }
 .popover .opt b, .popover .opt-row b { display: block; font-weight: 600; font-size: 14px; }
@@ -366,8 +382,11 @@ body[data-view="map"] #focus { visibility: hidden; }
   .run { padding: 5px 10px; gap: 5px; }
   .runway { gap: 6px; }
   .tb-row:last-child { flex-wrap: wrap; }
-  .search { flex: 1 1 0; }
-  .pills { order: 3; flex-basis: 100%; }
+  .search { flex: 1 1 100%; max-width: none; }
+  .tb-actions { flex: 1 1 100%; }
+  .tb-actions > * { flex: 1 1 0; justify-content: center; }
+  .gh-btn span { display: none; }
+  #areadlg { width: 100%; }
   #focus { mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); }
   .popover { inset: auto 0 0 0; width: 100%; max-width: none; border-radius: 20px 20px 0 0; padding-bottom: max(16px, env(safe-area-inset-bottom)); }
   .row-main { grid-template-columns: 64px minmax(0, 1fr) auto; gap: 2px 10px; padding: 10px; }

@@ -274,9 +274,15 @@ function upcomingRows(filter = matches) {
 function renderToolbar() {
   $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
   const n = state.starred.size;
-  $("areas").innerHTML = `<button class="pill star-pill" type="button" data-starred aria-pressed="${state.starredOnly}">★ Starred${n ? ` <span>${n}</span>` : ""}</button>` +
-    `<button class="pill" type="button" data-area="" aria-pressed="${state.areas.size === 0 && !state.starredOnly}">All</button>` +
-    Object.entries(DATA.areas).map(([a, name]) => `<button class="pill" type="button" data-area="${a}" aria-pressed="${state.areas.has(a)}">${esc(name)}</button>`).join("");
+  $("starPill").innerHTML = `★ Starred${n ? ` <span>${n}</span>` : ""}`;
+  $("starPill").setAttribute("aria-pressed", state.starredOnly);
+  const picked = Object.entries(DATA.areas).filter(([a]) => state.areas.has(a)).map(([, name]) => name);
+  $("areaLabel").textContent = !picked.length ? "All areas" : picked.length === 1 ? picked[0] : `${picked[0]} +${picked.length - 1}`;
+  $("areaBtn").classList.toggle("on", picked.length > 0);
+  $("areaList").innerHTML = Object.entries(DATA.areas).map(([a, name]) => {
+    const count = DATA.series.filter((s) => s.areas.includes(a)).length;
+    return `<label class="opt"><input type="checkbox" data-area="${a}" ${state.areas.has(a) ? "checked" : ""}><span><b>${esc(name)}</b><small>${count} venue${count === 1 ? "" : "s"}</small></span></label>`;
+  }).join("");
   $("top").checked = state.top;
   $("hideEst").checked = state.hideEst;
   $("side").checked = state.side;
@@ -701,23 +707,31 @@ function tick() {
   if (expired) render();
 }
 
-// ---- filters popover ----
-function openFilters() {
-  const dlg = $("filterdlg"), btn = $("filterBtn");
-  if (dlg.open) { closeFilters(); return; }
+// ---- popovers (Areas, Filters): anchored under their button; a bottom sheet on phones ----
+const POPS = [["areadlg", "areaBtn"], ["filterdlg", "filterBtn"]];
+function openPop(dlgId, btnId) {
+  const dlg = $(dlgId), btn = $(btnId);
+  const wasOpen = dlg.open;
+  closePops();
+  if (wasOpen) return;
   if (matchMedia("(max-width: 640px)").matches) dlg.showModal();
   else {
     const r = btn.getBoundingClientRect();
     dlg.style.top = `${Math.round(r.bottom + 8)}px`;
-    dlg.style.right = `${Math.round(document.documentElement.clientWidth - r.right)}px`;
+    dlg.style.right = `${Math.max(16, Math.round(document.documentElement.clientWidth - r.right))}px`;
+    dlg.style.maxHeight = `${Math.max(240, Math.round(innerHeight - r.bottom - 24))}px`;
     dlg.show();
   }
   btn.setAttribute("aria-expanded", "true");
 }
-function closeFilters() {
-  $("filterdlg").close();
-  $("filterBtn").setAttribute("aria-expanded", "false");
+function closePops() {
+  for (const [d, b] of POPS) {
+    if ($(d).open) $(d).close();
+    $(b).setAttribute("aria-expanded", "false");
+  }
 }
+const openFilters = () => openPop("filterdlg", "filterBtn");
+const closeFilters = closePops;
 
 async function copyText(text, btn, done = "Copied") {
   const label = btn.textContent;
@@ -746,14 +760,17 @@ function bind() {
     state.focus = b.dataset.focus;
     syncGroups(); save(); render();
   });
-  $("areas").addEventListener("click", (ev) => {
-    const b = ev.target.closest("[data-area], [data-starred]");
-    if (!b) return;
-    if (b.hasAttribute("data-starred")) state.starredOnly = !state.starredOnly;
-    else if (!b.dataset.area) { state.areas.clear(); state.starredOnly = false; }
-    else if (state.areas.has(b.dataset.area)) state.areas.delete(b.dataset.area);
-    else state.areas.add(b.dataset.area);
+  $("starPill").addEventListener("click", () => { state.starredOnly = !state.starredOnly; save(); render(); });
+  $("areaBtn").addEventListener("click", () => openPop("areadlg", "areaBtn"));
+  $("areaList").addEventListener("change", (ev) => {
+    const a = ev.target.dataset.area;
+    if (!a) return;
+    if (ev.target.checked) state.areas.add(a); else state.areas.delete(a);
     save(); render();
+  });
+  $("clearAreas").addEventListener("click", () => { state.areas.clear(); save(); render(); closePops(); });
+  $("areadlg").addEventListener("click", (ev) => {
+    if (ev.target.closest("[data-close]") || ev.target === $("areadlg")) closePops();
   });
   for (const [id, key] of [["top", "top"], ["hideEst", "hideEst"], ["side", "side"]]) {
     $(id).addEventListener("change", (ev) => {
@@ -779,8 +796,8 @@ function bind() {
   });
   $("resetFilters").addEventListener("click", () => { resetFilters(); closeFilters(); });
   document.addEventListener("click", (ev) => {
-    const dlg = $("filterdlg");
-    if (dlg.open && !dlg.contains(ev.target) && !ev.target.closest("#filterBtn")) closeFilters();
+    if (ev.target.closest("#filterBtn, #areaBtn, .popover")) return;
+    closePops();
   });
 
   // Everything inside rendered content (list, hero, list bar).
@@ -858,8 +875,8 @@ function bind() {
       $("q").select();
     } else if (ev.key === "Escape" && ev.target === $("q")) {
       $("q").blur();
-    } else if (ev.key === "Escape" && $("filterdlg").open) {
-      closeFilters();
+    } else if (ev.key === "Escape") {
+      closePops();
     }
   });
   window.addEventListener("hashchange", () => openVenue(decodeURIComponent(location.hash.slice(1))));
@@ -886,8 +903,24 @@ function openVenue(k) {
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); // html scroll-padding clears the sticky bars
 }
 
+// Star count on the GitHub button; quietly hidden if the API can't tell us.
+async function loadStars() {
+  try {
+    const cached = JSON.parse(sessionStorage.getItem("ai-deadlines:stars") || "null");
+    let n = cached && Date.now() - cached.at < 3600e3 ? cached.n : null;
+    if (n == null) {
+      const res = await fetch("https://api.github.com/repos/ruzcko/ai-deadlines");
+      if (!res.ok) return;
+      n = (await res.json()).stargazers_count;
+      try { sessionStorage.setItem("ai-deadlines:stars", JSON.stringify({ n, at: Date.now() })); } catch (_) { /* fine */ }
+    }
+    if (typeof n === "number") { $("ghStars").textContent = n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n; $("ghStars").hidden = false; }
+  } catch (_) { /* offline or rate-limited */ }
+}
+
 async function main() {
   load();
+  loadStars();
   applyTheme();
   $("tzname").textContent = Intl.DateTimeFormat().resolvedOptions().timeZone + " (your local time), or AoE if you pick it in Filters";
   try {
