@@ -218,6 +218,7 @@ def edition(entry):
         "milestones": ms,
         "sources": ["hf"],
         "checks": [],
+        "links": [],
     }
 
 
@@ -259,7 +260,9 @@ def estimate_next(series_editions, now, cycle):
     # Skip ahead until the projected submission deadline is in the future.
     step = cycle
     while True:
-        ms = shift_years(last["milestones"], step)
+        # Project only the main cycle; side events and source labels don't carry over.
+        ms = [{k: v for k, v in m.items() if k not in ("src", "notime")}
+              for m in shift_years(last["milestones"], step) if m["group"] != "other"]
         if any(m["type"] in MAIN_SUBMISSION and m["group"] == "submission" and m["at"] > iso(now)
                for m in ms):
             break
@@ -277,7 +280,8 @@ def estimate_next(series_editions, now, cycle):
             "estimated": True, "estimated_from": last["year"],
             "dates": None, "city": None, "country": None, "venue": None, "lat": None, "lng": None,
             "last_place": ", ".join(x for x in (last.get("city"), last.get("country")) if x) or None,
-            "note": None, "note_link": None, "tentative": False, "checks": [], "place_src": None}
+            "note": None, "note_link": None, "tentative": False, "checks": [], "place_src": None,
+            "links": []}
 
 
 def estimate_gap_conference(series_editions, now, cycle):
@@ -310,7 +314,8 @@ def estimate_gap_conference(series_editions, now, cycle):
             "estimated": True, "estimated_from": last["year"],
             "dates": None, "city": None, "country": None, "venue": None, "lat": None, "lng": None,
             "last_place": ", ".join(x for x in (last.get("city"), last.get("country")) if x) or None,
-            "note": None, "note_link": None, "tentative": False, "checks": [], "place_src": None}
+            "note": None, "note_link": None, "tentative": False, "checks": [], "place_src": None,
+            "links": []}
 
 
 def series_key(entry):

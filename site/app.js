@@ -15,6 +15,7 @@ const state = {
   open: new Set(),
   view: "list",
   span: "all",
+  watch: null, // Set of venue keys from a shared ?watch= link
 };
 let DATA = null;
 
@@ -59,6 +60,35 @@ function zoneFor(label) {
 }
 const SRC_NAME = { hf: "Hugging Face", pr: "PaperRush" };
 const PAPERRUSH_SITE = "https://awsaf49.github.io/paperrush/";
+const REPORT_REPO = { hf: "https://github.com/huggingface/ai-deadlines", pr: "https://github.com/awsaf49/paperrush" };
+const SITE_URL = "https://ai-deadlines.ruzcko.com";
+
+function milestoneValue(m) {
+  if (m.day) return m.day;
+  return `${m.at.slice(0, 10)} ${m.at.slice(11, 16)} UTC` + (m.tz && m.tz !== "UTC" ? ` (listed as ${m.tz})` : "");
+}
+
+// Prefilled GitHub issue on the source that supplied the dates; the viewer reviews and submits it.
+function reportUrl(s, e, src) {
+  const listed = e.milestones.filter((m) => !m.est && (m.src || "hf") === src && m.type !== "end");
+  if (!listed.length) return null;
+  const file = src === "pr" ? `${REPORT_REPO.pr}/blob/main/js/data.js` : (s.source.includes("huggingface") ? s.source : REPORT_REPO.hf);
+  const body = [
+    `**Venue:** ${s.title} ${e.year}`,
+    `**Data:** ${file}`,
+    e.link ? `**Official site:** ${e.link}` : "",
+    "",
+    `Dates currently listed:`,
+    ...listed.map((m) => `- ${m.label}: ${milestoneValue(m)}`),
+    "",
+    `**What's wrong, and the correct date (with a link to the official source):**`,
+    "",
+    "",
+    `_Spotted via ${SITE_URL}/#${s.key}_`,
+  ].filter((line, i, all) => line !== "" || all[i - 1] !== "").join("\n");
+  const title = `Wrong date: ${s.title} ${e.year}`;
+  return `${REPORT_REPO[src]}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+}
 
 function checkBadge(e) {
   const checks = e.checks || [];
@@ -140,9 +170,14 @@ function nextFor(series, now) {
   return best;
 }
 function matches(s) {
+  if (state.watch) return state.watch.has(s.key) && matchesQuery(s);
   if (state.starredOnly && !state.starred.has(s.key)) return false;
   if (state.top && !(s.rank && TOP_RANKS.has(s.rank.value))) return false;
   if (state.areas.size && !s.areas.some((a) => state.areas.has(a))) return false;
+  return matchesQuery(s);
+}
+
+function matchesQuery(s) {
   if (state.q) {
     const hay = [s.title, s.full_name, ...s.tags, ...s.editions.flatMap((e) => [e.city, e.country, e.year])].join(" ").toLowerCase();
     if (!state.q.toLowerCase().split(/\s+/).every((w) => hay.includes(w))) return false;
@@ -202,7 +237,10 @@ function track(next) {
 
 function details(s, next, now) {
   const e = next.edition;
-  const rows = e.milestones.map((m) => {
+  // Side events (workshops, tutorials, registration) only when "Other" is selected.
+  const shown = state.groups.has("other") ? e.milestones : e.milestones.filter((m) => m.group !== "other");
+  const hidden = e.milestones.length - shown.length;
+  const rows = shown.map((m) => {
     const t = new Date(m.at);
     const past = t <= now;
     const when = m.est ? "~" + fmtMonth.format(t) : m.day ? fmtDate.format(new Date(m.day + "T12:00:00")) : fmtDateTime.format(t);
@@ -216,15 +254,27 @@ function details(s, next, now) {
     ? `<p class="est-note">Not all dates are announced yet. Dates marked ~ are projected from ${esc(s.title)} ${e.estimated_from}, so treat them as a rough plan, not a deadline.${e.last_place ? ` Location not announced; last held in ${esc(e.last_place)}.` : ""}</p>` : "";
   const tent = e.tentative ? `<p class="est-note">The organizers marked these dates as tentative.</p>` : "";
   const place = [e.city, e.country].filter(Boolean).join(", ");
+  const seen = new Set();
+  const quick = [
+    e.link && { label: "Official site", url: e.link },
+    e.note_link && { label: "Call for papers", url: e.note_link },
+    ...(e.links || []),
+  ].filter((l) => l && !seen.has(l.url) && seen.add(l.url))
+    .map((l) => `<a class="ql" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("");
+  const reports = (e.sources || ["hf"]).map((src) => {
+    const url = reportUrl(s, e, src);
+    return url && `<a href="${esc(url)}" target="_blank" rel="noopener">${(e.sources || []).length > 1 ? `Report a wrong date (${SRC_NAME[src]})` : "Report a wrong date"} ↗</a>`;
+  });
   const links = [
-    e.link && `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>`,
-    e.note_link && e.note_link !== e.link && `<a href="${esc(e.note_link)}" target="_blank" rel="noopener">Call for papers ↗</a>`,
     `<a href="${esc(s.source)}" target="_blank" rel="noopener">Data source ↗</a>`,
     s.also && s.source !== s.also && `<a href="${PAPERRUSH_SITE}" target="_blank" rel="noopener">Also on PaperRush ↗</a>`,
+    ...reports,
     `<a href="#${esc(s.key)}">Link to ${esc(s.title)}</a>`,
   ].filter(Boolean).join("");
-  return `<div class="details">${estNote}${tent}${checksBlock(e)}<table>${rows}</table>
+  const more = hidden ? `<p class="more">+${hidden} side date${hidden === 1 ? "" : "s"} (workshops, tutorials, registration). Select <b>Other</b> above to show them.</p>` : "";
+  return `<div class="details">${estNote}${tent}${checksBlock(e)}<table>${rows}</table>${more}
     ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
+    ${quick ? `<div class="quick">${quick}</div>` : ""}
     <div class="links">${links}</div>
     <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}${e.place_src === "pr" ? "Location via PaperRush · " : ""}Sources: ${esc((e.sources || ["hf"]).map((x) => SRC_NAME[x]).join(" + "))}${s.updated ? ` · data last changed ${esc(ago(s.updated))}` : ""}</div></div>`;
 }
@@ -287,7 +337,24 @@ function renderSynced() {
   $("synced").title = `Last checked ${ago(DATA.synced_at)} · upstream ${DATA.upstream.commit.slice(0, 7)}`;
 }
 
+function watchLink(keys) {
+  return `${location.origin}${location.pathname}?watch=${[...keys].map(encodeURIComponent).join(",")}`;
+}
+
+function renderWatchbar() {
+  const bar = $("watchbar");
+  $("shareStars").disabled = state.starred.size === 0;
+  if (!state.watch) { bar.hidden = true; return; }
+  const names = DATA.series.filter((s) => state.watch.has(s.key)).map((s) => s.title);
+  const allSaved = names.length && [...state.watch].every((k) => state.starred.has(k));
+  bar.hidden = false;
+  bar.innerHTML = `<span><b>Shared list</b> · ${names.length} venue${names.length === 1 ? "" : "s"}: ${esc(names.join(", "))}</span>
+    <span class="wb-actions">${allSaved ? `<span class="muted">All starred</span>` : `<button class="chip" data-watch="save">★ Star all</button>`}
+    <button class="chip" data-watch="exit">Show everything</button></span>`;
+}
+
 function renderList() {
+  renderWatchbar();
   renderRows();
   if (state.view === "map") renderMap();
 }
@@ -537,6 +604,29 @@ function bind() {
     map.flyTo(m.getLatLng(), Math.max(map.getZoom(), 4), { duration: 0.6 });
     map.once("moveend", () => m.openPopup());
   });
+  $("watchbar").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-watch]");
+    if (!b) return;
+    if (b.dataset.watch === "save") {
+      for (const k of state.watch) state.starred.add(k);
+      save();
+    } else {
+      state.watch = null;
+      const url = new URL(location.href);
+      url.searchParams.delete("watch");
+      history.replaceState(null, "", url);
+    }
+    renderList();
+  });
+  $("shareStars").addEventListener("click", async () => {
+    const url = watchLink(state.starred);
+    const b = $("shareStars");
+    try {
+      await navigator.clipboard.writeText(url);
+      b.textContent = "Link copied";
+      setTimeout(() => { b.textContent = "Share starred"; }, 1500);
+    } catch (_) { window.prompt("Share this link", url); }
+  });
   window.addEventListener("hashchange", openFromHash);
 }
 
@@ -563,6 +653,12 @@ async function main() {
   try {
     const res = await fetch("data/conferences.json", { cache: "no-cache" });
     DATA = await res.json();
+    const watch = new URLSearchParams(location.search).get("watch");
+    if (watch) {
+      const keys = new Set(DATA.series.map((s) => s.key));
+      const list = watch.split(",").map((k) => k.trim().toLowerCase()).filter((k) => keys.has(k));
+      if (list.length) state.watch = new Set(list);
+    }
   } catch (err) {
     $("hero").innerHTML = `<p class="empty">Could not load deadlines. Try reloading.</p>`;
     return;

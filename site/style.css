@@ -125,7 +125,7 @@ button { font: inherit; color: inherit; }
 .details .checks .differ { color: var(--text); }
 .warn-text { color: var(--warn); font-size: 12px; }
 .next { text-align: right; }
-.next .cd { font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+.next .cd { font-weight: 700; font-size: 18px; letter-spacing: -.01em; white-space: nowrap; }
 .next .lbl { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
 .next .lbl .sw { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .u-hot .cd { color: var(--accent); }
@@ -157,6 +157,18 @@ button { font: inherit; color: inherit; }
 .details .links { display: flex; gap: 6px 16px; flex-wrap: wrap; margin-top: 12px; font-size: 14px; }
 .details .meta { color: var(--faint); font-size: 12px; margin-top: 10px; }
 .details .est-note { background: color-mix(in srgb, var(--warn) 12%, transparent); color: var(--text); border-radius: 8px; padding: 8px 12px; font-size: 14px; margin: 0 0 10px; }
+
+/* Quick links, shared lists */
+.details .more { color: var(--faint); font-size: 13px; margin: 8px 0 0; }
+.details .quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.details .quick .ql { font-size: 13px; text-decoration: none; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); }
+.details .quick .ql:hover { border-color: var(--text); }
+.linkbtn { border: 0; background: none; padding: 0; color: var(--muted); font-size: 14px; cursor: pointer; text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 3px; white-space: nowrap; }
+.linkbtn:hover:not(:disabled) { color: var(--text); }
+.linkbtn:disabled { opacity: .45; cursor: default; text-decoration: none; }
+.watchbar { display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 12px; border-radius: 12px; background: color-mix(in srgb, #f5a524 14%, var(--surface)); border: 1px solid color-mix(in srgb, #f5a524 40%, transparent); font-size: 14px; }
+.watchbar[hidden] { display: none; }
+.watchbar .wb-actions { display: flex; gap: 6px; align-items: center; }
 
 /* View tabs */
 .tabs { display: inline-flex; padding: 3px; gap: 2px; background: var(--surface-2); border-radius: 10px; margin: 4px 0 14px; }

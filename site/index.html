@@ -25,12 +25,15 @@
       <div class="search-row">
         <input id="q" type="search" placeholder="Search NeurIPS, vision, Seoul…" autocomplete="off" aria-label="Search venues">
         <label class="toggle"><input type="checkbox" id="starred"> ★ Starred only</label>
+        <button class="linkbtn" id="shareStars" type="button" title="Copy a link to your starred venues">Share starred</button>
         <label class="toggle"><input type="checkbox" id="top"> Top tier</label>
         <label class="toggle"><input type="checkbox" id="hideEst"> Hide estimates</label>
       </div>
       <div class="chips" id="groups" role="group" aria-label="Milestones"></div>
       <div class="chips" id="areas" role="group" aria-label="Areas"></div>
     </section>
+
+    <div class="watchbar" id="watchbar" hidden></div>
 
     <div class="tabs" role="tablist" aria-label="View">
       <button role="tab" data-view="list" aria-selected="true">List</button>

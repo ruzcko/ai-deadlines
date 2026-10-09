@@ -84,6 +84,24 @@ def _milestones(conf, group_of):
     return out
 
 
+# Quick links worth having one click away while submitting, in display order.
+LINK_LABELS = [
+    ("author", "Call for papers"), ("submission", "Submission portal"), ("template", "LaTeX template"),
+    ("authorGuide", "Author guidelines"), ("dates", "Important dates"), ("reviewerGuide", "Reviewer guidelines"),
+    ("faq", "FAQ"), ("registration", "Registration"),
+]
+
+
+def _links(conf):
+    links, seen = [], {conf.get("website"), (conf.get("links") or {}).get("official")}
+    for key, label in LINK_LABELS:
+        url = (conf.get("links") or {}).get(key)
+        if url and url.startswith("http") and url not in seen:
+            seen.add(url)
+            links.append({"kind": key, "label": label, "url": url})
+    return links
+
+
 def _place(conf):
     loc = conf.get("location") or {}
     city, country = loc.get("city"), loc.get("country")
@@ -169,7 +187,8 @@ def merge(series, conferences, *, group_of, geocode, series_key_of, last_updated
             ed = {"id": conf["id"], "year": conf["year"], "dates": None, "city": city, "country": country,
                   "venue": venue, "link": conf.get("website") or (conf.get("links") or {}).get("official"),
                   "note": None, "note_link": (conf.get("links") or {}).get("dates"), "tentative": False,
-                  "estimated": False, "milestones": pr_ms, "sources": ["pr"], "checks": []}
+                  "estimated": False, "milestones": pr_ms, "sources": ["pr"], "checks": [],
+                  "links": _links(conf)}
             if place:
                 ed["place_src"] = "pr"
             ed["lat"], ed["lng"] = geocode(city, country) or (None, None)
@@ -180,6 +199,7 @@ def merge(series, conferences, *, group_of, geocode, series_key_of, last_updated
         if "pr" not in ed["sources"]:
             ed["sources"].append("pr")
         ed["checks"] = _cross_check(ed, pr_ms)
+        ed["links"] = _links(conf)
 
         what = []
         if place and not ed.get("city"):
