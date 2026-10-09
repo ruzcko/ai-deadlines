@@ -102,9 +102,9 @@ function venueSvg({ s, e, m, t }, now, eyebrowPrefix = "") {
 
 function listSvg(rows, now) {
   const shown = rows.slice(0, 4);
-  let body = txt(X, 176, 64, 800, C.text, "Deadlines to watch", 'letter-spacing="-2"');
+  let body = txt(X, 162, 58, 800, C.text, "Deadlines to watch", 'letter-spacing="-2"');
   shown.forEach((r, i) => {
-    const y = 236 + i * 84, c = C[r.m.group] || C.accent;
+    const y = 196 + i * 82, c = C[r.m.group] || C.accent;
     const right = shortCount(r.t - now, r.m.est);
     body += `<line x1="${X}" y1="${y}" x2="${W - X}" y2="${y}" stroke="${C.line}" stroke-width="2"/>`;
     body += `<circle cx="${X + 9}" cy="${y + 34}" r="8" fill="${c}"/>`;
@@ -113,8 +113,8 @@ function listSvg(rows, now) {
     body += txt(X + 32, y + 74, 20, 500, C.muted, sub.length > 70 ? sub.slice(0, 69) + "…" : sub);
     body += txt(W - X, y + 52, 44, 800, r.m.est ? C.muted : c, right, 'text-anchor="end"');
   });
-  if (rows.length > shown.length) body += txt(X + 32, 236 + shown.length * 84 + 34, 22, 700, C.faint, `+${rows.length - shown.length} more`);
   body += txt(X, 588, 22, 500, C.faint, `${SITE}  ·  ${asOf(now)}`);
+  if (rows.length > shown.length) body += txt(W - X, 588, 22, 700, C.muted, `+${rows.length - shown.length} more`, 'text-anchor="end"');
   return frame(C.accent, body);
 }
 

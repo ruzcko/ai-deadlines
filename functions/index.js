@@ -2,7 +2,7 @@
 // links carry the venue or list in the query. We serve the normal page with its title, description and preview
 // image set for them. Every visit gets a preview image dated today, since the countdown in it changes daily.
 // Any error falls back to the untouched page.
-import { cleanKey, esc, loadData, nextFor, nextOverall, officialWhen, shortCount } from "../lib/deadline.js";
+import { cleanKey, esc, humanCount, loadData, nextFor, nextOverall, officialWhen } from "../lib/deadline.js";
 
 class SetContent {
   constructor(value) { this.value = value; }
@@ -24,7 +24,7 @@ export async function onRequestGet({ request, env }) {
     if (s) {
       const n = nextFor(s, now);
       query = `v=${s.key}`;
-      title = n ? `${s.title} ${n.e.year} · ${n.m.label} in ${shortCount(n.t - now, n.m.est)}` : `${s.title} · AI Conference Deadlines`;
+      title = n ? `${s.title} ${n.e.year} · ${n.m.label} in ${humanCount(n.t - now, n.m.est)}` : `${s.title} · AI Conference Deadlines`;
       desc = n ? `${n.m.label}: ${officialWhen(n.e, n.m)}.${n.e.city ? ` ${[n.e.city, n.e.country].filter(Boolean).join(", ")}.` : ""} Live countdown, every milestone and calendar feeds.`
         : `${s.full_name || s.title}: deadlines, dates and calendar feeds.`;
     } else if (watch.length) {
@@ -32,11 +32,11 @@ export async function onRequestGet({ request, env }) {
       if (rows.length) {
         query = `watch=${rows.map((r) => r.s.key).join(",")}`;
         title = `Deadlines to watch: ${rows.slice(0, 4).map((r) => r.s.title).join(", ")}${rows.length > 4 ? "…" : ""}`;
-        desc = rows.slice(0, 3).map((r) => `${r.s.title} ${r.e.year} ${r.m.label.toLowerCase()} in ${shortCount(r.t - now, r.m.est)}`).join(" · ") + ".";
+        desc = rows.slice(0, 3).map((r) => `${r.s.title} ${r.e.year} ${r.m.label.toLowerCase()} in ${humanCount(r.t - now, r.m.est)}`).join(" · ") + ".";
       }
     } else {
       const n = nextOverall(data, now);
-      if (n) desc = `Next up: ${n.s.title} ${n.e.year} ${n.m.label.toLowerCase()} in ${shortCount(n.t - now, false)}. Live countdowns for 70+ AI/ML venues, a map, a calendar and subscribable feeds.`;
+      if (n) desc = `Next up: ${n.s.title} ${n.e.year} ${n.m.label.toLowerCase()} in ${humanCount(n.t - now, false)}. Live countdowns for 70+ AI/ML venues, a map, a calendar and subscribable feeds.`;
     }
 
     const image = `${url.origin}/og?${query ? query + "&" : ""}d=${day}`;

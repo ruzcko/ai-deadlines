@@ -17,96 +17,127 @@
   <meta name="twitter:title" content="AI Conference Deadlines">
   <meta name="twitter:description" content="Live countdowns to AI, ML, vision, NLP and robotics conference deadlines, from submission to camera-ready.">
   <meta name="twitter:image" content="https://ai-deadlines.ruzcko.com/og">
-  <link rel="preload" href="fonts/Inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#f6f6f3" media="(prefers-color-scheme: light)">
+  <link rel="preload" href="fonts/Inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='17' r='12' fill='none' stroke='%23e5484d' stroke-width='3'/><path d='M16 10v7l4 3' stroke='%23e5484d' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
+  <script>
+    // Apply a saved theme before first paint, so the page doesn't flash.
+    try { const t = JSON.parse(localStorage.getItem("ai-deadlines:v1") || "{}").theme; if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (_) {}
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="top">
     <div class="wrap top-row">
-      <a class="brand" href="./"><span class="dot" aria-hidden="true"></span>AI Conference Deadlines</a>
-      <span class="synced" id="synced"></span>
+      <a class="brand" href="/" aria-label="AI Conference Deadlines, home">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="17" r="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 10v7l4 3" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+        <span>AI Conference Deadlines</span>
+      </a>
+      <div class="top-right">
+        <span class="synced" id="synced"></span>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="Theme"></button>
+      </div>
     </div>
   </header>
 
-  <main class="wrap">
-    <section class="hero" id="hero" aria-live="polite"></section>
-
-    <section class="controls" aria-label="Filters">
-      <div class="search-row">
-        <input id="q" type="search" placeholder="Search NeurIPS, vision, Seoul…" autocomplete="off" aria-label="Search venues">
-        <label class="toggle"><input type="checkbox" id="starred"> ★ Starred only</label>
-        <button class="linkbtn" id="shareStars" type="button" title="Copy a link to your starred venues">Share starred</button>
-        <button class="linkbtn" id="starCard" type="button" data-sharecard="list" title="Make an image of your starred deadlines">Starred card</button>
-        <label class="toggle"><input type="checkbox" id="top"> Top tier</label>
-        <label class="toggle"><input type="checkbox" id="hideEst"> Hide estimates</label>
-      </div>
-      <div class="chips" id="groups" role="group" aria-label="Milestones"></div>
-      <div class="chips" id="areas" role="group" aria-label="Areas"></div>
-    </section>
-
-    <div class="watchbar" id="watchbar" hidden></div>
-
-    <div class="tabs" role="tablist" aria-label="View">
-      <button role="tab" data-view="list" aria-selected="true">List</button>
-      <button role="tab" data-view="map" aria-selected="false">Map</button>
-      <button role="tab" data-view="calendar" aria-selected="false">Calendar</button>
+  <main>
+    <div class="wrap">
+      <section class="hero" id="hero" aria-live="polite"></section>
     </div>
 
-    <section class="view-list" aria-label="Venues">
-      <p class="count" id="count"></p>
-      <ol class="list" id="list"></ol>
-    </section>
-
-    <section class="view-map" aria-label="Conference locations">
-      <div class="map-bar">
-        <p class="count" id="mapcount"></p>
-        <div class="chips" id="span" role="group" aria-label="Time window">
-          <button class="chip" data-span="6">Next 6 months</button>
-          <button class="chip" data-span="12">Next 12 months</button>
-          <button class="chip" data-span="all">All announced</button>
+    <div class="toolbar-wrap" id="toolbar">
+      <div class="wrap toolbar">
+        <div class="tb-row">
+          <div class="seg" id="focus" role="radiogroup" aria-label="Show"></div>
+          <div class="seg views" role="tablist" aria-label="View">
+            <button role="tab" data-view="list" aria-selected="true"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5h12M4 10h12M4 15h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>List</span></button>
+            <button role="tab" data-view="map" aria-selected="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 18s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="8" r="2.2" fill="currentColor"/></svg><span>Map</span></button>
+            <button role="tab" data-view="calendar" aria-selected="false"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 8.5h14M7 2.8v3.4M13 2.8v3.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Calendar</span></button>
+          </div>
+        </div>
+        <div class="tb-row">
+          <label class="search">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m13.5 13.5 3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input id="q" type="search" placeholder="Search venues, cities, topics" autocomplete="off" aria-label="Search venues">
+            <kbd>/</kbd>
+          </label>
+          <div class="pills" id="areas" role="group" aria-label="Areas"></div>
+          <button class="filter-btn" id="filterBtn" type="button" aria-haspopup="dialog" aria-expanded="false">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M6 10h8M8.5 15h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>Filters</span><b id="filterCount" hidden></b>
+          </button>
         </div>
       </div>
-      <div id="map" class="map"></div>
-      <p class="map-legend"><span><span class="sw hot"></span> Within 3 months</span><span><span class="sw later"></span> Later</span><span>Next edition of each venue. Zoom in for labels. Locations are only shown once announced.</span></p>
-      <div class="tba" id="onmap"></div>
-      <div class="tba" id="tba"></div>
-    </section>
+    </div>
 
-    <section class="view-cal" aria-label="Calendar">
-      <div class="cal-bar">
-        <div class="cal-nav">
-          <button id="calPrev" class="chip" type="button" aria-label="Previous month">‹</button>
-          <h2 id="calTitle"></h2>
-          <button id="calNext" class="chip" type="button" aria-label="Next month">›</button>
+    <div class="wrap">
+      <div class="listbar" id="watchbar" hidden></div>
+
+      <section class="view-list" aria-label="Venues">
+        <div id="list"></div>
+      </section>
+
+      <section class="view-map" aria-label="Conference locations">
+        <div class="map-bar">
+          <p class="count" id="mapcount"></p>
+          <div class="seg small" id="span" role="radiogroup" aria-label="Time window">
+            <button type="button" data-span="6">6 months</button>
+            <button type="button" data-span="12">12 months</button>
+            <button type="button" data-span="all">All announced</button>
+          </div>
         </div>
-        <div class="cal-right"><span class="count" id="calcount"></span><button id="calToday" class="chip" type="button">Today</button></div>
-      </div>
-      <div class="calgrid" id="calgrid"></div>
-      <div class="calexpected" id="calexpected"></div>
-      <div class="calagenda" id="calagenda"></div>
-    </section>
+        <div id="map" class="map"></div>
+        <p class="map-legend"><span><span class="sw hot"></span> Within 3 months</span><span><span class="sw later"></span> Later</span><span>Next edition of each venue. Zoom in for labels. Locations show once announced.</span></p>
+        <div class="tba" id="onmap"></div>
+        <div class="tba" id="tba"></div>
+      </section>
 
-    <section class="subscribe" id="subscribe">
-      <h2>Put them in your calendar</h2>
-      <p>Each milestone type is its own feed, so you can subscribe to just what you care about and color them separately. Feeds refresh daily and leave out estimated dates.</p>
-      <div class="feeds" id="feeds"></div>
-    </section>
+      <section class="view-cal" aria-label="Calendar">
+        <div class="cal-bar">
+          <div class="cal-nav">
+            <button id="calPrev" class="icon-btn" type="button" aria-label="Previous month">‹</button>
+            <h2 id="calTitle"></h2>
+            <button id="calNext" class="icon-btn" type="button" aria-label="Next month">›</button>
+          </div>
+          <div class="cal-right"><span class="count" id="calcount"></span><button id="calToday" class="pill" type="button">Today</button></div>
+        </div>
+        <div class="calgrid" id="calgrid"></div>
+        <div class="calexpected" id="calexpected"></div>
+        <div class="calagenda" id="calagenda"></div>
+      </section>
+
+      <section class="subscribe" id="subscribe">
+        <div>
+          <h2>Put them in your calendar</h2>
+          <p>Each milestone type is its own feed: subscribe to just what you care about and color them separately. Feeds refresh daily and never include estimated dates.</p>
+        </div>
+        <div class="feeds" id="feeds"></div>
+      </section>
+    </div>
   </main>
 
   <footer class="wrap foot">
-    <p>Dates come from <a href="https://github.com/huggingface/ai-deadlines">huggingface/ai-deadlines</a> (MIT), with gaps filled and dates cross-checked from <a href="https://github.com/awsaf49/paperrush">PaperRush</a> (Apache-2.0). “✓ 2 sources” means both list the same date; “⚠ Sources differ” means they don’t. Deadlines move and get extended — always confirm on the official call for papers. Spotted a wrong date? Fix it upstream with the “Data source” link on any venue.</p>
+    <p>Dates come from <a href="https://github.com/huggingface/ai-deadlines">huggingface/ai-deadlines</a> (MIT), with gaps filled and dates cross-checked from <a href="https://github.com/awsaf49/paperrush">PaperRush</a> (Apache-2.0). “✓ 2 sources” means both list the same date; “⚠ Sources differ” means they don’t. Deadlines move and get extended — always confirm on the official call for papers. Spotted a wrong date? Use “Report a wrong date” on any venue.</p>
     <p>Times shown in <span id="tzname"></span>. Made by <a href="https://ruzcko.com">ruzcko</a>.</p>
   </footer>
 
+  <dialog id="filterdlg" class="popover" aria-label="Filters">
+    <div class="sd-head"><h2>Filters</h2><button class="sd-x" type="button" data-close aria-label="Close">×</button></div>
+    <label class="opt"><input type="checkbox" id="top"><span><b>Top tier only</b><small>CORE or ERA rank A* and A</small></span></label>
+    <label class="opt"><input type="checkbox" id="hideEst"><span><b>Hide estimates</b><small>Only dates the organizers announced</small></span></label>
+    <label class="opt"><input type="checkbox" id="side"><span><b>Show side events</b><small>Workshops, tutorials, registration</small></span></label>
+    <div class="opt-row"><span><b>Times in</b></span><div class="seg small" id="tzSeg" role="radiogroup" aria-label="Times in"><button type="button" data-tz="local">Your time</button><button type="button" data-tz="aoe">AoE</button></div></div>
+    <div class="opt-row"><span><b>Theme</b></span><div class="seg small" id="themeSeg" role="radiogroup" aria-label="Theme"><button type="button" data-theme-set="auto">Auto</button><button type="button" data-theme-set="light">Light</button><button type="button" data-theme-set="dark">Dark</button></div></div>
+    <button class="btn" type="button" id="resetFilters">Reset filters</button>
+  </dialog>
+
   <dialog id="sharedlg" class="sharedlg" aria-labelledby="sdTitle">
     <div class="sd-head"><h2 id="sdTitle">Share card</h2><button id="sdClose" class="sd-x" type="button" aria-label="Close">×</button></div>
-    <div class="chips" id="sdFormats" role="group" aria-label="Card format">
-      <button class="chip" type="button" data-format="story">Story 9:16</button>
-      <button class="chip" type="button" data-format="square">Square</button>
-      <button class="chip" type="button" data-format="wide">Wide</button>
+    <div class="seg small" id="sdFormats" role="radiogroup" aria-label="Card format">
+      <button type="button" data-format="story">Story 9:16</button>
+      <button type="button" data-format="square">Square</button>
+      <button type="button" data-format="wide">Wide</button>
     </div>
     <div class="sd-preview"><img id="sdImg" alt="Preview of the share card"></div>
     <div class="sd-actions">

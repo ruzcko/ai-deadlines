@@ -276,7 +276,7 @@ async function refreshCard() {
   if (img.dataset.url) URL.revokeObjectURL(img.dataset.url);
   img.dataset.url = URL.createObjectURL(shareState.blob);
   img.src = img.dataset.url;
-  for (const b of document.querySelectorAll("[data-format]")) b.setAttribute("aria-pressed", b.dataset.format === shareState.format);
+  for (const b of document.querySelectorAll("[data-format]")) b.setAttribute("aria-checked", b.dataset.format === shareState.format);
 }
 
 function openShareCard(kind, payload, url, text) {

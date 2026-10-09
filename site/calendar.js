@@ -18,19 +18,10 @@ function firstWeekday() {
   return 0;
 }
 
-const SHORT = { submission: "Paper", reviews: "Reviews", decision: "Decision", camera: "Camera-ready", conference: "Conference", other: "Event" };
-function shortLabel(m) {
-  const l = m.label.toLowerCase();
-  if (m.group === "submission") {
-    if (m.type === "abstract" || l.includes("abstract")) return "Abstract";
-    if (m.type === "supplementary" || l.includes("supplement")) return "Supp.";
-    if (l.includes("registration")) return "Registration";
-  }
-  if (m.group === "reviews" && /rebuttal|response|discussion/.test(l)) return l.includes("end") ? "Rebuttal ends" : "Rebuttal";
-  return SHORT[m.group] || m.label;
-}
+// Calendar day of a milestone: its own date for day-only entries, else the instant in the chosen zone.
+const keyOf = (m, t) => m.day || zoneDayKey(t);
 
-function calItems(start, end) {
+function calItems(monthPrefix) {
   const items = [], expected = new Map();
   for (const s of DATA.series) {
     if (!matches(s)) continue;
@@ -39,13 +30,13 @@ function calItems(start, end) {
       for (const m of e.milestones) {
         if (!state.groups.has(m.group) || m.type === "end") continue;
         const t = m.day ? new Date(m.day + "T12:00:00") : new Date(m.at);
-        if (t < start || t >= end) continue;
+        if (!keyOf(m, t).startsWith(monthPrefix)) continue;
         if (m.est) {
           const k = `${s.key}:${m.group}`;
           if (!state.hideEst && !expected.has(k)) expected.set(k, { s, e, m, t });
           continue;
         }
-        items.push({ s, e, m, t, until: m.type === "start" && endM ? endM.day : null });
+        items.push({ s, e, m, t, key: keyOf(m, t), until: m.type === "start" && endM ? endM.day : null });
       }
     }
   }
@@ -63,11 +54,11 @@ function renderCalendar() {
   const now = new Date();
   if (!cal.month) cal.month = new Date(now.getFullYear(), now.getMonth(), 1);
   const y = cal.month.getFullYear(), mo = cal.month.getMonth();
-  const start = new Date(y, mo, 1), end = new Date(y, mo + 1, 1);
-  const { items, expected } = calItems(start, end);
+  const start = new Date(y, mo, 1);
+  const { items, expected } = calItems(`${y}-${String(mo + 1).padStart(2, "0")}-`);
   const byDay = new Map();
   for (const it of items) {
-    const k = dayKey(it.t);
+    const k = it.key;
     if (!byDay.has(k)) byDay.set(k, []);
     byDay.get(k).push(it);
   }
@@ -87,7 +78,7 @@ function renderCalendar() {
 
   const lead = (start.getDay() - first + 7) % 7;
   const days = new Date(y, mo + 1, 0).getDate();
-  const today = dayKey(now);
+  const today = zoneDayKey(now);
   const cells = [];
   for (let i = 0; i < lead; i++) cells.push(`<div class="cal-cell blank"></div>`);
   for (let d = 1; d <= days; d++) {
@@ -106,7 +97,7 @@ function renderCalendar() {
   // Day-by-day agenda: the main view on phones, and where "+N more" leads.
   const agenda = [...byDay.entries()].map(([k, list]) => `
     <div class="ag-day${k < today ? " past" : ""}" id="ag-${k}"><div class="ag-date">${esc(fmtDate.format(new Date(k + "T12:00:00")))}</div>
-    ${list.map((it) => `<a class="ag-item" href="#${esc(it.s.key)}"><span class="sw" style="background:var(--g-${it.m.group})"></span><b>${esc(it.s.title)} ${it.e.year}</b> <span>${esc(it.m.label)}${it.until ? ` – until ${esc(fmtDate.format(new Date(it.until + "T12:00:00")))}` : ""}</span>${it.m.day ? "" : `<span class="muted">${esc(new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(it.t))}</span>`}</a>`).join("")}</div>`).join("");
+    ${list.map((it) => `<a class="ag-item" href="#${esc(it.s.key)}"><span class="sw" style="background:var(--g-${it.m.group})"></span><b>${esc(it.s.title)} ${it.e.year}</b> <span>${esc(it.m.label)}${it.until ? ` – until ${esc(fmtDate.format(new Date(it.until + "T12:00:00")))}` : ""}</span>${it.m.day ? "" : `<span class="muted">${esc(fmtIn("t").format(it.t) + tzTag())}</span>`}</a>`).join("")}</div>`).join("");
   $("calagenda").innerHTML = agenda || `<p class="muted">Nothing this month for these filters.</p>`;
 
   $("calexpected").innerHTML = expected.length ? `<h3>Expected this month <span class="badge est">Not announced</span></h3>

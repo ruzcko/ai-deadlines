@@ -2,16 +2,22 @@
 
 const STORE = "ai-deadlines:v1";
 const TOP_RANKS = new Set(["A*", "A"]);
+const MAIN_GROUPS = ["submission", "reviews", "decision", "camera", "conference"];
+const FOCUS = [["submission", "Submissions"], ["reviews", "Reviews"], ["decision", "Decisions"], ["camera", "Camera-ready"], ["conference", "Conferences"], ["all", "All"]];
 const $ = (id) => document.getElementById(id);
 
 const state = {
   q: "",
-  groups: new Set(["submission"]),
+  focus: "submission",
+  side: false, // workshops, tutorials, registration
+  groups: new Set(["submission"]), // derived from focus + side
   areas: new Set(),
   starred: new Set(),
   starredOnly: false,
   top: false,
   hideEst: false,
+  tz: "local", // or "aoe"
+  theme: "auto",
   open: new Set(),
   view: "list",
   span: "all",
@@ -19,25 +25,35 @@ const state = {
 };
 let DATA = null;
 
+function syncGroups() {
+  state.groups = new Set(state.focus === "all" ? MAIN_GROUPS : [state.focus]);
+  if (state.side) state.groups.add("other");
+}
+
 // ---- persistence (per-viewer convenience only) ----
 function load() {
   try {
     const s = JSON.parse(localStorage.getItem(STORE) || "{}");
-    if (Array.isArray(s.groups) && s.groups.length) state.groups = new Set(s.groups);
+    if (FOCUS.some(([k]) => k === s.focus)) state.focus = s.focus;
+    else if (Array.isArray(s.groups) && s.groups.length === 1 && FOCUS.some(([k]) => k === s.groups[0])) state.focus = s.groups[0];
     if (Array.isArray(s.areas)) state.areas = new Set(s.areas);
     if (Array.isArray(s.starred)) state.starred = new Set(s.starred);
     state.starredOnly = !!s.starredOnly;
     state.top = !!s.top;
     state.hideEst = !!s.hideEst;
+    state.side = !!s.side;
+    if (s.tz === "aoe") state.tz = "aoe";
+    if (["light", "dark"].includes(s.theme)) state.theme = s.theme;
     if (["map", "calendar"].includes(s.view)) state.view = s.view;
     if (["6", "12", "all"].includes(s.span)) state.span = s.span;
   } catch (_) { /* storage unavailable */ }
+  syncGroups();
 }
 function save() {
   try {
     localStorage.setItem(STORE, JSON.stringify({
-      groups: [...state.groups], areas: [...state.areas], starred: [...state.starred],
-      starredOnly: state.starredOnly, top: state.top, hideEst: state.hideEst,
+      focus: state.focus, side: state.side, areas: [...state.areas], starred: [...state.starred],
+      starredOnly: state.starredOnly, top: state.top, hideEst: state.hideEst, tz: state.tz, theme: state.theme,
       view: state.view, span: state.span,
     }));
   } catch (_) { /* storage unavailable */ }
@@ -45,19 +61,102 @@ function save() {
 
 // ---- formatting ----
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const fmtDateTime = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
 const fmtDate = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" });
 const fmtMonth = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" });
+const AOE = "Etc/GMT+12";
+
+// Instants follow the "Times in" switch: your local time, or Anywhere on Earth (UTC-12).
+const fmtCache = {};
+function fmtIn(kind) {
+  const tz = state.tz === "aoe" ? AOE : undefined;
+  const key = kind + (tz || "");
+  if (!fmtCache[key]) {
+    const opts = {
+      dt: { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" },
+      dts: { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" },
+      t: { hour: "numeric", minute: "2-digit" },
+    }[kind];
+    fmtCache[key] = new Intl.DateTimeFormat(undefined, { ...opts, timeZone: tz });
+  }
+  return fmtCache[key];
+}
+const tzTag = () => (state.tz === "aoe" ? " AoE" : "");
+const fmtDT = (t) => fmtIn("dt").format(t) + tzTag();
+// Kept for calendar.js/share.js: formats an instant per the switch.
+const fmtDateTime = { format: (t) => fmtDT(t) };
+
+// Calendar day (YYYY-MM-DD) of an instant, in the chosen zone.
+function zoneDayKey(t) {
+  if (state.tz !== "aoe") return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-CA", { timeZone: AOE, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(t).map((x) => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+}
 
 function zoneFor(label) {
   if (!label) return null;
-  if (label === "AoE") return "Etc/GMT+12";
+  if (label === "AoE") return AOE;
   if (label === "UTC") return "UTC";
   if (label === "Pacific") return "America/Los_Angeles";
   const m = /^UTC([+-])(\d+)$/.exec(label);
   if (m) return `Etc/GMT${m[1] === "+" ? "-" : "+"}${m[2]}`; // Etc/ signs are inverted
   return label;
 }
+function inZone(date, label) {
+  const tz = zoneFor(label);
+  if (!tz) return "";
+  try {
+    return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz }).format(date) + " " + label;
+  } catch (_) { return label; }
+}
+function whenText(item) {
+  if (item.m.est) return "around " + fmtMonth.format(item.t);
+  if (item.m.day) return fmtDate.format(new Date(item.m.day + "T12:00:00"));
+  return fmtDT(item.t);
+}
+// The official-zone time, shown next to ours unless they're the same thing.
+function officialAlt(item) {
+  const { m, t } = item;
+  if (m.est || m.day || !m.tz || m.notime) return "";
+  if (state.tz === "aoe" && m.tz === "AoE") return "";
+  return inZone(t, m.tz);
+}
+
+function parts(ms) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  return { d: Math.floor(s / 86400), h: Math.floor(s / 3600) % 24, m: Math.floor(s / 60) % 60, s: s % 60 };
+}
+function compact(ms, estimated) {
+  const p = parts(ms);
+  if (estimated) return p.d < 45 ? "Due soon?" : p.d >= 60 ? `~${Math.round(p.d / 30.4)} mo` : `~${p.d} d`;
+  if (p.d >= 2) return `${p.d}d ${p.h}h`;
+  const h = p.d * 24 + p.h;
+  return h ? `${h}h ${String(p.m).padStart(2, "0")}m` : `${p.m}m ${String(p.s).padStart(2, "0")}s`;
+}
+// Departures-board countdown: one big number, a small unit line.
+function cdParts(ms, est) {
+  const p = parts(ms);
+  if (est) {
+    if (p.d < 45) return ["Soon?", "not announced"];
+    return p.d >= 60 ? [`~${Math.round(p.d / 30.4)}`, "months"] : [`~${p.d}`, "days"];
+  }
+  if (p.d >= 2) return [String(p.d), p.d < 14 ? `days ${p.h}h` : "days"];
+  const h = p.d * 24 + p.h;
+  if (h >= 1) return [String(h), `hrs ${p.m}m`];
+  return [String(p.m), `min ${p.s}s`];
+}
+function ago(iso) {
+  const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
+  if (mins < 60) return `${Math.max(1, mins)} min ago`;
+  const h = Math.round(mins / 60);
+  if (h < 48) return `${h}h ago`;
+  return `${Math.round(h / 24)} days ago`;
+}
+function urgency(ms) {
+  const d = ms / 86400000;
+  return d < 7 ? "u-hot" : d < 30 ? "u-warm" : "";
+}
+
+// ---- sources, cross-checks, reports ----
 const SRC_NAME = { hf: "Hugging Face", pr: "PaperRush" };
 const PAPERRUSH_SITE = "https://awsaf49.github.io/paperrush/";
 const REPORT_REPO = { hf: "https://github.com/huggingface/ai-deadlines", pr: "https://github.com/awsaf49/paperrush" };
@@ -93,8 +192,7 @@ function reportUrl(s, e, src) {
 function checkBadge(e) {
   const checks = e.checks || [];
   if (!checks.length) return "";
-  const n = checks.filter((c) => !c.agree).length;
-  return n
+  return checks.some((c) => !c.agree)
     ? `<span class="badge warn" title="Hugging Face and PaperRush list different dates">⚠ Sources differ</span>`
     : `<span class="badge ok" title="Hugging Face and PaperRush list the same dates">✓ 2 sources</span>`;
 }
@@ -103,7 +201,7 @@ function checkWhen(v, tz, notime) {
   if (!v) return "";
   if (v.length === 10) return fmtDate.format(new Date(v + "T12:00:00"));
   const d = new Date(v);
-  return notime ? fmtDate.format(d) + " (no time given)" : fmtDateTime.format(d);
+  return notime ? fmtDate.format(d) + " (no time given)" : fmtDT(d);
 }
 
 function checksBlock(e) {
@@ -113,43 +211,6 @@ function checksBlock(e) {
     ? `<li class="agree">✓ <b>${esc(c.what)}</b>: both sources say ${esc(checkWhen(c.hf, c.hf_tz))}</li>`
     : `<li class="differ">⚠ <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, PaperRush says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. Check the official site.</li>`).join("");
   return `<ul class="checks">${items}</ul>`;
-}
-
-function inZone(date, label) {
-  const tz = zoneFor(label);
-  if (!tz) return "";
-  try {
-    return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz }).format(date) + " " + label;
-  } catch (_) { return label; }
-}
-function whenText(item) {
-  if (item.m.est) return "around " + fmtMonth.format(item.t);
-  if (item.m.day) return fmtDate.format(new Date(item.m.day + "T12:00:00"));
-  return fmtDateTime.format(item.t);
-}
-
-function parts(ms) {
-  const s = Math.max(0, Math.floor(ms / 1000));
-  return { d: Math.floor(s / 86400), h: Math.floor(s / 3600) % 24, m: Math.floor(s / 60) % 60, s: s % 60 };
-}
-function compact(ms, estimated) {
-  const p = parts(ms);
-  // Projected dates are rough; near ones mean "probably being announced now".
-  if (estimated) return p.d < 45 ? "Due soon?" : p.d >= 60 ? `~${Math.round(p.d / 30.4)} mo` : `~${p.d} d`;
-  if (p.d >= 2) return `${p.d}d ${p.h}h`;
-  const h = p.d * 24 + p.h;
-  return h ? `${h}h ${String(p.m).padStart(2, "0")}m` : `${p.m}m ${String(p.s).padStart(2, "0")}s`;
-}
-function ago(iso) {
-  const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
-  if (mins < 60) return `${Math.max(1, mins)} min ago`;
-  const h = Math.round(mins / 60);
-  if (h < 48) return `${h}h ago`;
-  return `${Math.round(h / 24)} days ago`;
-}
-function urgency(ms) {
-  const d = ms / 86400000;
-  return d < 7 ? "u-hot" : d < 30 ? "u-warm" : "";
 }
 
 // ---- model ----
@@ -176,7 +237,6 @@ function matches(s) {
   if (state.areas.size && !s.areas.some((a) => state.areas.has(a))) return false;
   return matchesQuery(s);
 }
-
 function matchesQuery(s) {
   if (state.q) {
     const hay = [s.title, s.full_name, ...s.tags, ...s.editions.flatMap((e) => [e.city, e.country, e.year])].join(" ").toLowerCase();
@@ -184,25 +244,66 @@ function matchesQuery(s) {
   }
   return true;
 }
-
-// ---- rendering ----
-function renderChips() {
-  $("groups").innerHTML = Object.entries(DATA.groups).map(([g, name]) =>
-    `<button class="chip" data-group="${g}" aria-pressed="${state.groups.has(g)}"><span class="sw" style="background:var(--g-${g})"></span>${esc(name)}</button>`).join("");
-  $("areas").innerHTML = `<button class="chip" data-area="" aria-pressed="${state.areas.size === 0}">All areas</button>` +
-    Object.entries(DATA.areas).map(([a, name]) =>
-      `<button class="chip" data-area="${a}" aria-pressed="${state.areas.has(a)}">${esc(name)}</button>`).join("");
-  $("starred").checked = state.starredOnly;
-  $("top").checked = state.top;
-  $("hideEst").checked = state.hideEst;
+function upcomingRows(filter = matches) {
+  const now = new Date();
+  const rows = [];
+  let nothing = 0;
+  for (const s of DATA.series) {
+    if (!filter(s)) continue;
+    const next = nextFor(s, now);
+    if (next) rows.push({ s, next }); else nothing++;
+  }
+  rows.sort((a, b) => a.next.t - b.next.t);
+  return { rows, nothing, now };
 }
 
-function renderHero(rows, now) {
+// ---- toolbar ----
+function renderToolbar() {
+  $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
+  const n = state.starred.size;
+  $("areas").innerHTML = `<button class="pill star-pill" type="button" data-starred aria-pressed="${state.starredOnly}">★ Starred${n ? ` <span>${n}</span>` : ""}</button>` +
+    `<button class="pill" type="button" data-area="" aria-pressed="${state.areas.size === 0 && !state.starredOnly}">All</button>` +
+    Object.entries(DATA.areas).map(([a, name]) => `<button class="pill" type="button" data-area="${a}" aria-pressed="${state.areas.has(a)}">${esc(name)}</button>`).join("");
+  $("top").checked = state.top;
+  $("hideEst").checked = state.hideEst;
+  $("side").checked = state.side;
+  const active = [state.top, state.hideEst, state.side].filter(Boolean).length;
+  $("filterCount").hidden = !active;
+  $("filterCount").textContent = active;
+  for (const b of document.querySelectorAll("[data-tz]")) b.setAttribute("aria-checked", b.dataset.tz === state.tz);
+  for (const b of document.querySelectorAll("[data-theme-set]")) b.setAttribute("aria-checked", b.dataset.themeSet === state.theme);
+  renderThemeBtn();
+}
+
+const THEME_ICON = {
+  auto: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13Z" fill="currentColor"/></svg>',
+  light: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" fill="currentColor"/><path d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  dark: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.6A7 7 0 0 1 7.4 3.5a7 7 0 1 0 9.1 9.1Z" fill="currentColor"/></svg>',
+};
+function renderThemeBtn() {
+  const b = $("themeBtn");
+  b.innerHTML = THEME_ICON[state.theme];
+  b.setAttribute("aria-label", `Theme: ${state.theme}. Click to change.`);
+  b.title = `Theme: ${state.theme}`;
+}
+function applyTheme() {
+  if (state.theme === "auto") delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = state.theme;
+  if (map) { map.remove(); map = null; } // the vector basemap reads theme colors when built
+}
+
+// ---- hero ----
+function renderHero() {
   const hero = $("hero");
-  const pick = rows.find((r) => !r.next.m.est) || rows[0];
+  // Personal first: with starred venues, the hero is "your next deadline".
+  const mine = state.starred.size && !state.watch ? upcomingRows((s) => state.starred.has(s.key) && matchesQuery(s)).rows.filter((r) => !r.next.m.est) : [];
+  const pool = mine.length ? mine : upcomingRows().rows.filter((r) => !r.next.m.est);
+  const now = new Date();
+  const pick = pool[0];
   if (!pick) {
     hero.className = "hero";
-    hero.innerHTML = `<p class="empty">Nothing upcoming for these filters.</p>`;
+    delete hero.dataset.at;
+    hero.innerHTML = `<p class="empty">Nothing coming up for these filters.</p>`;
     return;
   }
   const { series: s, edition: e, m, t } = pick.next;
@@ -210,46 +311,53 @@ function renderHero(rows, now) {
   hero.className = "hero" + (ms < 7 * 86400000 ? " urgent" : "");
   const p = parts(ms);
   const unit = (n, l, k) => `<div class="unit"><span class="n" data-k="${k}">${String(n).padStart(2, "0")}</span><span class="l">${l}</span></div>`;
-  const est = m.est ? ` <span class="badge est">Estimated</span>` : "";
+  const place = [e.city, e.country].filter(Boolean).join(", ");
+  const alt = officialAlt(pick.next);
+  const runway = pool.slice(1, 4).map((r) => `<button class="run" type="button" data-open="${esc(r.s.key)}" style="--c:var(--g-${r.next.m.group})">
+      <b>${esc(r.s.title)}</b><span>${esc(shortLabel(r.next.m))}</span><em data-at="${esc(r.next.m.at)}">${esc(compact(r.next.t - now, false))}</em></button>`).join("");
   hero.dataset.at = m.at;
   hero.innerHTML = `
-    <div class="eyebrow">Next up</div>
-    <button class="hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Make a share card for ${esc(s.title)}">Share card</button>
-    <h1>${esc(s.title)} ${e.year}${est}</h1>
-    <p class="what"><b>${esc(m.label)}</b> · ${esc(s.full_name || "")}</p>
-    <div class="clock">${unit(p.d, "days", "d")}${unit(p.h, "hours", "h")}${unit(p.m, "min", "m")}${unit(p.s, "sec", "s")}</div>
-    <div class="when"><span>${esc(whenText(pick.next))}</span>${m.tz && !m.est ? `<span>${esc(inZone(t, m.tz))}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>` : ""}</div>`;
+    <div class="hero-top">
+      <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span>${mine.length ? "Your next deadline" : "Next up"} · ${esc(m.label)}</div>
+      <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}">Share card</button>
+    </div>
+    <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
+    <p class="what">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</p>
+    <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "days", "d")}${unit(p.h, "hours", "h")}${unit(p.m, "min", "m")}${unit(p.s, "sec", "s")}</div>
+    <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>` : ""}</div>
+    ${runway ? `<div class="runway"><span class="muted">Then</span>${runway}</div>` : ""}`;
 }
 
+// ---- list ----
 function track(next) {
-  const ms = next.edition.milestones;
+  const ms = next.edition.milestones.filter((m) => m.group !== "other" || state.side);
+  if (ms.length < 2) return "";
   const t0 = Date.parse(ms[0].at), t1 = Date.parse(ms[ms.length - 1].at);
   const span = Math.max(1, t1 - t0);
   const now = Date.now();
   const pos = (t) => Math.min(100, Math.max(0, ((t - t0) / span) * 100));
   const dots = ms.map((m) => {
     const t = Date.parse(m.at);
-    const cls = ["m", t <= now ? "past" : "", m === next.m ? "is-next" : ""].join(" ");
+    const cls = ["m", t <= now ? "past" : "", m === next.m ? "is-next" : "", m.est ? "est" : ""].join(" ");
     return `<span class="${cls}" style="left:${pos(t)}%;--c:var(--g-${m.group})" title="${esc(m.label)}"></span>`;
   }).join("");
-  const nowMark = now > t0 && now < t1 ? `<span class="done" style="width:${pos(now)}%"></span><span class="now" style="left:${pos(now)}%" title="Now"></span>` : "";
+  const nowMark = now > t0 && now < t1 ? `<span class="done" style="width:${pos(now)}%"></span>` : "";
   return `<div class="track" aria-hidden="true">${nowMark}${dots}</div>`;
 }
 
 function details(s, next, now) {
   const e = next.edition;
-  // Side events (workshops, tutorials, registration) only when "Other" is selected.
-  const shown = state.groups.has("other") ? e.milestones : e.milestones.filter((m) => m.group !== "other");
+  const shown = state.side ? e.milestones : e.milestones.filter((m) => m.group !== "other");
   const hidden = e.milestones.length - shown.length;
   const rows = shown.map((m) => {
     const t = new Date(m.at);
     const past = t <= now;
-    const when = m.est ? "~" + fmtMonth.format(t) : m.day ? fmtDate.format(new Date(m.day + "T12:00:00")) : fmtDateTime.format(t);
-    const tz = m.est ? "" : m.notime ? `<div class="tz">no time given · assuming end of day AoE</div>`
-      : m.tz ? `<div class="tz">${esc(inZone(t, m.tz))}</div>` : "";
+    const when = m.est ? "~" + fmtMonth.format(t) : m.day ? fmtDate.format(new Date(m.day + "T12:00:00")) : fmtDT(t);
+    const alt = officialAlt({ m, t });
+    const tz = m.est ? "" : m.notime ? `<div class="tz">no time given · assuming end of day AoE</div>` : alt ? `<div class="tz">${esc(alt)}</div>` : "";
     const src = m.src === "pr" ? ` <span class="src" title="This date comes from PaperRush">PaperRush</span>` : "";
     const left = past ? "done" : compact(t - now, m.est);
-    return `<tr class="${past ? "past" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span>${esc(m.label)}${src}</td><td class="when">${esc(when)}${tz}</td><td class="left">${esc(left)}</td></tr>`;
+    return `<tr class="${past ? "past" : ""}${m === next.m ? " is-next" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span>${esc(m.label)}${src}</td><td class="when">${esc(when)}${tz}</td><td class="left">${esc(left)}</td></tr>`;
   }).join("");
   const estNote = e.estimated
     ? `<p class="est-note">Not all dates are announced yet. Dates marked ~ are projected from ${esc(s.title)} ${e.estimated_from}, so treat them as a rough plan, not a deadline.${e.last_place ? ` Location not announced; last held in ${esc(e.last_place)}.` : ""}</p>` : "";
@@ -267,13 +375,13 @@ function details(s, next, now) {
     return url && `<a href="${esc(url)}" target="_blank" rel="noopener">${(e.sources || []).length > 1 ? `Report a wrong date (${SRC_NAME[src]})` : "Report a wrong date"} ↗</a>`;
   });
   const links = [
+    `<button class="linkbtn" type="button" data-sharecard="${esc(s.key)}">Share card</button>`,
+    `<button class="linkbtn" type="button" data-copylink="${esc(s.key)}">Copy link</button>`,
     `<a href="${esc(s.source)}" target="_blank" rel="noopener">Data source ↗</a>`,
     s.also && s.source !== s.also && `<a href="${PAPERRUSH_SITE}" target="_blank" rel="noopener">Also on PaperRush ↗</a>`,
     ...reports,
-    `<a href="${esc(venueUrl(s.key))}">Link to ${esc(s.title)}</a>`,
-    `<button class="linkbtn" type="button" data-sharecard="${esc(s.key)}">Share card</button>`,
   ].filter(Boolean).join("");
-  const more = hidden ? `<p class="more">+${hidden} side date${hidden === 1 ? "" : "s"} (workshops, tutorials, registration). Select <b>Other</b> above to show them.</p>` : "";
+  const more = hidden ? `<p class="more">+${hidden} side date${hidden === 1 ? "" : "s"} (workshops, tutorials, registration). Turn on <b>Show side events</b> in Filters to see them.</p>` : "";
   return `<div class="details">${estNote}${tent}${checksBlock(e)}<table>${rows}</table>${more}
     ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
     ${quick ? `<div class="quick">${quick}</div>` : ""}
@@ -281,44 +389,70 @@ function details(s, next, now) {
     <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}${e.place_src === "pr" ? "Location via PaperRush · " : ""}Sources: ${esc((e.sources || ["hf"]).map((x) => SRC_NAME[x]).join(" + "))}${s.updated ? ` · data last changed ${esc(ago(s.updated))}` : ""}</div></div>`;
 }
 
-function renderRows() {
-  const now = new Date();
-  const rows = [];
-  let nothing = 0;
-  for (const s of DATA.series) {
-    if (!matches(s)) continue;
-    const next = nextFor(s, now);
-    if (next) rows.push({ s, next }); else nothing++;
-  }
-  rows.sort((a, b) => a.next.t - b.next.t);
-  renderHero(rows, now);
+const BUCKETS = [
+  ["week", "Next 7 days"], ["month", "Next 30 days"], ["quarter", "Next 3 months"], ["later", "Later"],
+  ["est", "Not announced yet", "Projected from last year's dates"],
+];
+function bucketOf(next, now) {
+  if (next.m.est) return "est";
+  const d = (next.t - now) / 86400000;
+  return d < 7 ? "week" : d < 30 ? "month" : d < 92 ? "quarter" : "later";
+}
 
-  $("count").textContent = `${rows.length} venue${rows.length === 1 ? "" : "s"}` +
-    (nothing ? ` · ${nothing} more with nothing upcoming for these milestones` : "");
-
-  $("list").innerHTML = rows.map(({ s, next }) => {
-    const e = next.edition;
-    const ms = next.t - now;
-    const rank = s.rank ? `<span class="badge" title="${esc(s.rank.system)} ranking">${esc(s.rank.system)} ${esc(s.rank.value)}</span>` : "";
-    const est = next.m.est ? `<span class="badge est">Estimated</span>` : e.tentative ? `<span class="badge tent">Tentative</span>` : "";
-    const place = [e.city, e.country].filter(Boolean).join(", ");
-    const open = state.open.has(s.key);
-    return `<li class="row ${open ? "open" : ""}" id="${esc(s.key)}" data-key="${esc(s.key)}">
-      <div class="row-main" role="button" tabindex="0" aria-expanded="${open}">
-        <button class="star" data-star="${esc(s.key)}" aria-pressed="${state.starred.has(s.key)}" aria-label="Star ${esc(s.title)}">★</button>
-        <div class="name">
-          <div class="t">${esc(s.title)} ${e.year} ${rank} ${est} ${checkBadge(e)}</div>
-          <div class="sub">${esc(s.full_name || "")}${place ? " · " + esc(place) : ""}</div>
-        </div>
-        <div class="next ${next.m.est ? "est-row" : urgency(ms)}">
-          <div class="cd" data-at="${esc(next.m.at)}" data-est="${next.m.est ? 1 : ""}">${esc(compact(ms, next.m.est))}</div>
-          <div class="lbl"><span class="sw" style="background:var(--g-${next.m.group})"></span>${esc(next.m.label)}</div>
-        </div>
-        ${track(next)}
+function rowHtml({ s, next }, now) {
+  const e = next.edition;
+  const ms = next.t - now;
+  const [big, small] = cdParts(ms, next.m.est);
+  const rank = s.rank ? `<span class="rank" title="${esc(s.rank.system)} ranking">${esc(s.rank.value)}</span>` : "";
+  const flags = (e.tentative && !next.m.est ? `<span class="badge tent">Tentative</span>` : "") + checkBadge(e);
+  const place = [e.city, e.country].filter(Boolean).join(", ");
+  const open = state.open.has(s.key);
+  const starred = state.starred.has(s.key);
+  return `<li class="row ${next.m.est ? "est-row" : urgency(ms)}${open ? " open" : ""}" id="${esc(s.key)}" data-key="${esc(s.key)}">
+    <div class="row-main" role="button" tabindex="0" aria-expanded="${open}">
+      <div class="cdbox" data-at="${esc(next.m.at)}" data-est="${next.m.est ? 1 : ""}"><span class="big">${esc(big)}</span><span class="small">${esc(small)}</span></div>
+      <div class="info">
+        <div class="t"><span class="name">${esc(s.title)} ${e.year}</span>${rank}${flags}</div>
+        <div class="what"><span class="sw" style="background:var(--g-${next.m.group})"></span><b>${esc(next.m.label)}</b><span class="dot">·</span><span class="when">${esc(whenText(next))}</span></div>
+        <div class="sub">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</div>
       </div>
-      ${details(s, next, now)}
-    </li>`;
-  }).join("");
+      <button class="star" type="button" data-star="${esc(s.key)}" aria-pressed="${starred}" aria-label="${starred ? "Unstar" : "Star"} ${esc(s.title)}">${starred ? "★" : "☆"}</button>
+      ${track(next)}
+    </div>
+    ${details(s, next, now)}
+  </li>`;
+}
+
+function renderRows() {
+  const { rows, nothing, now } = upcomingRows();
+  const list = $("list");
+  if (!rows.length) {
+    const emptyStars = state.starredOnly && !state.starred.size;
+    list.innerHTML = `<div class="empty-state">${emptyStars
+      ? `<h3>Your list is empty</h3><p>Tap ☆ on any venue to keep it here. Your list stays on this device.</p><button class="btn" type="button" data-reset="stars">Show all venues</button>`
+      : `<h3>Nothing matches</h3><p>No upcoming ${state.focus === "all" ? "dates" : esc(FOCUS.find(([k]) => k === state.focus)[1].toLowerCase())} for these filters${nothing ? ` (${nothing} venue${nothing === 1 ? " has" : "s have"} nothing ahead)` : ""}.</p><button class="btn" type="button" data-reset="all">Reset filters</button>`}</div>`;
+    return;
+  }
+  const groups = new Map(BUCKETS.map(([k]) => [k, []]));
+  for (const r of rows) groups.get(bucketOf(r.next, now)).push(r);
+  list.innerHTML = BUCKETS.filter(([k]) => groups.get(k).length).map(([k, title, note]) => `
+    <section class="bucket b-${k}">
+      <h3>${esc(title)} <span class="n">${groups.get(k).length}</span>${note ? `<span class="note">${esc(note)}</span>` : ""}</h3>
+      <ol class="list">${groups.get(k).map((r) => rowHtml(r, now)).join("")}</ol>
+    </section>`).join("") +
+    (nothing ? `<p class="count">${nothing} more venue${nothing === 1 ? " has" : "s have"} nothing upcoming for this view.</p>` : "");
+}
+
+const SHORT_LABEL = { submission: "Paper", reviews: "Reviews", decision: "Decision", camera: "Camera-ready", conference: "Conference", other: "Event" };
+function shortLabel(m) {
+  const l = m.label.toLowerCase();
+  if (m.group === "submission") {
+    if (m.type === "abstract" || l.includes("abstract")) return "Abstract";
+    if (m.type === "supplementary" || l.includes("supplement")) return "Supp.";
+    if (l.includes("registration")) return "Registration";
+  }
+  if (m.group === "reviews" && /rebuttal|response|discussion/.test(l)) return l.includes("end") ? "Rebuttal ends" : "Rebuttal";
+  return SHORT_LABEL[m.group] || m.label;
 }
 
 function renderFeeds() {
@@ -340,30 +474,40 @@ function renderSynced() {
 }
 
 function watchLink(keys) {
-  return `${location.origin}${location.pathname}?watch=${[...keys].map(encodeURIComponent).join(",")}`;
+  return `${location.origin}/?watch=${[...keys].map(encodeURIComponent).join(",")}`;
 }
 
-function renderWatchbar() {
+// The bar above the list for a shared list (?watch=) or your own starred list.
+function renderListbar() {
   const bar = $("watchbar");
-  $("shareStars").disabled = state.starred.size === 0;
-  $("starCard").disabled = state.starred.size === 0 && !state.watch;
-  if (!state.watch) { bar.hidden = true; return; }
-  const names = DATA.series.filter((s) => state.watch.has(s.key)).map((s) => s.title);
-  const allSaved = names.length && [...state.watch].every((k) => state.starred.has(k));
-  bar.hidden = false;
-  bar.innerHTML = `<span><b>Shared list</b> · ${names.length} venue${names.length === 1 ? "" : "s"}: ${esc(names.join(", "))}</span>
-    <span class="wb-actions"><button class="chip" type="button" data-sharecard="list">Share card</button>${allSaved ? `<span class="muted">All starred</span>` : `<button class="chip" data-watch="save">★ Star all</button>`}
-    <button class="chip" data-watch="exit">Show everything</button></span>`;
+  if (state.watch) {
+    const names = DATA.series.filter((s) => state.watch.has(s.key)).map((s) => s.title);
+    const allSaved = names.length && [...state.watch].every((k) => state.starred.has(k));
+    bar.hidden = false;
+    bar.innerHTML = `<span><b>Shared list</b> · ${esc(names.join(", "))}</span>
+      <span class="lb-actions"><button class="pill" type="button" data-sharecard="list">Share card</button>${allSaved ? `<span class="muted">All starred</span>` : `<button class="pill" type="button" data-watch="save">★ Star all</button>`}
+      <button class="pill" type="button" data-watch="exit">Show everything</button></span>`;
+    return;
+  }
+  if (state.starredOnly && state.starred.size) {
+    bar.hidden = false;
+    bar.innerHTML = `<span><b>★ Your list</b> · ${state.starred.size} venue${state.starred.size === 1 ? "" : "s"}, kept on this device</span>
+      <span class="lb-actions"><button class="pill" type="button" data-copywatch>Copy link</button><button class="pill" type="button" data-sharecard="list">Share card</button></span>`;
+    return;
+  }
+  bar.hidden = true;
 }
 
 function renderList() {
-  renderWatchbar();
+  renderListbar();
+  renderHero();
   renderRows();
   if (state.view === "map") renderMap();
   if (state.view === "calendar") renderCalendar();
 }
 
 function render() {
+  renderToolbar();
   renderList();
   renderSynced();
 }
@@ -461,6 +605,7 @@ async function renderMap() {
     toggleLabels();
     mapLayer = L.layerGroup().addTo(map);
     fetch("vendor/world-110m.geojson").then((r) => r.json()).then((world) => {
+      if (!map) return;
       L.geoJSON(world, {
         interactive: false,
         style: { color: css.getPropertyValue("--map-border").trim(), weight: 0.75, fillColor: css.getPropertyValue("--map-land").trim(), fillOpacity: 1 },
@@ -499,6 +644,7 @@ async function renderMap() {
     bounds.push([e.lat, e.lng]);
   }
   setTimeout(() => {
+    if (!map) return;
     map.invalidateSize();
     if (bounds.length > 1) map.fitBounds(bounds, { padding: [24, 24], maxZoom: 4 });
     else if (bounds.length === 1) map.setView(bounds[0], 4);
@@ -518,10 +664,16 @@ function setView(v) {
 function tick() {
   const now = Date.now();
   let expired = false;
-  for (const el of document.querySelectorAll(".cd[data-at]")) {
+  for (const el of document.querySelectorAll(".cdbox[data-at]")) {
     const ms = Date.parse(el.dataset.at) - now;
     if (ms <= 0) { expired = true; break; }
-    el.textContent = compact(ms, !!el.dataset.est);
+    const [big, small] = cdParts(ms, !!el.dataset.est);
+    el.firstElementChild.textContent = big;
+    el.lastElementChild.textContent = small;
+  }
+  for (const el of document.querySelectorAll(".run em[data-at]")) {
+    const ms = Date.parse(el.dataset.at) - now;
+    if (ms > 0) el.textContent = compact(ms, false);
   }
   const hero = $("hero");
   if (hero.dataset.at) {
@@ -536,39 +688,119 @@ function tick() {
   if (expired) render();
 }
 
+// ---- filters popover ----
+function openFilters() {
+  const dlg = $("filterdlg"), btn = $("filterBtn");
+  if (dlg.open) { closeFilters(); return; }
+  if (matchMedia("(max-width: 640px)").matches) dlg.showModal();
+  else {
+    const r = btn.getBoundingClientRect();
+    dlg.style.top = `${Math.round(r.bottom + 8)}px`;
+    dlg.style.right = `${Math.round(document.documentElement.clientWidth - r.right)}px`;
+    dlg.show();
+  }
+  btn.setAttribute("aria-expanded", "true");
+}
+function closeFilters() {
+  $("filterdlg").close();
+  $("filterBtn").setAttribute("aria-expanded", "false");
+}
+
+async function copyText(text, btn, done = "Copied") {
+  const label = btn.textContent;
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.textContent = done;
+    setTimeout(() => { btn.textContent = label; }, 1500);
+  } catch (_) { window.prompt("Copy this link", text); }
+}
+
+function resetFilters() {
+  Object.assign(state, { q: "", focus: "submission", side: false, starredOnly: false, top: false, hideEst: false });
+  state.areas.clear();
+  $("q").value = "";
+  syncGroups();
+  save();
+  render();
+}
+
 // ---- events ----
 function bind() {
   $("q").addEventListener("input", (ev) => { state.q = ev.target.value.trim(); renderList(); });
-  for (const id of ["starred", "top", "hideEst"]) {
-    $(id).addEventListener("change", (ev) => {
-      state[id === "starred" ? "starredOnly" : id] = ev.target.checked;
-      save(); renderList();
-    });
-  }
-  $("groups").addEventListener("click", (ev) => {
-    const b = ev.target.closest("[data-group]");
+  $("focus").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-focus]");
     if (!b) return;
-    const g = b.dataset.group;
-    if (state.groups.has(g) && state.groups.size > 1) state.groups.delete(g); else state.groups.add(g);
-    save(); renderChips(); renderList();
+    state.focus = b.dataset.focus;
+    syncGroups(); save(); render();
   });
   $("areas").addEventListener("click", (ev) => {
-    const b = ev.target.closest("[data-area]");
+    const b = ev.target.closest("[data-area], [data-starred]");
     if (!b) return;
-    const a = b.dataset.area;
-    if (!a) state.areas.clear();
-    else if (state.areas.has(a)) state.areas.delete(a); else state.areas.add(a);
-    save(); renderChips(); renderList();
+    if (b.hasAttribute("data-starred")) state.starredOnly = !state.starredOnly;
+    else if (!b.dataset.area) { state.areas.clear(); state.starredOnly = false; }
+    else if (state.areas.has(b.dataset.area)) state.areas.delete(b.dataset.area);
+    else state.areas.add(b.dataset.area);
+    save(); render();
   });
-  $("list").addEventListener("click", (ev) => {
+  for (const [id, key] of [["top", "top"], ["hideEst", "hideEst"], ["side", "side"]]) {
+    $(id).addEventListener("change", (ev) => {
+      state[key] = ev.target.checked;
+      syncGroups(); save(); render();
+    });
+  }
+  $("tzSeg").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-tz]");
+    if (!b) return;
+    state.tz = b.dataset.tz;
+    save(); render();
+  });
+  const setTheme = (t) => { state.theme = t; applyTheme(); save(); render(); };
+  $("themeSeg").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-theme-set]");
+    if (b) setTheme(b.dataset.themeSet);
+  });
+  $("themeBtn").addEventListener("click", () => setTheme({ auto: "light", light: "dark", dark: "auto" }[state.theme]));
+  $("filterBtn").addEventListener("click", openFilters);
+  $("filterdlg").addEventListener("click", (ev) => {
+    if (ev.target.closest("[data-close]") || ev.target === $("filterdlg")) closeFilters();
+  });
+  $("resetFilters").addEventListener("click", () => { resetFilters(); closeFilters(); });
+  document.addEventListener("click", (ev) => {
+    const dlg = $("filterdlg");
+    if (dlg.open && !dlg.contains(ev.target) && !ev.target.closest("#filterBtn")) closeFilters();
+  });
+
+  // Everything inside rendered content (list, hero, list bar).
+  document.addEventListener("click", (ev) => {
     const star = ev.target.closest("[data-star]");
     if (star) {
       const k = star.dataset.star;
       if (state.starred.has(k)) state.starred.delete(k); else state.starred.add(k);
-      save(); renderList();
+      save(); render();
       return;
     }
-    if (ev.target.closest("a, .details")) return;
+    const open = ev.target.closest("[data-open]");
+    if (open) { openVenue(open.dataset.open); return; }
+    const reset = ev.target.closest("[data-reset]");
+    if (reset) { resetFilters(); return; }
+    const cl = ev.target.closest("[data-copylink]");
+    if (cl) { copyText(venueUrl(cl.dataset.copylink), cl, "Link copied"); return; }
+    const cw = ev.target.closest("[data-copywatch]");
+    if (cw) { copyText(watchLink(state.starred), cw, "Link copied"); return; }
+    const w = ev.target.closest("[data-watch]");
+    if (w) {
+      if (w.dataset.watch === "save") { for (const k of state.watch) state.starred.add(k); save(); }
+      else {
+        state.watch = null;
+        const url = new URL(location.href);
+        url.searchParams.delete("watch");
+        history.replaceState(null, "", url);
+      }
+      render();
+    }
+  });
+  $("list").addEventListener("click", (ev) => {
+    if (ev.target.closest("a, button, .details")) return;
     const row = ev.target.closest(".row");
     if (!row) return;
     const k = row.dataset.key;
@@ -582,23 +814,18 @@ function bind() {
       ev.target.click();
     }
   });
-  $("feeds").addEventListener("click", async (ev) => {
+  $("feeds").addEventListener("click", (ev) => {
     const a = ev.target.closest("[data-copy]");
     if (!a) return;
     ev.preventDefault();
-    try {
-      await navigator.clipboard.writeText(a.dataset.copy);
-      a.textContent = "Copied";
-      a.classList.add("copied");
-      setTimeout(() => { a.textContent = "Copy URL"; a.classList.remove("copied"); }, 1500);
-    } catch (_) { window.prompt("Copy this feed URL", a.dataset.copy); }
+    copyText(a.dataset.copy, a);
   });
   for (const b of document.querySelectorAll("[data-view]")) b.addEventListener("click", () => setView(b.dataset.view));
   $("span").addEventListener("click", (ev) => {
     const b = ev.target.closest("[data-span]");
     if (!b) return;
     state.span = b.dataset.span;
-    for (const x of $("span").querySelectorAll("[data-span]")) x.setAttribute("aria-pressed", x === b);
+    for (const x of $("span").querySelectorAll("[data-span]")) x.setAttribute("aria-checked", x === b);
     save(); renderMap();
   });
   $("onmap").addEventListener("click", (ev) => {
@@ -609,55 +836,47 @@ function bind() {
     map.flyTo(m.getLatLng(), Math.max(map.getZoom(), 4), { duration: 0.6 });
     map.once("moveend", () => m.openPopup());
   });
-  $("watchbar").addEventListener("click", (ev) => {
-    const b = ev.target.closest("[data-watch]");
-    if (!b) return;
-    if (b.dataset.watch === "save") {
-      for (const k of state.watch) state.starred.add(k);
-      save();
-    } else {
-      state.watch = null;
-      const url = new URL(location.href);
-      url.searchParams.delete("watch");
-      history.replaceState(null, "", url);
+  // "/" or Ctrl/⌘-K to search, Escape to leave it.
+  document.addEventListener("keydown", (ev) => {
+    const typing = ev.target.closest("input, textarea, [contenteditable]");
+    if ((ev.key === "/" && !typing) || (ev.key.toLowerCase() === "k" && (ev.metaKey || ev.ctrlKey))) {
+      ev.preventDefault();
+      $("q").focus();
+      $("q").select();
+    } else if (ev.key === "Escape" && ev.target === $("q")) {
+      $("q").blur();
+    } else if (ev.key === "Escape" && $("filterdlg").open) {
+      closeFilters();
     }
-    renderList();
   });
-  $("shareStars").addEventListener("click", async () => {
-    const url = watchLink(state.starred);
-    const b = $("shareStars");
-    try {
-      await navigator.clipboard.writeText(url);
-      b.textContent = "Link copied";
-      setTimeout(() => { b.textContent = "Share starred"; }, 1500);
-    } catch (_) { window.prompt("Share this link", url); }
-  });
-  window.addEventListener("hashchange", openFromHash);
+  window.addEventListener("hashchange", () => openVenue(decodeURIComponent(location.hash.slice(1))));
 }
 
 // Shareable venue link: /?v=key works in link previews (servers never see "#"); #key works in-page.
 const venueUrl = (key) => `${location.origin}/?v=${encodeURIComponent(key)}`;
 
-function openFromHash(fromQuery) {
-  const k = typeof fromQuery === "string" ? fromQuery : decodeURIComponent(location.hash.slice(1));
+function openVenue(k) {
   const s = DATA.series.find((x) => x.key === k);
   if (!s) return;
   state.open.add(k);
   if (state.view !== "list") setView("list");
   // Make sure the venue is visible regardless of current filters.
   if (!nextFor(s, new Date()) || !matches(s)) {
-    state.q = s.title; $("q").value = s.title;
+    if (state.watch && !state.watch.has(k)) state.watch = null;
+    state.q = ""; $("q").value = "";
     state.starredOnly = false; state.top = false; state.areas.clear();
-    for (const g of Object.keys(DATA.groups)) state.groups.add(g);
-    renderChips();
-  }
-  renderList();
-  document.getElementById(k)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (!nextFor(s, new Date())) { state.focus = "all"; state.hideEst = false; }
+    syncGroups();
+    render();
+  } else renderList();
+  const el = document.getElementById(k);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 async function main() {
   load();
-  $("tzname").textContent = Intl.DateTimeFormat().resolvedOptions().timeZone + " (your local time)";
+  applyTheme();
+  $("tzname").textContent = Intl.DateTimeFormat().resolvedOptions().timeZone + " (your local time), or AoE if you pick it in Filters";
   try {
     const res = await fetch("data/conferences.json", { cache: "no-cache" });
     DATA = await res.json();
@@ -671,17 +890,16 @@ async function main() {
     $("hero").innerHTML = `<p class="empty">Could not load deadlines. Try reloading.</p>`;
     return;
   }
-  renderChips();
   renderFeeds();
-  for (const x of $("span").querySelectorAll("[data-span]")) x.setAttribute("aria-pressed", x.dataset.span === state.span);
+  for (const x of $("span").querySelectorAll("[data-span]")) x.setAttribute("aria-checked", x.dataset.span === state.span);
   bind();
   bindCalendar();
   bindShare();
   render();
   setView(state.view);
   const v = new URLSearchParams(location.search).get("v");
-  if (v) openFromHash(v.toLowerCase());
-  else if (location.hash) openFromHash();
+  if (v) openVenue(v.toLowerCase());
+  else if (location.hash) openVenue(decodeURIComponent(location.hash.slice(1)));
   setInterval(tick, 1000);
   setInterval(render, 60000);
 }
