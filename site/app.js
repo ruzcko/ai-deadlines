@@ -29,7 +29,7 @@ function load() {
     state.starredOnly = !!s.starredOnly;
     state.top = !!s.top;
     state.hideEst = !!s.hideEst;
-    if (s.view === "map") state.view = "map";
+    if (["map", "calendar"].includes(s.view)) state.view = s.view;
     if (["6", "12", "all"].includes(s.span)) state.span = s.span;
   } catch (_) { /* storage unavailable */ }
 }
@@ -214,6 +214,7 @@ function renderHero(rows, now) {
   hero.dataset.at = m.at;
   hero.innerHTML = `
     <div class="eyebrow">Next up</div>
+    <button class="hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Make a share card for ${esc(s.title)}">Share card</button>
     <h1>${esc(s.title)} ${e.year}${est}</h1>
     <p class="what"><b>${esc(m.label)}</b> · ${esc(s.full_name || "")}</p>
     <div class="clock">${unit(p.d, "days", "d")}${unit(p.h, "hours", "h")}${unit(p.m, "min", "m")}${unit(p.s, "sec", "s")}</div>
@@ -270,6 +271,7 @@ function details(s, next, now) {
     s.also && s.source !== s.also && `<a href="${PAPERRUSH_SITE}" target="_blank" rel="noopener">Also on PaperRush ↗</a>`,
     ...reports,
     `<a href="#${esc(s.key)}">Link to ${esc(s.title)}</a>`,
+    `<button class="linkbtn" type="button" data-sharecard="${esc(s.key)}">Share card</button>`,
   ].filter(Boolean).join("");
   const more = hidden ? `<p class="more">+${hidden} side date${hidden === 1 ? "" : "s"} (workshops, tutorials, registration). Select <b>Other</b> above to show them.</p>` : "";
   return `<div class="details">${estNote}${tent}${checksBlock(e)}<table>${rows}</table>${more}
@@ -344,12 +346,13 @@ function watchLink(keys) {
 function renderWatchbar() {
   const bar = $("watchbar");
   $("shareStars").disabled = state.starred.size === 0;
+  $("starCard").disabled = state.starred.size === 0 && !state.watch;
   if (!state.watch) { bar.hidden = true; return; }
   const names = DATA.series.filter((s) => state.watch.has(s.key)).map((s) => s.title);
   const allSaved = names.length && [...state.watch].every((k) => state.starred.has(k));
   bar.hidden = false;
   bar.innerHTML = `<span><b>Shared list</b> · ${names.length} venue${names.length === 1 ? "" : "s"}: ${esc(names.join(", "))}</span>
-    <span class="wb-actions">${allSaved ? `<span class="muted">All starred</span>` : `<button class="chip" data-watch="save">★ Star all</button>`}
+    <span class="wb-actions"><button class="chip" type="button" data-sharecard="list">Share card</button>${allSaved ? `<span class="muted">All starred</span>` : `<button class="chip" data-watch="save">★ Star all</button>`}
     <button class="chip" data-watch="exit">Show everything</button></span>`;
 }
 
@@ -357,6 +360,7 @@ function renderList() {
   renderWatchbar();
   renderRows();
   if (state.view === "map") renderMap();
+  if (state.view === "calendar") renderCalendar();
 }
 
 function render() {
@@ -507,6 +511,7 @@ function setView(v) {
   document.body.dataset.view = v;
   for (const b of document.querySelectorAll("[data-view]")) b.setAttribute("aria-selected", b.dataset.view === v);
   if (v === "map") renderMap();
+  if (v === "calendar") renderCalendar();
 }
 
 // ---- live ticking ----
@@ -667,6 +672,8 @@ async function main() {
   renderFeeds();
   for (const x of $("span").querySelectorAll("[data-span]")) x.setAttribute("aria-pressed", x.dataset.span === state.span);
   bind();
+  bindCalendar();
+  bindShare();
   render();
   setView(state.view);
   if (location.hash) openFromHash();

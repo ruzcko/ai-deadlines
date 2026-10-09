@@ -497,7 +497,7 @@ def stamp_assets():
         return
     index = SITE / "index.html"
     page = index.read_text(encoding="utf-8")
-    for name in ("app.js", "style.css"):
+    for name in ("app.js", "calendar.js", "share.js", "style.css"):
         digest = hashlib.sha256((SITE / name).read_bytes()).hexdigest()[:10]
         page = re.sub(rf'"{re.escape(name)}(\?v=[0-9a-f]+)?"', f'"{name}?v={digest}"', page)
     index.write_text(page, encoding="utf-8")
