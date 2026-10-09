@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Conference Deadlines</title>
+  <meta name="description" content="Live countdowns to AI, ML, vision, NLP and robotics conference deadlines, from submission to camera-ready. Subscribe in your calendar.">
+  <meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='17' r='12' fill='none' stroke='%23e5484d' stroke-width='3'/><path d='M16 10v7l4 3' stroke='%23e5484d' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-row">
+      <a class="brand" href="./"><span class="dot" aria-hidden="true"></span>AI Conference Deadlines</a>
+      <span class="synced" id="synced"></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="hero" aria-live="polite"></section>
+
+    <section class="controls" aria-label="Filters">
+      <div class="search-row">
+        <input id="q" type="search" placeholder="Search NeurIPS, vision, Seoul…" autocomplete="off" aria-label="Search venues">
+        <label class="toggle"><input type="checkbox" id="starred"> ★ Starred only</label>
+        <label class="toggle"><input type="checkbox" id="top"> Top tier</label>
+        <label class="toggle"><input type="checkbox" id="hideEst"> Hide estimates</label>
+      </div>
+      <div class="chips" id="groups" role="group" aria-label="Milestones"></div>
+      <div class="chips" id="areas" role="group" aria-label="Areas"></div>
+    </section>
+
+    <div class="tabs" role="tablist" aria-label="View">
+      <button role="tab" data-view="list" aria-selected="true">List</button>
+      <button role="tab" data-view="map" aria-selected="false">Map</button>
+    </div>
+
+    <section class="view-list" aria-label="Venues">
+      <p class="count" id="count"></p>
+      <ol class="list" id="list"></ol>
+    </section>
+
+    <section class="view-map" aria-label="Conference locations">
+      <div class="map-bar">
+        <p class="count" id="mapcount"></p>
+        <div class="chips" id="span" role="group" aria-label="Time window">
+          <button class="chip" data-span="6">Next 6 months</button>
+          <button class="chip" data-span="12">Next 12 months</button>
+          <button class="chip" data-span="all">All announced</button>
+        </div>
+      </div>
+      <div id="map" class="map"></div>
+      <p class="map-legend"><span><span class="sw hot"></span> Within 3 months</span><span><span class="sw later"></span> Later</span><span>Next edition of each venue. Zoom in for labels. Locations are only shown once announced.</span></p>
+      <div class="tba" id="onmap"></div>
+      <div class="tba" id="tba"></div>
+    </section>
+
+    <section class="subscribe" id="subscribe">
+      <h2>Put them in your calendar</h2>
+      <p>Each milestone type is its own feed, so you can subscribe to just what you care about and color them separately. Feeds refresh daily and leave out estimated dates.</p>
+      <div class="feeds" id="feeds"></div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Dates come from <a href="https://github.com/huggingface/ai-deadlines">huggingface/ai-deadlines</a> (MIT), synced daily. Deadlines move and get extended — always confirm on the official call for papers. Spotted a wrong date? Fix it upstream with the “Data source” link on any venue.</p>
+    <p>Times shown in <span id="tzname"></span>. Made by <a href="https://ruzcko.com">ruzcko</a>.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

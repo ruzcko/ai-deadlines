@@ -1,0 +1,378 @@
+{
+ "Aachen, Germany": [
+  50.7764,
+  6.0839
+ ],
+ "Abu Dhabi, UAE": [
+  24.4538,
+  54.3774
+ ],
+ "Albuquerque, New Mexico": [
+  35.0841,
+  -106.651
+ ],
+ "Amsterdam, Netherlands": [
+  52.3731,
+  4.8925
+ ],
+ "Anaheim, United States": [
+  33.8348,
+  -117.9117
+ ],
+ "Atlanta, USA": [
+  33.7545,
+  -84.3898
+ ],
+ "Austin, United States": [
+  30.2711,
+  -97.7437
+ ],
+ "Barcelona, Spain": [
+  41.3826,
+  2.1771
+ ],
+ "Bern, Switzerland": [
+  46.9485,
+  7.4522
+ ],
+ "Bilbao, Spain": [
+  43.263,
+  -2.935
+ ],
+ "Boise, United States": [
+  43.6166,
+  -116.2009
+ ],
+ "Bologna, Italy": [
+  44.4938,
+  11.3426
+ ],
+ "Bremen, Germany": [
+  53.0758,
+  8.8072
+ ],
+ "Bruges, Belgium": [
+  51.2086,
+  3.2268
+ ],
+ "Bucharest, Romania": [
+  44.4361,
+  26.1027
+ ],
+ "Budapest, Hungary": [
+  47.4818,
+  19.1449
+ ],
+ "Buena Vista, FL, USA": [
+  28.3717,
+  -81.524
+ ],
+ "Delft, The Netherlands": [
+  52.0114,
+  4.3584
+ ],
+ "Denver, USA": [
+  39.7392,
+  -104.9849
+ ],
+ "Detroit, United States": [
+  42.3316,
+  -83.0466
+ ],
+ "Dubai, UAE": [
+  25.0743,
+  55.1886
+ ],
+ "Dublin, Ireland": [
+  53.3494,
+  -6.2606
+ ],
+ "Edinburgh, United Kingdom": [
+  55.9533,
+  -3.1884
+ ],
+ "Edmonton, Canada": [
+  53.5462,
+  -113.4912
+ ],
+ "Goiânia, Brazil": [
+  -16.6809,
+  -49.2533
+ ],
+ "Hangzhou, China": [
+  30.249,
+  120.2052
+ ],
+ "Hannover, Germany": [
+  52.3745,
+  9.7386
+ ],
+ "Hanoi, Vietnam": [
+  21.0283,
+  105.854
+ ],
+ "Hong Kong, Hong Kong": [
+  22.2818,
+  114.1583
+ ],
+ "Honolulu, Hawaii": [
+  21.3045,
+  -157.8557
+ ],
+ "Hyderabad, India": [
+  17.3606,
+  78.4741
+ ],
+ "Jeju, Korea": [
+  33.4888,
+  126.4987
+ ],
+ "Kaunas, Lithuania": [
+  54.8982,
+  23.9045
+ ],
+ "Kuala Lumpur, Malaysia": [
+  3.1517,
+  101.6942
+ ],
+ "Kyoto, Japan": [
+  35.0116,
+  135.7681
+ ],
+ "Limassol, Cyprus": [
+  34.6853,
+  33.0333
+ ],
+ "London, UK": [
+  51.5074,
+  -0.1278
+ ],
+ "Los Angeles, USA": [
+  34.0537,
+  -118.2428
+ ],
+ "Los Angeles, United States": [
+  34.0537,
+  -118.2428
+ ],
+ "Lucca, Italy": [
+  44.0178,
+  10.4544
+ ],
+ "Lucca, Tuscany": [
+  44.0178,
+  10.4544
+ ],
+ "Luxembourg, Luxembourg": [
+  49.6113,
+  6.1298
+ ],
+ "Lyon, France": [
+  45.7578,
+  4.832
+ ],
+ "Maastricht, Netherlands": [
+  50.8512,
+  5.691
+ ],
+ "Macao, China": [
+  22.1758,
+  113.5514
+ ],
+ "Mai Khao, Thailand": [
+  8.1256,
+  98.308
+ ],
+ "Malmö, Sweden": [
+  55.6053,
+  13.0002
+ ],
+ "Melbourne, Australia": [
+  -37.8142,
+  144.9632
+ ],
+ "Milan, Italy": [
+  45.4642,
+  9.1896
+ ],
+ "Montreal, Canada": [
+  45.5032,
+  -73.5698
+ ],
+ "Montréal, Canada": [
+  45.5032,
+  -73.5698
+ ],
+ "Mumbai, India": [
+  19.055,
+  72.8692
+ ],
+ "Naples, Italy": [
+  40.8359,
+  14.2488
+ ],
+ "Nashville, Tennessee": [
+  36.1623,
+  -86.7743
+ ],
+ "Padua, Italy": [
+  45.3984,
+  11.8957
+ ],
+ "Palma, Mallorca, Spain": [
+  39.5532,
+  2.729
+ ],
+ "Paphos, Cyprus": [
+  34.7744,
+  32.4232
+ ],
+ "Philadelphia, Pennsylvania": [
+  39.9527,
+  -75.1635
+ ],
+ "Philadelphia, USA": [
+  39.9527,
+  -75.1635
+ ],
+ "Pittsburgh, USA": [
+  40.4407,
+  -80.0026
+ ],
+ "Pittsburgh, United States": [
+  40.4407,
+  -80.0026
+ ],
+ "Porto, Portugal": [
+  41.1502,
+  -8.6103
+ ],
+ "Prague, Czech Republic": [
+  50.0875,
+  14.4213
+ ],
+ "Rio de Janeiro, Brazil": [
+  -22.911,
+  -43.2094
+ ],
+ "Rome, Italy": [
+  41.8933,
+  12.4829
+ ],
+ "San Diego, USA": [
+  32.7157,
+  -117.1638
+ ],
+ "San Diego, United States": [
+  32.7157,
+  -117.1638
+ ],
+ "San Francisco, USA": [
+  37.7879,
+  -122.4075
+ ],
+ "San Francisco, United States": [
+  37.7879,
+  -122.4075
+ ],
+ "Seattle, USA": [
+  47.6038,
+  -122.3301
+ ],
+ "Seoul, South Korea": [
+  37.5667,
+  126.9783
+ ],
+ "Shenyang, China": [
+  41.8026,
+  123.4279
+ ],
+ "Singapore, Singapore": [
+  1.2899,
+  103.8519
+ ],
+ "Sochi, Russia": [
+  43.5855,
+  39.7231
+ ],
+ "Southampton, United Kingdom": [
+  50.9025,
+  -1.4042
+ ],
+ "Stanford, USA": [
+  37.4265,
+  -122.1703
+ ],
+ "Strasbourg, France": [
+  48.5846,
+  7.7507
+ ],
+ "Suzhou, China": [
+  31.3111,
+  120.6213
+ ],
+ "Sydney, Australia": [
+  -33.8698,
+  151.2083
+ ],
+ "Tangier, Morocco": [
+  35.7626,
+  -5.8295
+ ],
+ "Thessaloniki, Greece": [
+  40.6403,
+  22.9353
+ ],
+ "Toronto, Canada": [
+  43.6535,
+  -79.3839
+ ],
+ "Tucson, Arizona, USA": [
+  32.2229,
+  -110.9748
+ ],
+ "Tucson, USA": [
+  32.2229,
+  -110.9748
+ ],
+ "Tübingen, Germany": [
+  48.5203,
+  9.0536
+ ],
+ "Utrecht, Netherlands": [
+  52.0907,
+  5.1216
+ ],
+ "Vancouver, Canada": [
+  49.2609,
+  -123.114
+ ],
+ "Vienna, Austria": [
+  48.2084,
+  16.3725
+ ],
+ "Vilnius, Lithuania": [
+  54.687,
+  25.2829
+ ],
+ "Waikoloa, USA": [
+  19.9469,
+  -155.7874
+ ],
+ "Washington DC, USA": [
+  38.8951,
+  -77.0364
+ ],
+ "Wuhan, China": [
+  30.5789,
+  114.2921
+ ],
+ "Yerevan, Armenia": [
+  40.1777,
+  44.5126
+ ],
+ "Yokohama, Japan": [
+  35.4503,
+  139.6344
+ ]
+}

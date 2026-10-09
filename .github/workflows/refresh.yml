@@ -1,0 +1,32 @@
+name: Refresh data
+
+# Cloudflare Pages runs pipeline/sync.py on every build. This job pushes a
+# tiny lock file when upstream changes (or once a week, so estimates and
+# "next edition" picks stay current), and that push triggers a rebuild.
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump lock if upstream changed
+        run: |
+          sha=$(git ls-remote https://github.com/huggingface/ai-deadlines HEAD | cut -f1)
+          new="$sha $(date -u +%G-W%V)"
+          if [ "$(cat data/upstream.lock 2>/dev/null)" = "$new" ]; then
+            echo "No change."
+            exit 0
+          fi
+          echo "$new" > data/upstream.lock
+          git config user.name "github-actions[bot]"
+          git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
+          git add data/upstream.lock
+          git commit -m "Refresh: upstream ${sha:0:7}"
+          git push
