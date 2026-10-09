@@ -84,6 +84,9 @@ button { font: inherit; color: inherit; }
 }
 .hero-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .hero .eyebrow { font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; font-weight: 650; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.hero .eb-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.hero .eb-star { color: var(--star); margin-right: 6px; display: none; }
+.hero-share { flex: none; }
 .hero h1 { margin: 10px 0 2px; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; letter-spacing: -.035em; font-weight: 800; }
 .hero h1 .linklike { font: inherit; letter-spacing: inherit; }
 .hero .what { color: var(--muted); margin: 0 0 22px; }
@@ -95,8 +98,11 @@ button { font: inherit; color: inherit; }
 .hero .when { margin-top: 20px; font-size: 14px; display: flex; gap: 4px 16px; flex-wrap: wrap; font-weight: 550; }
 .hero .when a { color: var(--text); }
 .hero .empty { color: var(--muted); margin: 0; }
-.runway { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; }
-.run { display: inline-flex; gap: 6px; align-items: baseline; border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+/* One line, always: chips shrink to fit, then the row scrolls sideways instead of wrapping. */
+.runway { display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); padding-right: 20px; }
+.runway::-webkit-scrollbar { display: none; }
+.run-label { color: var(--muted); font-weight: 600; flex: none; }
+.run { flex: none; white-space: nowrap; display: inline-flex; gap: 6px; align-items: baseline; border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
 .run:hover { border-color: var(--faint); }
 .run b { font-weight: 700; }
 .run span { color: var(--muted); }
@@ -180,9 +186,13 @@ button { font: inherit; color: inherit; }
 .info .t { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .info .name { font-weight: 750; font-size: 16.5px; letter-spacing: -.015em; }
 .rank { font-size: 11px; font-weight: 700; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; line-height: 18px; }
-.info .what { font-size: 14px; margin-top: 2px; min-width: 0; }
-.info .what .sw { margin-right: 7px; vertical-align: 1px; }
-.info .what .dot { margin: 0 5px; }
+/* One line: the milestone name gives way first, the date stays whole. */
+.info .what { font-size: 14px; margin-top: 2px; min-width: 0; display: flex; align-items: center; white-space: nowrap; }
+.info .what .sw { margin-right: 7px; }
+.info .what b { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.info .what .dot { margin: 0 5px; flex: none; }
+.info .what .when { flex: none; }
+.info .what .lab-short { display: none; }
 .info .what b { font-weight: 600; }
 .info .what .dot, .info .what .when { color: var(--muted); }
 .info .sub { color: var(--faint); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
@@ -341,11 +351,20 @@ body[data-view="map"] #focus { visibility: hidden; }
   .views span { display: none; }
   .views button { padding: 6px 9px; }
 }
+@media (max-width: 480px) {
+  .run span { display: none; } /* venue + countdown only, so three fit on one line */
+  .hero .eb-pre { display: none; } /* the "Next" row already says what comes after */
+  .hero .eb-star { display: inline; }
+  .info .what .lab-full { display: none; }
+  .info .what .lab-short { display: inline; }
+}
 @media (max-width: 640px) {
   html { scroll-padding-top: 70px; }
   .synced { display: none; }
   .hero { margin-top: 4px; }
-  .hero-top { align-items: flex-start; }
+  .hero .eyebrow { letter-spacing: .05em; font-size: 11.5px; }
+  .run { padding: 5px 10px; gap: 5px; }
+  .runway { gap: 6px; }
   .tb-row:last-child { flex-wrap: wrap; }
   .search { flex: 1 1 0; }
   .pills { order: 3; flex-basis: 100%; }

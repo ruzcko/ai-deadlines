@@ -73,7 +73,7 @@ function fmtIn(kind) {
   if (!fmtCache[key]) {
     const opts = {
       dt: { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" },
-      dts: { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" },
+      dts: { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" },
       t: { hour: "numeric", minute: "2-digit" },
     }[kind];
     fmtCache[key] = new Intl.DateTimeFormat(undefined, { ...opts, timeZone: tz });
@@ -107,6 +107,13 @@ function inZone(date, label) {
   try {
     return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz }).format(date) + " " + label;
   } catch (_) { return label; }
+}
+// Row dates: drop the year (and weekday) when it's within the coming year, to keep rows on one line.
+function whenShort(item) {
+  if (item.m.est) return "around " + fmtMonth.format(item.t);
+  const soon = item.t - Date.now() < 300 * 86400000;
+  if (item.m.day) return new Intl.DateTimeFormat(undefined, soon ? { month: "short", day: "numeric" } : { month: "short", day: "numeric", year: "numeric" }).format(new Date(item.m.day + "T12:00:00"));
+  return soon ? fmtIn("dts").format(item.t) + tzTag() : fmtDT(item.t);
 }
 function whenText(item) {
   if (item.m.est) return "around " + fmtMonth.format(item.t);
@@ -143,6 +150,12 @@ function cdParts(ms, est) {
   const h = p.d * 24 + p.h;
   if (h >= 1) return [String(h), `hrs ${p.m}m`];
   return [String(p.m), `min ${p.s}s`];
+}
+// Single-unit countdown for tight spots: "32d", "17h", "45m".
+function shortCd(ms) {
+  const p = parts(ms);
+  if (p.d >= 1) return `${p.d}d`;
+  return p.h ? `${p.h}h` : `${p.m}m`;
 }
 function ago(iso) {
   const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
@@ -314,18 +327,18 @@ function renderHero() {
   const place = [e.city, e.country].filter(Boolean).join(", ");
   const alt = officialAlt(pick.next);
   const runway = pool.slice(1, 4).map((r) => `<button class="run" type="button" data-open="${esc(r.s.key)}" style="--c:var(--g-${r.next.m.group})">
-      <b>${esc(r.s.title)}</b><span>${esc(shortLabel(r.next.m))}</span><em data-at="${esc(r.next.m.at)}">${esc(compact(r.next.t - now, false))}</em></button>`).join("");
+      <b>${esc(r.s.title)}</b><span>${esc(shortLabel(r.next.m))}</span><em data-at="${esc(r.next.m.at)}">${esc(shortCd(r.next.t - now))}</em></button>`).join("");
   hero.dataset.at = m.at;
   hero.innerHTML = `
     <div class="hero-top">
-      <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span>${mine.length ? "Your next deadline" : "Next up"} · ${esc(m.label)}</div>
+      <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span><span class="eb-text">${mine.length ? `<span class="eb-star" aria-hidden="true">★</span>` : ""}<span class="eb-pre">${mine.length ? "Your next deadline" : "Next up"} · </span>${esc(m.label)}</span></div>
       <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}">Share card</button>
     </div>
     <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
     <p class="what">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</p>
     <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "days", "d")}${unit(p.h, "hours", "h")}${unit(p.m, "min", "m")}${unit(p.s, "sec", "s")}</div>
     <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>` : ""}</div>
-    ${runway ? `<div class="runway"><span class="muted">Then</span>${runway}</div>` : ""}`;
+    ${runway ? `<div class="runway"><span class="run-label">Next</span>${runway}</div>` : ""}`;
 }
 
 // ---- list ----
@@ -413,7 +426,7 @@ function rowHtml({ s, next }, now) {
       <div class="cdbox" data-at="${esc(next.m.at)}" data-est="${next.m.est ? 1 : ""}"><span class="big">${esc(big)}</span><span class="small">${esc(small)}</span></div>
       <div class="info">
         <div class="t"><span class="name">${esc(s.title)} ${e.year}</span>${rank}${flags}</div>
-        <div class="what"><span class="sw" style="background:var(--g-${next.m.group})"></span><b>${esc(next.m.label)}</b><span class="dot">·</span><span class="when">${esc(whenText(next))}</span></div>
+        <div class="what"><span class="sw" style="background:var(--g-${next.m.group})"></span><b class="lab-full" title="${esc(next.m.label)}">${esc(next.m.label)}</b><b class="lab-short" title="${esc(next.m.label)}">${esc(shortLabel(next.m))}</b><span class="dot">·</span><span class="when">${esc(whenShort(next))}</span></div>
         <div class="sub">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</div>
       </div>
       <button class="star" type="button" data-star="${esc(s.key)}" aria-pressed="${starred}" aria-label="${starred ? "Unstar" : "Star"} ${esc(s.title)}">${starred ? "★" : "☆"}</button>
@@ -673,7 +686,7 @@ function tick() {
   }
   for (const el of document.querySelectorAll(".run em[data-at]")) {
     const ms = Date.parse(el.dataset.at) - now;
-    if (ms > 0) el.textContent = compact(ms, false);
+    if (ms > 0) el.textContent = shortCd(ms);
   }
   const hero = $("hero");
   if (hero.dataset.at) {
