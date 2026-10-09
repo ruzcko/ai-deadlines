@@ -8,13 +8,38 @@ const CARD_FORMATS = {
   square: { w: 1080, h: 1080, label: "Square" },
   wide: { w: 1200, h: 630, label: "Wide" },
 };
-const CARD_COLORS = {
-  bg1: "#16181f", bg2: "#0b0c10", text: "#f2f3f6", muted: "#a3a8b2", faint: "#5d626c", line: "#2c313a",
-  accent: "#ff6369",
-  submission: "#ff6369", reviews: "#b98cf0", decision: "#52a9ff", camera: "#3dd68c", conference: "#b4b9c2", other: "#80858f",
+// Card themes. Every color is a 6-digit hex (the glow and dots append alpha to it), except `line`.
+// Milestone colors are tuned per theme so they stay readable on its background.
+const CARD_THEMES = {
+  midnight: {
+    name: "Midnight", bg1: "#16181f", bg2: "#0b0c10", glow: 0x55, text: "#f2f3f6", muted: "#a3a8b2", faint: "#5d626c", line: "#2c313a",
+    accent: "#ff6369", submission: "#ff6369", reviews: "#b98cf0", decision: "#52a9ff", camera: "#3dd68c", conference: "#e8eaee", other: "#80858f",
+  },
+  paper: {
+    name: "Paper", bg1: "#faf6ee", bg2: "#ebe2d0", glow: 0x26, text: "#1c1a16", muted: "#5e584d", faint: "#9a9282", line: "#d8cfbd",
+    accent: "#d23f2e", submission: "#d23f2e", reviews: "#7a3fb2", decision: "#1d5fc2", camera: "#23803c", conference: "#1c1a16", other: "#8a8375",
+  },
+  aurora: {
+    name: "Aurora", bg1: "#0f2d4f", bg2: "#03101d", glow: 0x66, glowColor: "#38e6c5", text: "#eef7ff", muted: "#a7bdd3", faint: "#64809c", line: "#1f3d5c",
+    accent: "#38e6c5", submission: "#ff8593", reviews: "#c8a6ff", decision: "#6ccbff", camera: "#5ff0b1", conference: "#eef7ff", other: "#7d93a8",
+  },
+  sunset: {
+    name: "Sunset", bg1: "#2b0f45", bg2: "#e0522e", glow: 0x55, glowColor: "#ffd166", text: "#ffffff", muted: "#ffe3d9", faint: "#ffc0b0", line: "#ffffff38",
+    accent: "#ffd166", submission: "#ffd166", reviews: "#f7c6ff", decision: "#c3e4ff", camera: "#c2f7d3", conference: "#ffffff", other: "#ffd9cf",
+  },
 };
+const CARD_COLORS = { ...CARD_THEMES.midnight }; // the theme being drawn
 const FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-const shareState = { kind: null, payload: null, format: "story", blob: null, url: null };
+const CARD_STORE = "ai-deadlines:card";
+const shareState = { kind: null, payload: null, format: "story", theme: "midnight", blob: null, url: null };
+try {
+  const saved = JSON.parse(localStorage.getItem(CARD_STORE) || "{}");
+  if (CARD_THEMES[saved.theme]) shareState.theme = saved.theme;
+  if (CARD_FORMATS[saved.format]) shareState.format = saved.format;
+} catch (_) { /* storage unavailable */ }
+function saveCardPrefs() {
+  try { localStorage.setItem(CARD_STORE, JSON.stringify({ theme: shareState.theme, format: shareState.format })); } catch (_) { /* fine */ }
+}
 
 // ---- text helpers ----
 function font(g, size, weight = 600) { g.font = `${weight} ${Math.round(size)}px ${FONT}`; }
@@ -85,8 +110,9 @@ function background(g, W, H, color) {
   g.fillStyle = bg;
   g.fillRect(0, 0, W, H);
   const glow = g.createRadialGradient(W * 0.9, H * 0.08, 0, W * 0.9, H * 0.08, Math.max(W, H) * 0.7);
-  glow.addColorStop(0, color + "55");
-  glow.addColorStop(1, color + "00");
+  const gc = CARD_COLORS.glowColor || color;
+  glow.addColorStop(0, gc + CARD_COLORS.glow.toString(16).padStart(2, "0"));
+  glow.addColorStop(1, gc + "00");
   g.fillStyle = glow;
   g.fillRect(0, 0, W, H);
 }
@@ -142,7 +168,7 @@ function drawVenue(g, W, H, fmt, { s, e, m }) {
   const b = safeBox(fmt, W, H);
   const [num, unit] = cardCount(Date.parse(m.at) - Date.now(), m.est);
   const place = [e.city, e.country].filter(Boolean).join(", ");
-  const url = `${siteHost()}/#${s.key}`;
+  const url = `${siteHost()}/?v=${s.key}`;
 
   if (fmt === "wide") {
     const colW = b.w * 0.56;
@@ -254,7 +280,9 @@ function layout(blocks, b) {
   }
 }
 
-function renderCard(kind, payload, fmt) {
+function renderCard(kind, payload, fmt, theme = shareState.theme) {
+  Object.keys(CARD_COLORS).forEach((k) => delete CARD_COLORS[k]);
+  Object.assign(CARD_COLORS, CARD_THEMES[theme] || CARD_THEMES.midnight);
   const { w, h } = CARD_FORMATS[fmt];
   const c = document.createElement("canvas");
   c.width = w;
@@ -277,6 +305,7 @@ async function refreshCard() {
   img.dataset.url = URL.createObjectURL(shareState.blob);
   img.src = img.dataset.url;
   for (const b of document.querySelectorAll("[data-format]")) b.setAttribute("aria-checked", b.dataset.format === shareState.format);
+  for (const b of document.querySelectorAll("[data-card-theme]")) b.setAttribute("aria-checked", b.dataset.cardTheme === shareState.theme);
 }
 
 function openShareCard(kind, payload, url, text) {
@@ -339,6 +368,16 @@ function bindShare() {
     const b = ev.target.closest("[data-format]");
     if (!b) return;
     shareState.format = b.dataset.format;
+    saveCardPrefs();
+    refreshCard();
+  });
+  $("sdThemes").innerHTML = Object.entries(CARD_THEMES).map(([k, t]) => `<button type="button" role="radio" data-card-theme="${k}" aria-checked="${k === shareState.theme}">
+      <span class="swatch" style="background:linear-gradient(135deg, ${t.bg1}, ${t.bg2})"><i style="background:${t.accent}"></i></span>${esc(t.name)}</button>`).join("");
+  $("sdThemes").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-card-theme]");
+    if (!b) return;
+    shareState.theme = b.dataset.cardTheme;
+    saveCardPrefs();
     refreshCard();
   });
   $("sdShare").addEventListener("click", shareCardNow);

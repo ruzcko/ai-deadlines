@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Credits & licences · AI Conference Deadlines</title>
+  <meta name="description" content="Where the data, code, fonts and map come from, and their licences.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='17' r='12' fill='none' stroke='%23e5484d' stroke-width='3'/><path d='M16 10v7l4 3' stroke='%23e5484d' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
+  <script>
+    try { const t = JSON.parse(localStorage.getItem("ai-deadlines:v1") || "{}").theme; if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .doc { max-width: 720px; margin: 0 auto; padding: 8px 16px 48px; }
+    .doc h1 { font-size: clamp(28px, 6vw, 40px); letter-spacing: -.03em; margin: 16px 0 8px; }
+    .doc h2 { font-size: 18px; letter-spacing: -.01em; margin: 32px 0 8px; }
+    .doc p, .doc li { color: var(--muted); }
+    .doc b { color: var(--text); }
+    .doc .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin: 10px 0; }
+    .doc .card h3 { margin: 0 0 4px; font-size: 15.5px; color: var(--text); }
+    .doc .card p { margin: 0 0 6px; font-size: 14px; }
+    .doc .card p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-row">
+      <a class="brand" href="/">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="17" r="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 10v7l4 3" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+        <span>AI Conference Deadlines</span>
+      </a>
+    </div>
+  </header>
+  <main class="doc">
+    <h1>Credits & licences</h1>
+    <p>This site is an independent project by <a href="https://ruzcko.com">ruzcko</a>. It is not affiliated with Hugging Face, PaperRush, or any conference listed. The code, layout and design are our own. The dates come from two open datasets, and a few open-source parts do the heavy lifting. Here is each one and its licence.</p>
+
+    <h2>Conference data</h2>
+    <div class="card">
+      <h3>huggingface/ai-deadlines</h3>
+      <p>Our main source: deadlines, conference dates, cities and rankings for most venues. Copyright © 2025 Hugging Face, under the MIT License.</p>
+      <p><b>Our changes:</b> we merge each venue's editions, group milestone types, convert timezones to UTC, correct obvious year typos (and say so), and add estimated dates for editions not yet announced, clearly marked.</p>
+      <p><a href="https://github.com/huggingface/ai-deadlines">Repository</a> · <a href="licenses/huggingface-ai-deadlines-MIT.txt">Full MIT licence text</a></p>
+    </div>
+    <div class="card">
+      <h3>PaperRush (awsaf49/paperrush)</h3>
+      <p>Our second source, under the Apache License 2.0. We use only the dates and links it marks as announced, never its own estimates.</p>
+      <p><b>Our changes:</b> we fill gaps in the Hugging Face data with its host cities, conference dates, deadlines and submission links, add venues it covers that Hugging Face doesn't, and compare the dates both list ("✓ 2 sources" / "⚠ Sources differ"). Dates taken from it are labelled “PaperRush” on each venue.</p>
+      <p><a href="https://github.com/awsaf49/paperrush">Repository</a> · <a href="https://awsaf49.github.io/paperrush/">Their site</a> · <a href="licenses/paperrush-Apache-2.0.txt">Full Apache 2.0 licence text</a></p>
+    </div>
+    <p>Feature ideas we liked from PaperRush (quick links on a venue, shareable lists, a calendar view, report-a-date links) are implemented independently here. No PaperRush code or design assets are used.</p>
+
+    <h2>Map</h2>
+    <div class="card">
+      <h3>OpenStreetMap (via Nominatim)</h3>
+      <p>Host-city coordinates were looked up with OpenStreetMap's Nominatim geocoder. Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, available under the Open Database License (ODbL).</p>
+    </div>
+    <div class="card">
+      <h3>Natural Earth</h3>
+      <p>Country outlines for the map (1:110m, simplified). <a href="https://www.naturalearthdata.com/">Natural Earth</a> is in the public domain.</p>
+    </div>
+    <div class="card">
+      <h3>Leaflet 1.9.4</h3>
+      <p>The interactive map. Copyright © 2010–2023 Volodymyr Agafonkin, © 2010–2011 CloudMade. BSD 2-Clause License.</p>
+      <p><a href="https://leafletjs.com/">leafletjs.com</a> · <a href="licenses/leaflet-BSD-2-Clause.txt">Full licence text</a></p>
+    </div>
+
+    <h2>Type and images</h2>
+    <div class="card">
+      <h3>Inter</h3>
+      <p>The typeface, by Rasmus Andersson and The Inter Project Authors, under the SIL Open Font License 1.1.</p>
+      <p><a href="https://rsms.me/inter/">rsms.me/inter</a> · <a href="licenses/inter-OFL-1.1.txt">Full licence text</a></p>
+    </div>
+    <div class="card">
+      <h3>resvg (resvg-wasm 2.6.2)</h3>
+      <p>Draws the link-preview images on the server. Mozilla Public License 2.0; used unmodified.</p>
+      <p><a href="https://github.com/yisibl/resvg-js">Source code</a> · <a href="licenses/resvg-MPL-2.0.txt">Full licence text</a></p>
+    </div>
+
+    <h2>A note on accuracy</h2>
+    <p>Deadlines move and get extended. Always confirm on the venue's official call for papers. If you spot a wrong date, the “Report a wrong date” link on any venue opens a ready-to-send issue with whichever source listed it.</p>
+    <p><a href="/">← Back to the deadlines</a></p>
+  </main>
+</body>
+</html>

@@ -39,3 +39,10 @@ python -m venv .venv
   so no deploy hook or API token is needed.
 - `data/geocode.json` caches city coordinates (OpenStreetMap Nominatim); commit
   it after a local sync adds new cities.
+
+## Credits
+
+See [site/credits.html](site/credits.html) (served at `/credits.html`) for every source and licence:
+Hugging Face ai-deadlines (MIT) and PaperRush (Apache-2.0) data, with our changes described;
+OpenStreetMap/Nominatim (ODbL) coordinates; Natural Earth (public domain); Leaflet (BSD-2);
+Inter (OFL); resvg-wasm (MPL-2.0). Full licence texts live in `site/licenses/`.
