@@ -13,7 +13,7 @@ const CARD_COLORS = {
   accent: "#ff6369",
   submission: "#ff6369", reviews: "#b98cf0", decision: "#52a9ff", camera: "#3dd68c", conference: "#b4b9c2", other: "#80858f",
 };
-const FONT = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+const FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 const shareState = { kind: null, payload: null, format: "story", blob: null, url: null };
 
 // ---- text helpers ----
@@ -270,6 +270,8 @@ function renderCard(kind, payload, fmt) {
 async function refreshCard() {
   const img = $("sdImg");
   img.removeAttribute("src");
+  // Canvas text needs the web font loaded first, or the first card falls back to a system font.
+  try { await Promise.all([document.fonts.load("800 40px Inter"), document.fonts.load("500 40px Inter")]); } catch (_) { /* fall back */ }
   shareState.blob = await renderCard(shareState.kind, shareState.payload, shareState.format);
   if (img.dataset.url) URL.revokeObjectURL(img.dataset.url);
   img.dataset.url = URL.createObjectURL(shareState.blob);
@@ -290,7 +292,7 @@ function shareVenue(key) {
   if (!s) return;
   const next = nextFor(s, new Date()) || itemsOf(s).filter((it) => it.t > new Date()).sort((a, b) => a.t - b.t)[0];
   if (!next) return;
-  openShareCard("venue", { s, e: next.edition, m: next.m }, `${location.origin}${location.pathname}#${s.key}`,
+  openShareCard("venue", { s, e: next.edition, m: next.m }, venueUrl(s.key),
     `${s.title} ${next.edition.year} · ${next.m.label}: ${officialWhen(next.edition, next.m)}`);
 }
 

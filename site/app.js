@@ -84,7 +84,7 @@ function reportUrl(s, e, src) {
     `**What's wrong, and the correct date (with a link to the official source):**`,
     "",
     "",
-    `_Spotted via ${SITE_URL}/#${s.key}_`,
+    `_Spotted via ${SITE_URL}/?v=${s.key}_`,
   ].filter((line, i, all) => line !== "" || all[i - 1] !== "").join("\n");
   const title = `Wrong date: ${s.title} ${e.year}`;
   return `${REPORT_REPO[src]}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
@@ -270,7 +270,7 @@ function details(s, next, now) {
     `<a href="${esc(s.source)}" target="_blank" rel="noopener">Data source ↗</a>`,
     s.also && s.source !== s.also && `<a href="${PAPERRUSH_SITE}" target="_blank" rel="noopener">Also on PaperRush ↗</a>`,
     ...reports,
-    `<a href="#${esc(s.key)}">Link to ${esc(s.title)}</a>`,
+    `<a href="${esc(venueUrl(s.key))}">Link to ${esc(s.title)}</a>`,
     `<button class="linkbtn" type="button" data-sharecard="${esc(s.key)}">Share card</button>`,
   ].filter(Boolean).join("");
   const more = hidden ? `<p class="more">+${hidden} side date${hidden === 1 ? "" : "s"} (workshops, tutorials, registration). Select <b>Other</b> above to show them.</p>` : "";
@@ -635,8 +635,11 @@ function bind() {
   window.addEventListener("hashchange", openFromHash);
 }
 
-function openFromHash() {
-  const k = decodeURIComponent(location.hash.slice(1));
+// Shareable venue link: /?v=key works in link previews (servers never see "#"); #key works in-page.
+const venueUrl = (key) => `${location.origin}/?v=${encodeURIComponent(key)}`;
+
+function openFromHash(fromQuery) {
+  const k = typeof fromQuery === "string" ? fromQuery : decodeURIComponent(location.hash.slice(1));
   const s = DATA.series.find((x) => x.key === k);
   if (!s) return;
   state.open.add(k);
@@ -676,7 +679,9 @@ async function main() {
   bindShare();
   render();
   setView(state.view);
-  if (location.hash) openFromHash();
+  const v = new URLSearchParams(location.search).get("v");
+  if (v) openFromHash(v.toLowerCase());
+  else if (location.hash) openFromHash();
   setInterval(tick, 1000);
   setInterval(render, 60000);
 }
