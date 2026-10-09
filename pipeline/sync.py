@@ -486,7 +486,26 @@ def ics(series, groups, name, stamp):
     return "\r\n".join(fold(line) for line in lines) + "\r\n"
 
 
+def stamp_assets():
+    """Version app.js/style.css URLs by content hash so browsers never mix old JS with new HTML.
+
+    Only on Cloudflare Pages builds (CF_PAGES=1), so local checkouts stay clean.
+    """
+    import hashlib
+    import os
+    if os.environ.get("CF_PAGES") != "1":
+        return
+    index = SITE / "index.html"
+    page = index.read_text(encoding="utf-8")
+    for name in ("app.js", "style.css"):
+        digest = hashlib.sha256((SITE / name).read_bytes()).hexdigest()[:10]
+        page = re.sub(rf'"{re.escape(name)}(\?v=[0-9a-f]+)?"', f'"{name}?v={digest}"', page)
+    index.write_text(page, encoding="utf-8")
+    print("stamped asset versions")
+
+
 def main():
+    stamp_assets()
     now = datetime.now(timezone.utc)
     sha, upstream_when = fetch_upstream()
     series = build(now)
