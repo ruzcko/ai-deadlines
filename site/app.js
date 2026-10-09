@@ -870,7 +870,7 @@ function openVenue(k) {
     render();
   } else renderList();
   const el = document.getElementById(k);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); // html scroll-padding clears the sticky bars
 }
 
 async function main() {
