@@ -57,6 +57,34 @@ function zoneFor(label) {
   if (m) return `Etc/GMT${m[1] === "+" ? "-" : "+"}${m[2]}`; // Etc/ signs are inverted
   return label;
 }
+const SRC_NAME = { hf: "Hugging Face", pr: "PaperRush" };
+const PAPERRUSH_SITE = "https://awsaf49.github.io/paperrush/";
+
+function checkBadge(e) {
+  const checks = e.checks || [];
+  if (!checks.length) return "";
+  const n = checks.filter((c) => !c.agree).length;
+  return n
+    ? `<span class="badge warn" title="Hugging Face and PaperRush list different dates">⚠ Sources differ</span>`
+    : `<span class="badge ok" title="Hugging Face and PaperRush list the same dates">✓ 2 sources</span>`;
+}
+
+function checkWhen(v, tz, notime) {
+  if (!v) return "";
+  if (v.length === 10) return fmtDate.format(new Date(v + "T12:00:00"));
+  const d = new Date(v);
+  return notime ? fmtDate.format(d) + " (no time given)" : fmtDateTime.format(d);
+}
+
+function checksBlock(e) {
+  const checks = e.checks || [];
+  if (!checks.length) return "";
+  const items = checks.map((c) => c.agree
+    ? `<li class="agree">✓ <b>${esc(c.what)}</b>: both sources say ${esc(checkWhen(c.hf, c.hf_tz))}</li>`
+    : `<li class="differ">⚠ <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, PaperRush says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. Check the official site.</li>`).join("");
+  return `<ul class="checks">${items}</ul>`;
+}
+
 function inZone(date, label) {
   const tz = zoneFor(label);
   if (!tz) return "";
@@ -178,9 +206,11 @@ function details(s, next, now) {
     const t = new Date(m.at);
     const past = t <= now;
     const when = m.est ? "~" + fmtMonth.format(t) : m.day ? fmtDate.format(new Date(m.day + "T12:00:00")) : fmtDateTime.format(t);
-    const tz = !m.est && m.tz ? `<div class="tz">${esc(inZone(t, m.tz))}</div>` : "";
+    const tz = m.est ? "" : m.notime ? `<div class="tz">no time given · assuming end of day AoE</div>`
+      : m.tz ? `<div class="tz">${esc(inZone(t, m.tz))}</div>` : "";
+    const src = m.src === "pr" ? ` <span class="src" title="This date comes from PaperRush">PaperRush</span>` : "";
     const left = past ? "done" : compact(t - now, m.est);
-    return `<tr class="${past ? "past" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span>${esc(m.label)}</td><td class="when">${esc(when)}${tz}</td><td class="left">${esc(left)}</td></tr>`;
+    return `<tr class="${past ? "past" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span>${esc(m.label)}${src}</td><td class="when">${esc(when)}${tz}</td><td class="left">${esc(left)}</td></tr>`;
   }).join("");
   const estNote = e.estimated
     ? `<p class="est-note">Not all dates are announced yet. Dates marked ~ are projected from ${esc(s.title)} ${e.estimated_from}, so treat them as a rough plan, not a deadline.${e.last_place ? ` Location not announced; last held in ${esc(e.last_place)}.` : ""}</p>` : "";
@@ -190,12 +220,13 @@ function details(s, next, now) {
     e.link && `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>`,
     e.note_link && e.note_link !== e.link && `<a href="${esc(e.note_link)}" target="_blank" rel="noopener">Call for papers ↗</a>`,
     `<a href="${esc(s.source)}" target="_blank" rel="noopener">Data source ↗</a>`,
+    s.also && s.source !== s.also && `<a href="${PAPERRUSH_SITE}" target="_blank" rel="noopener">Also on PaperRush ↗</a>`,
     `<a href="#${esc(s.key)}">Link to ${esc(s.title)}</a>`,
   ].filter(Boolean).join("");
-  return `<div class="details">${estNote}${tent}<table>${rows}</table>
+  return `<div class="details">${estNote}${tent}${checksBlock(e)}<table>${rows}</table>
     ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
     <div class="links">${links}</div>
-    <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}Data for ${esc(s.title)} last changed upstream ${esc(ago(s.updated))}</div></div>`;
+    <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}${e.place_src === "pr" ? "Location via PaperRush · " : ""}Sources: ${esc((e.sources || ["hf"]).map((x) => SRC_NAME[x]).join(" + "))}${s.updated ? ` · data last changed ${esc(ago(s.updated))}` : ""}</div></div>`;
 }
 
 function renderRows() {
@@ -224,7 +255,7 @@ function renderRows() {
       <div class="row-main" role="button" tabindex="0" aria-expanded="${open}">
         <button class="star" data-star="${esc(s.key)}" aria-pressed="${state.starred.has(s.key)}" aria-label="Star ${esc(s.title)}">★</button>
         <div class="name">
-          <div class="t">${esc(s.title)} ${e.year} ${rank} ${est}</div>
+          <div class="t">${esc(s.title)} ${e.year} ${rank} ${est} ${checkBadge(e)}</div>
           <div class="sub">${esc(s.full_name || "")}${place ? " · " + esc(place) : ""}</div>
         </div>
         <div class="next ${next.m.est ? "est-row" : urgency(ms)}">
@@ -390,6 +421,7 @@ async function renderMap() {
     marker.bindPopup(`<div class="pop"><div class="pop-place">${esc(place)}</div>${items.map(({ s, e: ed, assumed }) => `
       <div class="pop-item"><a href="#${esc(s.key)}"><b>${esc(s.title)} ${ed.year}</b></a>
       <div>${esc(fmtRange(ed))}${assumed ? ` <span class="badge est">Dates assumed</span>` : ""}</div>
+      ${(ed.checks || []).some((c) => !c.agree && c.what === "Conference starts") ? `<div class="warn-text">⚠ Sources differ on the dates</div>` : ""}
       <div class="muted">${nextDeadlineText(s)}</div></div>`).join("")}</div>`);
     marker.addTo(mapLayer);
     for (const it of items) markers.set(it.s.key, marker);

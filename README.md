@@ -5,7 +5,10 @@ camera-ready, conference) with per-milestone calendar feeds.
 Planned home: https://ai-deadlines.ruzcko.com
 
 Dates come from [huggingface/ai-deadlines](https://github.com/huggingface/ai-deadlines)
-(MIT). Fix wrong dates there; this site picks them up on the next sync.
+(MIT). [PaperRush](https://github.com/awsaf49/paperrush) (Apache-2.0) is a second
+source: its announced dates and host cities fill gaps, and dates both sources list
+are cross-checked ("✓ 2 sources" / "⚠ Sources differ"). PaperRush's own estimates
+are never used. Fix wrong dates upstream; this site picks them up on the next sync.
 
 ## How it works
 

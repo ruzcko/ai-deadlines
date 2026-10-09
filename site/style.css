@@ -116,6 +116,14 @@ button { font: inherit; color: inherit; }
 .badge { font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); letter-spacing: .02em; }
 .badge.est { border-style: dashed; color: var(--warn); border-color: color-mix(in srgb, var(--warn) 60%, transparent); }
 .badge.tent { color: var(--warn); }
+.badge.ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+.badge.warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 60%, transparent); background: color-mix(in srgb, var(--warn) 10%, transparent); }
+.details .src { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; }
+.details .checks { list-style: none; margin: 0 0 10px; padding: 8px 12px; border-radius: 8px; background: var(--surface-2); font-size: 14px; display: grid; gap: 4px; }
+.details .checks .agree { color: var(--muted); }
+.details .checks .agree b { color: var(--text); font-weight: 600; }
+.details .checks .differ { color: var(--text); }
+.warn-text { color: var(--warn); font-size: 12px; }
 .next { text-align: right; }
 .next .cd { font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
 .next .lbl { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; justify-content: flex-end; }

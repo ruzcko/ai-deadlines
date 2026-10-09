@@ -1,4 +1,4 @@
-"""Pull conference data from huggingface/ai-deadlines and export it for the site.
+"""Pull conference data from huggingface/ai-deadlines (plus PaperRush) and export it.
 
 Writes site/data/conferences.json (one entry per venue series, with every
 edition's milestones in UTC) and site/cal/*.ics (one subscribable feed per
@@ -18,6 +18,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import yaml
+
+import paperrush
 
 ROOT = Path(__file__).resolve().parent.parent
 UPSTREAM = ROOT / "data" / "upstream"
@@ -75,6 +77,7 @@ TAG_AREA = {
 }
 MAIN_SUBMISSION = {"abstract", "paper", "submission"}
 WARNINGS = []  # upstream data issues worth reporting
+SOURCES = {"pr_updated": None}
 TENTATIVE = re.compile(r"proposed|tentative|subject to change|to be announced|\bTBA\b|\bTBD\b", re.I)
 
 
@@ -213,6 +216,8 @@ def edition(entry):
         "tentative": bool(entry.get("note") and TENTATIVE.search(entry["note"])),
         "estimated": False,
         "milestones": ms,
+        "sources": ["hf"],
+        "checks": [],
     }
 
 
@@ -272,7 +277,7 @@ def estimate_next(series_editions, now, cycle):
             "estimated": True, "estimated_from": last["year"],
             "dates": None, "city": None, "country": None, "venue": None, "lat": None, "lng": None,
             "last_place": ", ".join(x for x in (last.get("city"), last.get("country")) if x) or None,
-            "note": None, "note_link": None, "tentative": False}
+            "note": None, "note_link": None, "tentative": False, "checks": [], "place_src": None}
 
 
 def estimate_gap_conference(series_editions, now, cycle):
@@ -305,7 +310,7 @@ def estimate_gap_conference(series_editions, now, cycle):
             "estimated": True, "estimated_from": last["year"],
             "dates": None, "city": None, "country": None, "venue": None, "lat": None, "lng": None,
             "last_place": ", ".join(x for x in (last.get("city"), last.get("country")) if x) or None,
-            "note": None, "note_link": None, "tentative": False}
+            "note": None, "note_link": None, "tentative": False, "checks": [], "place_src": None}
 
 
 def series_key(entry):
@@ -382,6 +387,14 @@ def build(now):
             ed["lat"], ed["lng"] = geocode(ed["city"], ed["country"]) or (None, None)
             s["editions"].append(ed)
 
+    conferences, SOURCES["pr_updated"] = paperrush.fetch()
+    added, filled = paperrush.merge(
+        series, conferences, group_of=group_of, geocode=geocode, last_updated=SOURCES["pr_updated"],
+        series_key_of=lambda name: re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-"))
+    print(f"PaperRush: {len(conferences)} editions; new venues {added or 'none'}")
+    for f in filled:
+        print("  filled from PaperRush:", f)
+
     out = []
     for s in series.values():
         s["editions"].sort(key=lambda e: e["year"])
@@ -441,6 +454,8 @@ def ics(series, groups, name, stamp):
                 desc = f"{s['full_name'] or title}\n{m['label']}"
                 if m.get("tz"):
                     desc += f" ({m['tz']})"
+                if m.get("src") == "pr":
+                    desc += "\nSource: PaperRush"
                 desc += f"\nAlways confirm on the official site: {e['link'] or ''}"
                 ev = ["BEGIN:VEVENT", f"UID:{uid}", f"DTSTAMP:{stamp}"]
                 if m["type"] == "start":
@@ -473,6 +488,7 @@ def main():
     payload = {
         "synced_at": iso(now),
         "upstream": {"repo": UPSTREAM_URL, "commit": sha, "updated": upstream_when},
+        "paperrush": {"repo": paperrush.REPO_URL, "updated": SOURCES["pr_updated"]},
         "groups": {g: GROUP_NAMES[g] for g in GROUPS},
         "areas": AREAS,
         "series": series,

@@ -19,9 +19,17 @@
   33.8348,
   -117.9117
  ],
+ "Athens, Greece": [
+  37.9756,
+  23.7348
+ ],
  "Atlanta, USA": [
   33.7545,
   -84.3898
+ ],
+ "Auckland, New Zealand": [
+  -36.8521,
+  174.7632
  ],
  "Austin, United States": [
   30.2711,
@@ -30,6 +38,10 @@
  "Barcelona, Spain": [
   41.3826,
   2.1771
+ ],
+ "Bellevue, USA": [
+  47.6144,
+  -122.1923
  ],
  "Bern, Switzerland": [
   46.9485,
@@ -111,6 +123,10 @@
   21.0283,
   105.854
  ],
+ "Hong Kong, China": [
+  22.2818,
+  114.1583
+ ],
  "Hong Kong, Hong Kong": [
   22.2818,
   114.1583
@@ -138,6 +154,10 @@
  "Kyoto, Japan": [
   35.0116,
   135.7681
+ ],
+ "Lancaster, UK": [
+  54.0488,
+  -2.8013
  ],
  "Limassol, Cyprus": [
   34.6853,
@@ -176,6 +196,10 @@
   5.691
  ],
  "Macao, China": [
+  22.1758,
+  113.5514
+ ],
+ "Macau, China": [
   22.1758,
   113.5514
  ],
@@ -274,6 +298,10 @@
  "San Francisco, United States": [
   37.7879,
   -122.4075
+ ],
+ "San Jose, United States": [
+  37.3362,
+  -121.8906
  ],
  "Seattle, USA": [
   47.6038,
