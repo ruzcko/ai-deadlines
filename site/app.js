@@ -287,6 +287,9 @@ function upcomingRows(filter = matches) {
 
 // ---- toolbar ----
 function renderToolbar() {
+  // Phones get the same choice as a native dropdown (all options visible in the system picker).
+  $("focusSel").innerHTML = FOCUS.map(([k, name]) => `<option value="${k}"${state.focus === k ? " selected" : ""}>${esc(name)}</option>`).join("");
+  $("focusDot").style.background = state.focus === "all" ? "var(--faint)" : `var(--g-${state.focus})`;
   $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
   const n = state.starred.size;
   $("starPill").innerHTML = `★<span class="sp-label"> Starred</span>${n ? ` <span class="sp-n">${n}</span>` : ""}`;
@@ -865,6 +868,10 @@ function bind() {
     const b = ev.target.closest("[data-focus]");
     if (!b) return;
     state.focus = b.dataset.focus;
+    syncGroups(); save(); render();
+  });
+  $("focusSel").addEventListener("change", (ev) => {
+    state.focus = ev.target.value;
     syncGroups(); save(); render();
   });
   $("starPill").addEventListener("click", () => { state.starredOnly = !state.starredOnly; save(); render(); });

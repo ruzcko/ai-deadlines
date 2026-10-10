@@ -187,6 +187,11 @@ button { font: inherit; color: inherit; }
 .seg svg { width: 16px; height: 16px; }
 .seg.small button { padding: 4px 10px; font-size: 13px; }
 #focus { overflow-x: auto; scrollbar-width: none; flex: 0 1 auto; }
+.focus-select { display: none; position: relative; align-items: center; gap: 8px; height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); flex: 1 1 auto; min-width: 0; cursor: pointer; }
+.focus-select select { appearance: none; -webkit-appearance: none; border: 0; background: none; color: var(--text); font: 600 15px/1 Inter, ui-sans-serif, system-ui, sans-serif; flex: 1; min-width: 0; padding: 0 20px 0 0; cursor: pointer; outline: none; }
+.focus-select .sw { width: 9px; height: 9px; }
+.focus-select .chev { position: absolute; right: 12px; width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+.focus-select:focus-within { border-color: var(--faint); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
 .views { flex: none; }
 #focus::-webkit-scrollbar { display: none; }
 
@@ -342,7 +347,7 @@ button { font: inherit; color: inherit; }
 /* Views */
 body:not([data-view="map"]) .view-map, body:not([data-view="calendar"]) .view-cal,
 body[data-view="map"] .view-list, body[data-view="calendar"] .view-list { display: none; }
-body[data-view="map"] #focus { visibility: hidden; }
+body[data-view="map"] #focus, body[data-view="map"] .focus-select { visibility: hidden; }
 
 /* ---------- Map ---------- */
 .map-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -499,6 +504,9 @@ body[data-view="map"] #focus { visibility: hidden; }
   .gaps .gtrack, .gaps .g-note { display: none; }
   .gchain { padding-top: 10px; }
 
+  /* Toolbar: the focus switch becomes a native dropdown (no hidden sideways scroll). */
+  #focus { display: none; }
+  .focus-select { display: flex; }
   /* Toolbar: search and three icon buttons on one line. */
   .toolbar { gap: 8px; padding-top: 8px; padding-bottom: 10px; }
   .tb-row:last-child { flex-wrap: nowrap; }
