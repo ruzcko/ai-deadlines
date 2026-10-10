@@ -91,7 +91,7 @@ function officialWhen(e, m) {
   const tz = zoneFor(m.tz) || "UTC";
   try {
     const opts = m.notime ? { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: tz }
-      : { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz };
+      : { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", ...hourOpts(), timeZone: tz };
     return new Intl.DateTimeFormat(undefined, opts).format(t) + " " + (m.tz || "UTC");
   } catch (_) { return fmtDateTime.format(t); }
 }

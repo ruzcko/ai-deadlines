@@ -17,6 +17,7 @@ const state = {
   top: false,
   hideEst: false,
   tz: "local", // or "aoe"
+  clock: null, // "12" or "24"; null follows the device
   theme: "auto",
   open: new Set(),
   view: "list",
@@ -45,6 +46,7 @@ function load() {
     state.hideEst = !!s.hideEst;
     state.side = !!s.side;
     if (s.tz === "aoe") state.tz = "aoe";
+    if (s.clock === "12" || s.clock === "24") state.clock = s.clock;
     if (["light", "dark"].includes(s.theme)) state.theme = s.theme;
     if (["map", "calendar"].includes(s.view)) state.view = s.view;
     if (["6", "12", "all"].includes(s.span)) state.span = s.span;
@@ -55,7 +57,7 @@ function save() {
   try {
     localStorage.setItem(STORE, JSON.stringify({
       focus: state.focus, side: state.side, areas: [...state.areas], starred: [...state.starred],
-      starredOnly: state.starredOnly, top: state.top, hideEst: state.hideEst, tz: state.tz, theme: state.theme,
+      starredOnly: state.starredOnly, top: state.top, hideEst: state.hideEst, tz: state.tz, clock: state.clock, theme: state.theme,
       view: state.view, span: state.span,
     }));
   } catch (_) { /* storage unavailable */ }
@@ -67,18 +69,25 @@ const fmtDate = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "s
 const fmtMonth = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" });
 const AOE = "Etc/GMT+12";
 
+// 12- or 24-hour clock: the viewer's pick, else whatever their device uses.
+const DEVICE_24H = (() => {
+  try { return !new Intl.DateTimeFormat(undefined, { hour: "numeric" }).resolvedOptions().hour12; } catch (_) { return false; }
+})();
+const use24 = () => (state.clock ? state.clock === "24" : DEVICE_24H);
+const hourOpts = () => (use24() ? { hourCycle: "h23" } : { hour12: true });
+
 // Instants follow the "Times in" switch: your local time, or Anywhere on Earth (UTC-12).
 const fmtCache = {};
 function fmtIn(kind) {
   const tz = state.tz === "aoe" ? AOE : undefined;
-  const key = kind + (tz || "");
+  const key = kind + (tz || "") + (use24() ? "24" : "12");
   if (!fmtCache[key]) {
     const opts = {
       dt: { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" },
       dts: { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" },
       t: { hour: "numeric", minute: "2-digit" },
     }[kind];
-    fmtCache[key] = new Intl.DateTimeFormat(undefined, { ...opts, timeZone: tz });
+    fmtCache[key] = new Intl.DateTimeFormat(undefined, { ...opts, ...(opts.hour ? hourOpts() : {}), timeZone: tz });
   }
   return fmtCache[key];
 }
@@ -107,7 +116,7 @@ function inZone(date, label) {
   const tz = zoneFor(label);
   if (!tz) return "";
   try {
-    return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: tz }).format(date) + " " + label;
+    return new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", ...hourOpts(), timeZone: tz }).format(date) + " " + label;
   } catch (_) { return label; }
 }
 // Row dates: drop the year (and weekday) when it's within the coming year, to keep rows on one line.
@@ -150,7 +159,7 @@ function cdParts(ms, est) {
   }
   if (p.d >= 2) return [String(p.d), p.d < 14 ? `days ${p.h}h` : "days"];
   const h = p.d * 24 + p.h;
-  if (h >= 1) return [String(h), `${h === 1 ? "hr" : "hrs"} ${p.m}m`];
+  if (h >= 1) return [String(h), `${h === 1 ? "hour" : "hours"} ${p.m}m`]; // big number's unit as a word, remainder compact
   return [String(p.m), `min ${p.s}s`];
 }
 // Single-unit countdown for tight spots: "32d", "17h", "45m".
@@ -296,6 +305,7 @@ function renderToolbar() {
   $("filterCount").hidden = !active;
   $("filterCount").textContent = active;
   for (const b of document.querySelectorAll("[data-tz]")) b.setAttribute("aria-checked", b.dataset.tz === state.tz);
+  for (const b of document.querySelectorAll("[data-clock]")) b.setAttribute("aria-checked", b.dataset.clock === (use24() ? "24" : "12"));
   for (const b of document.querySelectorAll("[data-theme-set]")) b.setAttribute("aria-checked", b.dataset.themeSet === state.theme);
   renderThemeBtn();
 }
@@ -806,6 +816,12 @@ function bind() {
     const b = ev.target.closest("[data-tz]");
     if (!b) return;
     state.tz = b.dataset.tz;
+    save(); render();
+  });
+  $("clockSeg").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-clock]");
+    if (!b) return;
+    state.clock = b.dataset.clock;
     save(); render();
   });
   const setTheme = (t) => { state.theme = t; applyTheme(); save(); render(); };
