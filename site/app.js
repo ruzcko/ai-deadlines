@@ -150,7 +150,7 @@ function cdParts(ms, est) {
   }
   if (p.d >= 2) return [String(p.d), p.d < 14 ? `days ${p.h}h` : "days"];
   const h = p.d * 24 + p.h;
-  if (h >= 1) return [String(h), `hrs ${p.m}m`];
+  if (h >= 1) return [String(h), `${h === 1 ? "hr" : "hrs"} ${p.m}m`];
   return [String(p.m), `min ${p.s}s`];
 }
 // Single-unit countdown for tight spots: "32d", "17h", "45m".
