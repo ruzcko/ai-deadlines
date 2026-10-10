@@ -453,7 +453,7 @@ function rowHtml({ s, next }, now) {
       </div>
       <div class="row-acts">
         <button class="star" type="button" data-star="${esc(s.key)}" aria-pressed="${starred}" aria-label="${starred ? "Unstar" : "Star"} ${esc(s.title)}">${starred ? "★" : "☆"}</button>
-        <button class="share-btn" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}" title="Share card"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5M5 10.5v5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="share-btn" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}" title="Share card">${SHARE_ICON}</button>
       </div>
       ${track(next)}
     </div>
@@ -496,6 +496,12 @@ function estSection(rows, now) {
         <b>${esc(s.title)} ${next.edition.year}</b><span><i class="sw"></i>${esc(shortLabel(next.m))} · ~${esc(month.format(next.t))}</span></button>`).join("")}</div>` : "") +
     (tiles.length > EST_TILES ? `<button class="pill est-more" type="button" data-allest>${state.allEst ? "Show fewer" : `Show all ${tiles.length}`}</button>` : "");
 }
+
+// The share glyph people know from their own device: box-and-arrow on Apple, three dots elsewhere.
+const IS_APPLE = /Mac|iPhone|iPad|iPod/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent);
+const SHARE_ICON = IS_APPLE
+  ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5M5 10.5v5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  : '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.4 8.8 5.2-2.6M7.4 11.2l5.2 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="5.2" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="14.8" cy="5.2" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="14.8" cy="14.8" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
 
 const SHORT_LABEL = { submission: "Paper", reviews: "Reviews", decision: "Decision", camera: "Camera-ready", conference: "Conference", other: "Event" };
 function shortLabel(m) {
