@@ -287,9 +287,6 @@ function upcomingRows(filter = matches) {
 
 // ---- toolbar ----
 function renderToolbar() {
-  // Phones get the same choice as a native dropdown (all options visible in the system picker).
-  $("focusSel").innerHTML = FOCUS.map(([k, name]) => `<option value="${k}"${state.focus === k ? " selected" : ""}>${esc(name)}</option>`).join("");
-  $("focusDot").style.background = state.focus === "all" ? "var(--faint)" : `var(--g-${state.focus})`;
   $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
   const n = state.starred.size;
   $("starPill").innerHTML = `★<span class="sp-label"> Starred</span>${n ? ` <span class="sp-n">${n}</span>` : ""}`;
@@ -519,6 +516,14 @@ function shortLabel(m) {
   return SHORT_LABEL[m.group] || m.label;
 }
 
+// Feed buttons: brand marks from Simple Icons (CC0) for Apple and Google; Outlook and "copy" are our own glyphs.
+const FEED_ICONS = {
+  apple: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>`,
+  outlook: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><ellipse cx="12" cy="12" rx="3.6" ry="4.2" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
+  google: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>`,
+  copy: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1.5 1.5M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1.5-1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+};
+
 function renderFeeds() {
   const host = location.host;
   const feeds = [["all", "Everything"], ...Object.entries(DATA.groups).filter(([g]) => g !== "other")];
@@ -526,9 +531,15 @@ function renderFeeds() {
     const https = `${location.protocol}//${host}/cal/${g}.ics`;
     const webcal = `webcal://${host}/cal/${g}.ics`;
     const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
+    const outlook = `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(https)}&name=${encodeURIComponent(`AI deadlines · ${name}`)}`;
     const sw = g === "all" ? "var(--text)" : `var(--g-${g})`;
     return `<div class="feed"><span class="fn"><span class="sw" style="background:${sw}"></span>${esc(name)}</span>
-      <span class="fl"><a href="${esc(webcal)}">Apple/Outlook</a><a href="${esc(google)}" target="_blank" rel="noopener">Google</a><a href="#" data-copy="${esc(https)}">Copy URL</a></span></div>`;
+      <span class="fl">
+        <a class="fi" href="${esc(webcal)}" aria-label="Subscribe in Apple Calendar (${esc(name)})" title="Apple Calendar · also Outlook desktop and Thunderbird">${FEED_ICONS.apple}</a>
+        <a class="fi" href="${esc(outlook)}" target="_blank" rel="noopener" aria-label="Subscribe in Outlook.com (${esc(name)})" title="Outlook.com">${FEED_ICONS.outlook}</a>
+        <a class="fi" href="${esc(google)}" target="_blank" rel="noopener" aria-label="Subscribe in Google Calendar (${esc(name)})" title="Google Calendar">${FEED_ICONS.google}</a>
+        <a class="fi" href="#" data-copy="${esc(https)}" aria-label="Copy the feed URL (${esc(name)})" title="Copy feed URL">${FEED_ICONS.copy}</a>
+      </span></div>`;
   }).join("");
 }
 
@@ -878,10 +889,6 @@ function bind() {
     state.focus = b.dataset.focus;
     syncGroups(); save(); render();
   });
-  $("focusSel").addEventListener("change", (ev) => {
-    state.focus = ev.target.value;
-    syncGroups(); save(); render();
-  });
   $("starPill").addEventListener("click", () => { state.starredOnly = !state.starredOnly; save(); render(); });
   $("areaBtn").addEventListener("click", () => openPop("areadlg", "areaBtn"));
   $("areaList").addEventListener("change", (ev) => {
@@ -973,11 +980,16 @@ function bind() {
       ev.target.click();
     }
   });
-  $("feeds").addEventListener("click", (ev) => {
+  $("feeds").addEventListener("click", async (ev) => {
     const a = ev.target.closest("[data-copy]");
     if (!a) return;
     ev.preventDefault();
-    copyText(a.dataset.copy, a);
+    try {
+      await navigator.clipboard.writeText(a.dataset.copy);
+      a.classList.add("done");
+      a.title = "Copied";
+      setTimeout(() => { a.classList.remove("done"); a.title = "Copy feed URL"; }, 1500);
+    } catch (_) { window.prompt("Copy this feed URL", a.dataset.copy); }
   });
   for (const b of document.querySelectorAll("[data-view]")) b.addEventListener("click", () => setView(b.dataset.view));
   $("span").addEventListener("click", (ev) => {

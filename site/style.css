@@ -189,11 +189,6 @@ button { font: inherit; color: inherit; }
 .seg svg { width: 16px; height: 16px; }
 .seg.small button { padding: 4px 10px; font-size: 13px; }
 #focus { overflow-x: auto; scrollbar-width: none; flex: 0 1 auto; }
-.focus-select { display: none; position: relative; align-items: center; gap: 8px; height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); flex: 1 1 auto; min-width: 0; cursor: pointer; }
-.focus-select select { appearance: none; -webkit-appearance: none; border: 0; background: none; color: var(--text); font: 600 15px/1 Inter, ui-sans-serif, system-ui, sans-serif; flex: 1; min-width: 0; padding: 0 20px 0 0; cursor: pointer; outline: none; }
-.focus-select .sw { width: 9px; height: 9px; }
-.focus-select .chev { position: absolute; right: 12px; width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
-.focus-select:focus-within { border-color: var(--faint); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
 .views { flex: none; }
 #focus::-webkit-scrollbar { display: none; }
 
@@ -349,7 +344,7 @@ button { font: inherit; color: inherit; }
 /* Views */
 body:not([data-view="map"]) .view-map, body:not([data-view="calendar"]) .view-cal,
 body[data-view="map"] .view-list, body[data-view="calendar"] .view-list { display: none; }
-body[data-view="map"] #focus, body[data-view="map"] .focus-select { visibility: hidden; }
+body[data-view="map"] #focus { visibility: hidden; }
 
 /* ---------- Map ---------- */
 .map-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -438,9 +433,13 @@ body[data-view="map"] #focus, body[data-view="map"] .focus-select { visibility: 
 .feed { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
 .feed .fn { font-weight: 650; display: flex; align-items: center; gap: 8px; }
 .feed .fn .sw { width: 10px; height: 10px; }
-.feed .fl { display: flex; gap: 6px; font-size: 13px; white-space: nowrap; flex-wrap: wrap; }
-.feed .fl a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 11px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-weight: 600; color: var(--muted); }
-.feed .fl a:hover { color: var(--text); border-color: var(--faint); }
+.feed .fl { display: flex; gap: 6px; }
+.feed .fi { display: inline-grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); text-decoration: none; position: relative; }
+.feed .fi:hover { color: var(--text); border-color: var(--faint); background: var(--surface-2); }
+.feed .fi svg { width: 17px; height: 17px; }
+.feed .fi.done { color: var(--ok); border-color: var(--ok); }
+.feed .fi.done svg { display: none; }
+.feed .fi.done::after { content: "✓"; font-weight: 700; }
 .foot { color: var(--muted); font-size: 13px; padding-top: 24px; padding-bottom: 40px; }
 .foot p { margin: 0 0 6px; max-width: 80ch; }
 
@@ -508,9 +507,14 @@ body[data-view="map"] #focus, body[data-view="map"] .focus-select { visibility: 
   .gaps .gtrack, .gaps .g-note { display: none; }
   .gchain { padding-top: 10px; }
 
-  /* Toolbar: the focus switch becomes a native dropdown (no hidden sideways scroll). */
-  #focus { display: none; }
-  .focus-select { display: flex; }
+  /* Toolbar: views on their own row, then every milestone type visible as a 3x2 grid of chips. */
+  .tb-row:first-child { flex-direction: column; align-items: stretch; gap: 8px; }
+  .views { order: -1; width: 100%; }
+  .views button { flex: 1; justify-content: center; }
+  .views span { display: inline; }
+  #focus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; overflow: visible; mask-image: none; padding: 3px; }
+  #focus button { justify-content: center; padding: 7px 4px; font-size: 13px; gap: 5px; min-width: 0; }
+  #focus button .sw { flex: none; }
   /* Toolbar: search and three icon buttons on one line. */
   .toolbar { gap: 8px; padding-top: 8px; padding-bottom: 10px; }
   .tb-row:last-child { flex-wrap: nowrap; }
