@@ -149,13 +149,15 @@
 
   <dialog id="sharedlg" class="sharedlg" aria-labelledby="sdTitle">
     <div class="sd-head"><h2 id="sdTitle">Share card</h2><button id="sdClose" class="sd-x" type="button" aria-label="Close">×</button></div>
-    <div class="seg small" id="sdFormats" role="radiogroup" aria-label="Card format">
-      <button type="button" data-format="story">Story 9:16</button>
-      <button type="button" data-format="square">Square</button>
-      <button type="button" data-format="wide">Wide</button>
-    </div>
-    <div class="sd-themes" id="sdThemes" role="radiogroup" aria-label="Card theme"></div>
     <div class="sd-preview"><img id="sdImg" alt="Preview of the share card"></div>
+    <div class="sd-controls">
+      <div class="seg small" id="sdFormats" role="radiogroup" aria-label="Card format">
+        <button type="button" data-format="story">Story 9:16</button>
+        <button type="button" data-format="square">Square</button>
+        <button type="button" data-format="wide">Wide</button>
+      </div>
+      <div class="sd-themes" id="sdThemes" role="radiogroup" aria-label="Card theme"></div>
+    </div>
     <div class="sd-actions">
       <button id="sdShare" class="btn primary" type="button">Share</button>
       <button id="sdSave" class="btn" type="button">Download</button>
