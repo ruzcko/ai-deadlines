@@ -289,7 +289,8 @@ function upcomingRows(filter = matches) {
 function renderToolbar() {
   $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
   const n = state.starred.size;
-  $("starPill").innerHTML = `★ Starred${n ? ` <span>${n}</span>` : ""}`;
+  $("starPill").innerHTML = `★<span class="sp-label"> Starred</span>${n ? ` <span class="sp-n">${n}</span>` : ""}`;
+  $("starPill").setAttribute("aria-label", `Starred only${n ? `, ${n} starred` : ""}`);
   $("starPill").setAttribute("aria-pressed", state.starredOnly);
   const picked = Object.entries(DATA.areas).filter(([a]) => state.areas.has(a)).map(([, name]) => name);
   $("areaLabel").textContent = !picked.length ? "All areas" : picked.length === 1 ? picked[0] : `${picked[0]} +${picked.length - 1}`;
@@ -354,7 +355,7 @@ function renderHero() {
   hero.innerHTML = `
     <div class="hero-top">
       <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span><span class="eb-text">${mine.length ? `<span class="eb-star" aria-hidden="true">★</span>` : ""}<span class="eb-pre">${mine.length ? "Your next deadline" : "Next up"} · </span>${esc(m.label)}</span></div>
-      <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}">Share card</button>
+      <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}"><span class="hs-icon">${SHARE_ICON}</span><span class="hs-text">Share card</span></button>
     </div>
     <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
     <p class="what">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</p>
@@ -392,7 +393,7 @@ function details(s, next, now) {
     const tz = m.est ? "" : m.notime ? `<div class="tz">no time given · assuming end of day AoE</div>` : alt ? `<div class="tz">${esc(alt)}</div>` : "";
     const src = m.src === "pr" ? ` <span class="src" title="This date comes from PaperRush">PaperRush</span>` : "";
     const left = past ? "done" : compact(t - now, m.est);
-    return `<tr class="${past ? "past" : ""}${m === next.m ? " is-next" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span>${esc(m.label)}${src}</td><td class="when">${esc(when)}${tz}</td><td class="left">${esc(left)}</td></tr>`;
+    return `<tr class="${past ? "past" : ""}${m === next.m ? " is-next" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span><span class="m-label">${esc(m.label)}</span>${src}</td><td class="when"><span class="w-full">${esc(when)}</span><span class="w-short">${esc(whenShort({ m, t }))}</span>${tz}</td><td class="left">${esc(left)}</td></tr>`;
   }).join("");
   const estNote = e.estimated
     ? `<p class="est-note">Not all dates are announced yet. Dates marked ~ are projected from ${esc(s.title)} ${e.estimated_from}, so treat them as a rough plan, not a deadline.${e.last_place ? ` Location not announced; last held in ${esc(e.last_place)}.` : ""}</p>` : "";

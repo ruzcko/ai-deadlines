@@ -2,7 +2,7 @@
 // Calendar month view. Deadlines land on the viewer's local day, the same moment the list counts down to.
 // Estimated dates aren't pinned to a day (that would be false precision); they go in "Expected this month".
 
-const cal = { month: null }; // first day of the shown month (local time)
+const cal = { month: null, showPast: false }; // first day of the shown month (local time)
 
 function dayKey(t) {
   return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
@@ -95,10 +95,15 @@ function renderCalendar() {
   $("calgrid").innerHTML = heads + cells.join("");
 
   // Day-by-day agenda: the main view on phones, and where "+N more" leads.
-  const agenda = [...byDay.entries()].map(([k, list]) => `
+  // The day-by-day list (the main view on phones) starts at today; earlier days fold away.
+  const dayEntries = [...byDay.entries()];
+  const pastDays = dayEntries.filter(([k]) => k < today);
+  const visible = cal.showPast ? dayEntries : dayEntries.filter(([k]) => k >= today);
+  const pastBtn = pastDays.length ? `<button class="pill ag-past" type="button" data-agpast>${cal.showPast ? "Hide earlier days" : `Show ${pastDays.length} earlier day${pastDays.length === 1 ? "" : "s"}`}</button>` : "";
+  const agenda = visible.map(([k, list]) => `
     <div class="ag-day${k < today ? " past" : ""}" id="ag-${k}"><div class="ag-date">${esc(fmtDate.format(new Date(k + "T12:00:00")))}</div>
     ${list.map((it) => `<a class="ag-item" href="#${esc(it.s.key)}"><span class="sw" style="background:var(--g-${it.m.group})"></span><b>${esc(it.s.title)} ${it.e.year}</b> <span>${esc(it.m.label)}${it.until ? ` – until ${esc(fmtDate.format(new Date(it.until + "T12:00:00")))}` : ""}</span>${it.m.day ? "" : `<span class="muted">${esc(fmtIn("t").format(it.t) + tzTag())}</span>`}</a>`).join("")}</div>`).join("");
-  $("calagenda").innerHTML = agenda || `<p class="muted">Nothing this month for these filters.</p>`;
+  $("calagenda").innerHTML = pastBtn + (agenda || (pastDays.length ? `<p class="muted">Nothing left this month.</p>` : `<p class="muted">Nothing this month for these filters.</p>`));
 
   $("calexpected").innerHTML = expected.length ? `<h3>Expected this month <span class="badge est">Not announced</span></h3>
     <p class="muted">Projected from last year, so no exact day yet.</p>
@@ -121,7 +126,17 @@ function bindCalendar() {
     document.getElementById(`ag-${cell.dataset.day}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
     $("calagenda").classList.add("show");
   };
-  $("calgrid").addEventListener("click", toDay);
+  $("calgrid").addEventListener("click", (ev) => {
+    const cell = ev.target.closest("[data-day]");
+    // Tapping a past day on a phone unfolds the earlier days first, so there's something to scroll to.
+    if (cell && cell.dataset.day < zoneDayKey(new Date()) && !cal.showPast) { cal.showPast = true; renderCalendar(); }
+    toDay(ev);
+  });
+  $("calagenda").addEventListener("click", (ev) => {
+    if (!ev.target.closest("[data-agpast]")) return;
+    cal.showPast = !cal.showPast;
+    renderCalendar();
+  });
   $("calgrid").addEventListener("keydown", (ev) => {
     if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches("[data-day]")) { ev.preventDefault(); toDay(ev); }
   });
