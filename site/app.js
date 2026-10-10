@@ -22,7 +22,9 @@ const state = {
   view: "list",
   span: "all",
   watch: null, // Set of venue keys from a shared ?watch= link
+  allEst: false, // show every "not announced yet" tile, not just the first few
 };
+const EST_TILES = 12;
 let DATA = null;
 
 function syncGroups() {
@@ -457,9 +459,25 @@ function renderRows() {
   list.innerHTML = BUCKETS.filter(([k]) => groups.get(k).length).map(([k, title, note]) => `
     <section class="bucket b-${k}">
       <h3>${esc(title)} <span class="n">${groups.get(k).length}</span>${note ? `<span class="note">${esc(note)}</span>` : ""}</h3>
-      <ol class="list">${groups.get(k).map((r) => rowHtml(r, now)).join("")}</ol>
+      ${k === "est" ? estSection(groups.get(k), now) : `<ol class="list">${groups.get(k).map((r) => rowHtml(r, now)).join("")}</ol>`}
     </section>`).join("") +
     (nothing ? `<p class="count">${nothing} more venue${nothing === 1 ? " has" : "s have"} nothing upcoming for this view.</p>` : "");
+}
+
+// Estimated venues are guesses, so they get small tiles instead of full rows. A tile opens into a row;
+// starred venues always get the full row.
+function estSection(rows, now) {
+  const full = rows.filter((r) => state.open.has(r.s.key) || state.starred.has(r.s.key));
+  const tiles = rows.filter((r) => !full.includes(r));
+  // Collapsed, the few tiles shown favour top-tier venues (A*/A); either way they read in date order.
+  const isTop = (r) => (r.s.rank && TOP_RANKS.has(r.s.rank.value) ? 1 : 0);
+  const shown = state.allEst ? tiles
+    : [...tiles].sort((a, b) => isTop(b) - isTop(a) || a.next.t - b.next.t).slice(0, EST_TILES).sort((a, b) => a.next.t - b.next.t);
+  const month = new Intl.DateTimeFormat(undefined, { month: "short", year: "numeric" });
+  return (full.length ? `<ol class="list">${full.map((r) => rowHtml(r, now)).join("")}</ol>` : "") +
+    (shown.length ? `<div class="est-grid">${shown.map(({ s, next }) => `<button class="est-tile" type="button" data-open="${esc(s.key)}" style="--c:var(--g-${next.m.group})">
+        <b>${esc(s.title)} ${next.edition.year}</b><span><i class="sw"></i>${esc(shortLabel(next.m))} · ~${esc(month.format(next.t))}</span></button>`).join("")}</div>` : "") +
+    (tiles.length > EST_TILES ? `<button class="pill est-more" type="button" data-allest>${state.allEst ? "Show fewer" : `Show all ${tiles.length}`}</button>` : "");
 }
 
 const SHORT_LABEL = { submission: "Paper", reviews: "Reviews", decision: "Decision", camera: "Camera-ready", conference: "Conference", other: "Event" };
@@ -811,6 +829,7 @@ function bind() {
     }
     const open = ev.target.closest("[data-open]");
     if (open) { openVenue(open.dataset.open); return; }
+    if (ev.target.closest("[data-allest]")) { state.allEst = !state.allEst; renderRows(); return; }
     const reset = ev.target.closest("[data-reset]");
     if (reset) { resetFilters(); return; }
     const cl = ev.target.closest("[data-copylink]");

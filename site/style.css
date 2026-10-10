@@ -64,7 +64,7 @@ button { font: inherit; color: inherit; }
 /* Tabular figures only where digits tick or line up (applied page-wide, Inter also spaces out hyphens). */
 .clock, .cdbox, .run em, .details td.when, .details td.left, .count, .bucket h3 .n, .cal-n, .info .when, .hero .when, .star-pill span, #ghStars { font-variant-numeric: tabular-nums; }
 /* Controls act like buttons: a double-click shouldn't select their text. */
-.row-main, .seg, .pill, .filter-btn, .run, .star, .icon-btn, .gh-btn, .cchip, .cal-cell, .sd-themes, .tabs { -webkit-user-select: none; user-select: none; }
+.row-main, .seg, .pill, .filter-btn, .run, .star, .est-tile, .icon-btn, .gh-btn, .cchip, .cal-cell, .sd-themes, .tabs { -webkit-user-select: none; user-select: none; }
 .muted { color: var(--muted); }
 .sw { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none; }
 
@@ -263,6 +263,14 @@ button { font: inherit; color: inherit; }
 .linklike:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .warn-text { color: var(--warn); font-size: 12px; }
 
+.est-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.est-tile { text-align: left; border: 1.5px dashed var(--line); background: transparent; border-radius: 12px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; min-width: 0; }
+.est-tile:hover { border-color: var(--faint); background: var(--surface); }
+.est-tile b { font-size: 14.5px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.est-tile span { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.est-tile .sw { background: var(--c); width: 7px; height: 7px; margin-right: 6px; vertical-align: 1px; }
+.bucket .list + .est-grid { margin-top: 8px; }
+.est-more { margin-top: 10px; }
 .empty-state { text-align: center; padding: 48px 20px; border: 1px dashed var(--line); border-radius: 18px; }
 .empty-state h3 { margin: 0 0 6px; font-size: 18px; letter-spacing: -.01em; }
 .empty-state p { color: var(--muted); margin: 0 0 16px; }
