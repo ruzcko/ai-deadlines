@@ -159,6 +159,10 @@ function shortCd(ms) {
   if (p.d >= 1) return `${p.d}d`;
   return p.h ? `${p.h}h` : `${p.m}m`;
 }
+// Hero clock labels: "1 day", "1 hour"; min and sec are abbreviations, fine for any number.
+function clockLabel(k, n) {
+  return { d: n === 1 ? "day" : "days", h: n === 1 ? "hour" : "hours", m: "min", s: "sec" }[k];
+}
 function ago(iso) {
   const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
   if (mins < 60) return `${Math.max(1, mins)} min ago`;
@@ -331,7 +335,7 @@ function renderHero() {
   const ms = t - now;
   hero.className = "hero" + (ms < 7 * 86400000 ? " urgent" : "");
   const p = parts(ms);
-  const unit = (n, l, k) => `<div class="unit"><span class="n" data-k="${k}">${String(n).padStart(2, "0")}</span><span class="l">${l}</span></div>`;
+  const unit = (n, k) => `<div class="unit"><span class="n" data-k="${k}">${String(n).padStart(2, "0")}</span><span class="l" data-l="${k}">${clockLabel(k, n)}</span></div>`;
   const place = [e.city, e.country].filter(Boolean).join(", ");
   const alt = officialAlt(pick.next);
   const runway = pool.slice(1, 4).map((r) => `<button class="run" type="button" data-open="${esc(r.s.key)}" style="--c:var(--g-${r.next.m.group})">
@@ -344,7 +348,7 @@ function renderHero() {
     </div>
     <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
     <p class="what">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</p>
-    <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "days", "d")}${unit(p.h, "hours", "h")}${unit(p.m, "min", "m")}${unit(p.s, "sec", "s")}</div>
+    <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "d")}${unit(p.h, "h")}${unit(p.m, "m")}${unit(p.s, "s")}</div>
     <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>` : ""}</div>
     ${runway ? `<div class="runway"><span class="run-label">Next</span>${runway}</div>` : ""}`;
 }
@@ -720,6 +724,8 @@ function tick() {
     for (const k of ["d", "h", "m", "s"]) {
       const el = hero.querySelector(`[data-k="${k}"]`);
       if (el) el.textContent = String(p[k]).padStart(2, "0");
+      const lab = hero.querySelector(`[data-l="${k}"]`);
+      if (lab) lab.textContent = clockLabel(k, p[k]);
     }
   }
   if (expired) render();
