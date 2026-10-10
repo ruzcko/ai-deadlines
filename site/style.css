@@ -12,7 +12,7 @@
   --surface-2: #efefea;
   --text: #121418;
   --muted: #5f636b;
-  --faint: #9a9ea6;
+  --faint: #646873;
   --line: #e3e3dd;
   --accent: #e5484d;
   --warn: #b8730a;
@@ -44,14 +44,14 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0d0f13; --surface: #15181d; --surface-2: #1d2027; --text: #eceef2; --muted: #a0a5ae; --faint: #686d77;
+    --bg: #0d0f13; --surface: #15181d; --surface-2: #1d2027; --text: #eceef2; --muted: #a0a5ae; --faint: #848994;
     --line: #262a32; --accent: #ff6369; --warn: #f1a10d; --ok: #3dd68c; --g-submission: #ff6369; --g-reviews: #b98cf0;
     --g-decision: #52a9ff; --g-camera: #3dd68c; --g-conference: #9aa0aa; --g-other: #5c616b; --shadow: none;
     --pop-shadow: 0 16px 48px rgb(0 0 0 / .5); --map-sea: #0a0c0f; --map-land: #20252d; --map-border: #323843; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0d0f13; --surface: #15181d; --surface-2: #1d2027; --text: #eceef2; --muted: #a0a5ae; --faint: #686d77;
+  --bg: #0d0f13; --surface: #15181d; --surface-2: #1d2027; --text: #eceef2; --muted: #a0a5ae; --faint: #848994;
   --line: #262a32; --accent: #ff6369; --warn: #f1a10d; --ok: #3dd68c; --g-submission: #ff6369; --g-reviews: #b98cf0;
   --g-decision: #52a9ff; --g-camera: #3dd68c; --g-conference: #9aa0aa; --g-other: #5c616b; --shadow: none;
   --pop-shadow: 0 16px 48px rgb(0 0 0 / .5); --map-sea: #0a0c0f; --map-land: #20252d; --map-border: #323843; color-scheme: dark;
@@ -85,6 +85,8 @@ button { font: inherit; color: inherit; }
 .brand .logo { width: 22px; height: 22px; color: var(--accent); }
 .top-right { display: flex; align-items: center; gap: 10px; }
 .synced { color: var(--muted); font-size: 13px; }
+.synced.stale { color: var(--warn); font-weight: 600; }
+.synced.dead { color: var(--accent); font-weight: 600; }
 .icon-btn { width: 34px; height: 34px; display: inline-grid; place-items: center; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; }
 .icon-btn:hover { color: var(--text); border-color: var(--faint); }
 .icon-btn svg { width: 17px; height: 17px; }
@@ -436,7 +438,9 @@ body[data-view="map"] #focus, body[data-view="map"] .focus-select { visibility: 
 .feed { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
 .feed .fn { font-weight: 650; display: flex; align-items: center; gap: 8px; }
 .feed .fn .sw { width: 10px; height: 10px; }
-.feed .fl { display: flex; gap: 10px; font-size: 13px; white-space: nowrap; }
+.feed .fl { display: flex; gap: 6px; font-size: 13px; white-space: nowrap; flex-wrap: wrap; }
+.feed .fl a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 11px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-weight: 600; color: var(--muted); }
+.feed .fl a:hover { color: var(--text); border-color: var(--faint); }
 .foot { color: var(--muted); font-size: 13px; padding-top: 24px; padding-bottom: 40px; }
 .foot p { margin: 0 0 6px; max-width: 80ch; }
 

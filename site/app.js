@@ -533,8 +533,16 @@ function renderFeeds() {
 }
 
 function renderSynced() {
-  $("synced").textContent = `Dates updated ${ago(DATA.upstream.updated)}`;
-  $("synced").title = `Last checked ${ago(DATA.synced_at)} · upstream ${DATA.upstream.commit.slice(0, 7)}`;
+  // Two clocks: when the source data last changed, and when this site last rebuilt from it.
+  const el = $("synced");
+  const srcDays = (Date.now() - Date.parse(DATA.upstream.updated)) / 86400000;
+  const buildDays = (Date.now() - Date.parse(DATA.synced_at)) / 86400000;
+  el.textContent = `Dates updated ${ago(DATA.upstream.updated)}`;
+  el.title = `Last checked ${ago(DATA.synced_at)} · upstream ${DATA.upstream.commit.slice(0, 7)}`;
+  el.className = "synced";
+  if (buildDays > 3) { el.className += " dead"; el.textContent = `Not refreshed for ${Math.round(buildDays)} days`; el.title = "The refresh job may be broken. " + el.title; }
+  else if (srcDays > 60) { el.className += " dead"; el.title = "The source data hasn't changed in two months; check it's still maintained. " + el.title; }
+  else if (srcDays > 30) { el.className += " stale"; el.title = "The source data hasn't changed in over a month. " + el.title; }
 }
 
 function watchLink(keys) {
