@@ -451,7 +451,10 @@ function rowHtml({ s, next }, now) {
         <div class="what"><span class="sw" style="background:var(--g-${next.m.group})"></span><b class="lab-full" title="${esc(next.m.label)}">${esc(next.m.label)}</b><b class="lab-short" title="${esc(next.m.label)}">${esc(shortLabel(next.m))}</b><span class="dot">·</span><span class="when">${esc(whenShort(next))}</span></div>
         <div class="sub">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</div>
       </div>
-      <button class="star" type="button" data-star="${esc(s.key)}" aria-pressed="${starred}" aria-label="${starred ? "Unstar" : "Star"} ${esc(s.title)}">${starred ? "★" : "☆"}</button>
+      <div class="row-acts">
+        <button class="star" type="button" data-star="${esc(s.key)}" aria-pressed="${starred}" aria-label="${starred ? "Unstar" : "Star"} ${esc(s.title)}">${starred ? "★" : "☆"}</button>
+        <button class="share-btn" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}" title="Share card"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5M5 10.5v5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
       ${track(next)}
     </div>
     ${details(s, next, now)}

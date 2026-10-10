@@ -74,7 +74,7 @@ button { font: inherit; color: inherit; }
 /* Tabular figures only where digits tick or line up (applied page-wide, Inter also spaces out hyphens). */
 .clock, .cdbox, .run em, .details td.when, .details td.left, .count, .bucket h3 .n, .cal-n, .info .when, .hero .when, .star-pill span, #ghStars { font-variant-numeric: tabular-nums; }
 /* Controls act like buttons: a double-click shouldn't select their text. */
-.row-main, .seg, .pill, .filter-btn, .run, .star, .est-tile, .icon-btn, .gh-btn, .cchip, .cal-cell, .sd-themes, .tabs { -webkit-user-select: none; user-select: none; }
+.row-main, .seg, .pill, .filter-btn, .run, .star, .share-btn, .est-tile, .icon-btn, .gh-btn, .cchip, .cal-cell, .sd-themes, .tabs { -webkit-user-select: none; user-select: none; }
 .muted { color: var(--muted); }
 .sw { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex: none; }
 
@@ -267,7 +267,11 @@ button { font: inherit; color: inherit; }
 .info .what b { font-weight: 600; }
 .info .what .dot, .info .what .when { color: var(--muted); }
 .info .sub { color: var(--faint); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
-.star { grid-area: star; align-self: start; border: 0; background: none; font-size: 20px; line-height: 1; padding: 6px; cursor: pointer; color: var(--faint); border-radius: 8px; }
+.row-acts { grid-area: star; align-self: start; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.share-btn { border: 0; background: none; padding: 6px; cursor: pointer; color: var(--faint); border-radius: 8px; line-height: 0; }
+.share-btn svg { width: 18px; height: 18px; }
+.share-btn:hover { color: var(--text); background: var(--surface-2); }
+.star { border: 0; background: none; font-size: 20px; line-height: 1; padding: 6px; cursor: pointer; color: var(--faint); border-radius: 8px; }
 .star:hover { color: var(--star); background: var(--surface-2); }
 .star[aria-pressed="true"] { color: var(--star); }
 .badge { font-size: 11px; font-weight: 600; padding: 0 7px; line-height: 18px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
