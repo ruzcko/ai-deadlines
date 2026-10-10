@@ -549,9 +549,72 @@ function renderListbar() {
   bar.hidden = true;
 }
 
+// ---- deadline gaps: the time between your starred (or shared) venues' next paper deadlines ----
+const GAP_WINDOW = 365 * 86400000;
+function gapPoint(s, now) {
+  // The deadline people plan around: the next paper/submission date, else the abstract.
+  let paper = null, abstract = null;
+  for (const it of itemsOf(s)) {
+    const m = it.m;
+    if (it.t <= now || m.group !== "submission" || (state.hideEst && m.est)) continue;
+    if (m.type === "paper" || m.type === "submission") { if (!paper || it.t < paper.t) paper = it; }
+    else if (m.type === "abstract" && (!abstract || it.t < abstract.t)) abstract = it;
+  }
+  return paper || abstract;
+}
+const gapClass = (days) => (days < 14 ? "tight" : days < 30 ? "close" : "");
+function gapText(days) {
+  if (days < 1) return "same day";
+  if (days < 60) return `${Math.round(days)} days`;
+  return `${(days / 30.44).toFixed(1).replace(/\.0$/, "")} months`;
+}
+
+function renderGaps() {
+  const box = $("gaps");
+  const keys = state.watch || state.starred;
+  const now = new Date();
+  const pts = DATA.series.filter((s) => keys.has(s.key)).map((s) => gapPoint(s, now)).filter(Boolean).sort((a, b) => a.t - b.t);
+  const inWin = pts.filter((p) => p.t - now <= GAP_WINDOW);
+  if (inWin.length < 2) { box.hidden = true; return; }
+  box.hidden = false;
+  const span = Math.max(inWin[inWin.length - 1].t - now, 30 * 86400000);
+  const pos = (t) => ((t - now) / span) * 100;
+  const month = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" });
+  const tight = inWin.slice(1).filter((p, i) => (p.t - inWin[i].t) / 86400000 < 14).length;
+  // Labels go above or below the line, whichever has room; with neither, the name stays in the tooltip.
+  const lastEnd = { up: -Infinity, down: -Infinity };
+  const dots = inWin.map((p) => {
+    const x = pos(p.t), half = p.series.title.length * 0.55; // rough label half-width, in % of the track
+    const lane = ["up", "down"].find((l) => x - half > lastEnd[l] + 1);
+    if (lane) lastEnd[lane] = x + half;
+    return `<button class="gp${p.m.est ? " est" : ""}" type="button" data-open="${esc(p.series.key)}" style="left:${x.toFixed(2)}%;--c:var(--g-${p.m.group})" title="${esc(`${p.series.title} ${p.edition.year} · ${p.m.label} · ${whenText(p)}`)}"><i></i>${lane ? `<span class="${lane}">${esc(p.series.title)}</span>` : ""}</button>`;
+  }).join("");
+  const segs = inWin.slice(1).map((p, i) => {
+    const cls = gapClass((p.t - inWin[i].t) / 86400000);
+    return cls ? `<span class="gseg ${cls}" style="left:${pos(inWin[i].t).toFixed(2)}%;width:${(pos(p.t) - pos(inWin[i].t)).toFixed(2)}%"></span>` : "";
+  }).join("");
+  const chain = inWin.map((p, i) => {
+    const card = `<button class="gcard${p.m.est ? " est" : ""}" type="button" data-open="${esc(p.series.key)}" style="--c:var(--g-${p.m.group})"><b>${esc(p.series.title)}</b><span>${esc(shortLabel(p.m))} · ${p.m.est ? "~" : ""}${esc(month.format(p.t))}</span></button>`;
+    if (!i) return card;
+    const days = (p.t - inWin[i - 1].t) / 86400000;
+    const cls = gapClass(days);
+    return `<span class="garrow ${cls}">${cls === "tight" ? "⚠ " : ""}${esc(gapText(days))}<i>→</i></span>${card}`;
+  }).join("");
+  const later = pts.length - inWin.length;
+  const wasOpen = box.dataset.ready ? box.open : true;
+  box.innerHTML = `<summary><span class="g-title">${state.watch ? "Gaps in this list" : "Your deadline gaps"}</span>
+      <span class="g-meta">${inWin.length} deadlines · next 12 months${tight ? ` · <b class="tight">${tight} tight gap${tight === 1 ? "" : "s"}</b>` : ""}${later ? ` · +${later} later` : ""}</span></summary>
+    <div class="gtrack"><span class="gnow" title="Today"></span>${segs}${dots}</div>
+    <div class="gchain">${chain}</div>
+    <p class="g-note">Time between each venue's next paper deadline (abstract if there's no paper date). Under 2 weeks is tight. ~ marks estimates.</p>`;
+  box.open = wasOpen;
+  box.dataset.ready = "1";
+}
+
 function renderList() {
   renderListbar();
   renderHero();
+  renderGaps();
   renderRows();
   if (state.view === "map") renderMap();
   if (state.view === "calendar") renderCalendar();

@@ -116,6 +116,49 @@ button { font: inherit; color: inherit; }
 .run span { color: var(--muted); }
 .run em { font-style: normal; font-weight: 700; color: var(--c); }
 
+/* ---------- Deadline gaps ---------- */
+.gaps { margin: -6px 0 20px; padding: 14px 18px 16px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.gaps[hidden] { display: none; }
+.gaps summary { display: flex; align-items: baseline; gap: 6px 12px; flex-wrap: wrap; cursor: pointer; list-style: none; -webkit-user-select: none; user-select: none; }
+.gaps summary::-webkit-details-marker { display: none; }
+.gaps summary::before { content: "▸"; color: var(--faint); font-size: 12px; transition: transform .15s; display: inline-block; }
+.gaps[open] summary::before { transform: rotate(90deg); }
+.g-title { font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--muted); }
+.g-meta { font-size: 13px; color: var(--faint); }
+.g-meta .tight, .garrow.tight { color: var(--accent); }
+.gtrack { position: relative; height: 64px; margin: 14px 10px 6px; }
+.gtrack::before { content: ""; position: absolute; left: 0; right: 0; top: 31px; height: 2px; background: var(--line); border-radius: 2px; }
+.gnow { position: absolute; left: 0; top: 24px; width: 3px; height: 16px; margin-left: -1px; background: var(--text); border-radius: 2px; }
+.gseg { position: absolute; top: 29px; height: 6px; border-radius: 3px; }
+.gseg.tight { background: color-mix(in srgb, var(--accent) 55%, transparent); }
+.gseg.close { background: color-mix(in srgb, var(--warn) 45%, transparent); }
+.gp { position: absolute; top: 0; height: 64px; width: 0; border: 0; padding: 0; background: none; cursor: pointer; }
+.gp i { position: absolute; left: -7px; top: 25px; width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 3px var(--surface); }
+.gp.est i { background: var(--surface); border: 2px dashed var(--c); }
+.gp span { position: absolute; left: 50%; transform: translateX(-50%); font-size: 11.5px; font-weight: 700; white-space: nowrap; color: var(--text); }
+.gp span.up { top: 2px; }
+.gp span.down { top: 46px; }
+.gp:hover span { text-decoration: underline; }
+.gchain { display: flex; align-items: center; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 8px 24px 2px 2px; mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); }
+.gchain::-webkit-scrollbar { display: none; }
+.gcard { flex: none; display: grid; gap: 1px; text-align: left; border: 1px solid var(--line); border-left: 3px solid var(--c); background: var(--surface-2); border-radius: 10px; padding: 6px 10px; cursor: pointer; }
+.gcard.est { border-style: dashed; border-left-style: solid; background: transparent; }
+.gcard b { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
+.gcard span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.garrow { flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 650; color: var(--muted); white-space: nowrap; }
+.garrow.close { color: var(--warn); }
+.garrow i { font-style: normal; color: var(--faint); }
+.g-note { margin: 10px 0 0; font-size: 12px; color: var(--faint); }
+@media (max-width: 640px) {
+  .gtrack .gp span { display: none; }
+  .gtrack { height: 40px; margin-top: 8px; }
+  .gtrack::before { top: 19px; }
+  .gnow { top: 12px; }
+  .gseg { top: 17px; }
+  .gp { height: 40px; }
+  .gp i { top: 13px; }
+}
+
 /* ---------- Toolbar ---------- */
 .toolbar-wrap { background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); margin-bottom: 18px; }
 @media (min-width: 641px) { .toolbar-wrap { position: sticky; top: 56px; z-index: 5; } }
