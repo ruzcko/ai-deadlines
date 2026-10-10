@@ -48,6 +48,8 @@ function load() {
     if (s.tz === "aoe") state.tz = "aoe";
     if (s.clock === "12" || s.clock === "24") state.clock = s.clock;
     if (["light", "dark"].includes(s.theme)) state.theme = s.theme;
+    const qt = new URLSearchParams(location.search).get("theme"); // temporary: palette comparison frames
+    if (qt === "light" || qt === "dark") state.theme = qt;
     if (["map", "calendar"].includes(s.view)) state.view = s.view;
     if (["6", "12", "all"].includes(s.span)) state.span = s.span;
   } catch (_) { /* storage unavailable */ }

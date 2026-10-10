@@ -24,6 +24,8 @@
   <script>
     // Apply a saved theme before first paint, so the page doesn't flash.
     try { const t = JSON.parse(localStorage.getItem("ai-deadlines:v1") || "{}").theme; if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (_) {}
+    // Temporary: ?palette= and ?theme= for comparing palette candidates.
+    try { const q = new URLSearchParams(location.search); const p = q.get("palette"), th = q.get("theme"); if (/^(ink|signal|campus)$/.test(p || "")) document.documentElement.dataset.palette = p; if (th === "light" || th === "dark") document.documentElement.dataset.theme = th; } catch (_) {}
   </script>
   <link rel="stylesheet" href="style.css">
 </head>
