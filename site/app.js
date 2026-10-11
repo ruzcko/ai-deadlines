@@ -377,7 +377,8 @@ function renderHero() {
       <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}"><span class="hs-icon">${SHARE_ICON}</span><span class="hs-text">Share card</span></button>
     </div>
     <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
-    <p class="what">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</p>
+    <p class="what">${esc(s.full_name || "")}</p>
+    ${place ? `<p class="place"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 18s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="8" r="2.2" fill="currentColor"/></svg>${esc(place)}</p>` : ""}
     <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "d")}${unit(p.h, "h")}${unit(p.m, "m")}${unit(p.s, "s")}</div>
     <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>` : ""}</div>
     ${runway ? `<div class="runway"><span class="run-label">Next</span>${runway}</div>` : ""}`;

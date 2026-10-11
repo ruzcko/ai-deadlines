@@ -114,7 +114,11 @@ button { font: inherit; color: inherit; }
 .hero-share .hs-icon svg { width: 17px; height: 17px; }
 .hero h1 { margin: 10px 0 2px; font-size: clamp(30px, 6vw, 46px); line-height: 1.05; letter-spacing: -.035em; font-weight: 800; }
 .hero h1 .linklike { font: inherit; letter-spacing: inherit; }
-.hero .what { color: var(--hero-muted); margin: 0 0 22px; }
+.hero .what { color: var(--hero-muted); margin: 0; }
+.hero .place { display: flex; align-items: center; gap: 5px; color: var(--hero-muted); margin: 2px 0 0; font-size: 14px; }
+.hero .place svg { width: 15px; height: 15px; flex: none; }
+.hero .what, .hero .place { margin-bottom: 0; }
+.hero .clock { margin-top: 22px; }
 .clock { display: flex; gap: clamp(14px, 4vw, 36px); align-items: flex-end; flex-wrap: wrap; }
 .clock .unit { display: flex; flex-direction: column; }
 .clock .n { font-size: clamp(48px, 13vw, 96px); font-weight: 800; line-height: .9; letter-spacing: -.055em; color: var(--clock); background: var(--clock-tile); border-radius: 10px; }
@@ -525,7 +529,9 @@ body[data-view="map"] #focus { visibility: hidden; }
   /* Hero: tighter, so the list starts on the first screen. */
   .hero { padding: 16px 16px 14px; border-radius: 18px; margin-bottom: 14px; }
   .hero h1 { font-size: 28px; margin-top: 8px; }
-  .hero .what { margin-bottom: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; }
+  .hero .what { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 14px; }
+  .hero .place { font-size: 13px; }
+  .hero .clock { margin-top: 14px; }
   .clock { gap: 14px; }
   .clock .n { font-size: clamp(38px, 12vw, 56px); }
   .clock .l { font-size: 10.5px; margin-top: 6px; }
