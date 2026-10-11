@@ -1,0 +1,92 @@
+{
+ "key": "iclr",
+ "title": "ICLR",
+ "fetched_at": "2026-10-11T02:27:02Z",
+ "urls": [
+  "https://iclr.cc/Conferences/2027/CallForPapers",
+  "https://iclr.cc/Conferences/2027/Dates",
+  "https://iclr.cc/Conferences/2027"
+ ],
+ "errors": [],
+ "content_hash": "e54194d5f6b3a8ab",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 2697,
+  "output": 651
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": null,
+ "country": null,
+ "venue": null,
+ "conference_start": "2027-04-26",
+ "conference_end": "2027-04-30",
+ "milestones": [
+  {
+   "label": "Abstract Deadline",
+   "type": "abstract",
+   "date": "2026-09-18",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Paper Deadline",
+   "type": "paper",
+   "date": "2026-09-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviews Released",
+   "type": "review_release",
+   "date": "2026-11-05",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author- Reviewer Discussion Begins",
+   "type": "rebuttal_start",
+   "date": "2026-11-05",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author- Reviewer Discussion Ends",
+   "type": "rebuttal_end",
+   "date": "2026-11-18",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviewer- A C Discussion and Meta-reviewing Begins",
+   "type": "other",
+   "date": "2026-11-19",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviewer- A C Discussion and Meta-reviewing Ends",
+   "type": "other",
+   "date": "2026-12-16",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Final Decisions",
+   "type": "notification",
+   "date": "2026-12-16",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}
