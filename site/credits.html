@@ -33,7 +33,7 @@
   </header>
   <main class="doc">
     <h1>Credits & licences</h1>
-    <p>This site is an independent project by <a href="https://ruzcko.com">ruzcko</a>. It is not affiliated with Hugging Face, PaperRush, or any conference listed. The code, layout and design are our own. The dates come from two open datasets, and a few open-source parts do the heavy lifting. Here is each one and its licence.</p>
+    <p>This site is an independent project by <a href="https://ruzcko.com">ruzcko</a>. It is not affiliated with Hugging Face or any conference listed. The code, layout and design are our own. The dates come from one open dataset plus our own weekly read of each venue’s official page, and a few open-source parts do the heavy lifting. Here is each one and its licence.</p>
 
     <h2>Conference data</h2>
     <div class="card">
@@ -43,12 +43,10 @@
       <p><a href="https://github.com/huggingface/ai-deadlines">Repository</a> · <a href="licenses/huggingface-ai-deadlines-MIT.txt">Full MIT licence text</a></p>
     </div>
     <div class="card">
-      <h3>PaperRush (awsaf49/paperrush)</h3>
-      <p>Our second source, under the Apache License 2.0. We use only the dates and links it marks as announced, never its own estimates.</p>
-      <p><b>Our changes:</b> we fill gaps in the Hugging Face data with its host cities, conference dates, deadlines and submission links, add venues it covers that Hugging Face doesn't, and compare the dates both list ("✓ 2 sources" / "⚠ Sources differ"). Dates taken from it are labelled “PaperRush” on each venue.</p>
-      <p><a href="https://github.com/awsaf49/paperrush">Repository</a> · <a href="https://awsaf49.github.io/paperrush/">Their site</a> · <a href="licenses/paperrush-Apache-2.0.txt">Full Apache 2.0 licence text</a></p>
+      <h3>The venues’ official pages</h3>
+      <p>Our second source. Once a week a script fetches each venue’s important-dates page and has Claude extract the dates into a fixed format; the result is stored in the repository and shown with an “Official” tag. It fills gaps in the Hugging Face data (host cities, conference dates, editions not listed yet) and is compared with it (“✓ 2 sources” / “⚠ Sources differ”). Nothing is inferred: a date is reported only if the page states it.</p>
+      <p>Between 10 and 11 October 2026 the site also used data from <a href="https://github.com/awsaf49/paperrush">PaperRush</a> (Apache-2.0) while this was being built. Some of its feature ideas (quick links on a venue, shareable lists, a calendar view, report-a-date links) are implemented independently here; no PaperRush code, data or design assets remain in use.</p>
     </div>
-    <p>Feature ideas we liked from PaperRush (quick links on a venue, shareable lists, a calendar view, report-a-date links) are implemented independently here. No PaperRush code or design assets are used.</p>
 
     <h2>Map</h2>
     <div class="card">

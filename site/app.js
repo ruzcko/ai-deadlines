@@ -187,9 +187,9 @@ function urgency(ms) {
 }
 
 // ---- sources, cross-checks, reports ----
-const SRC_NAME = { hf: "Hugging Face", pr: "PaperRush" };
-const PAPERRUSH_SITE = "https://awsaf49.github.io/paperrush/";
-const REPORT_REPO = { hf: "https://github.com/huggingface/ai-deadlines", pr: "https://github.com/awsaf49/paperrush" };
+const SRC_NAME = { hf: "Hugging Face", of: "Official site" };
+// Where a wrong date gets reported: Hugging Face for their data, our own repo for dates we read ourselves.
+const REPORT_REPO = { hf: "https://github.com/huggingface/ai-deadlines", of: "https://github.com/ruzcko/ai-deadlines" };
 const SITE_URL = "https://ai-deadlines.ruzcko.com";
 
 function milestoneValue(m) {
@@ -201,10 +201,10 @@ function milestoneValue(m) {
 function reportUrl(s, e, src) {
   const listed = e.milestones.filter((m) => !m.est && (m.src || "hf") === src && m.type !== "end");
   if (!listed.length) return null;
-  const file = src === "pr" ? `${REPORT_REPO.pr}/blob/main/js/data.js` : (s.source.includes("huggingface") ? s.source : REPORT_REPO.hf);
+  const file = src === "of" ? (s.official && s.official.url) || "(official site)" : (s.source.includes("huggingface") ? s.source : REPORT_REPO.hf);
   const body = [
     `**Venue:** ${s.title} ${e.year}`,
-    `**Data:** ${file}`,
+    src === "of" ? `**Read from:** ${file} (by our weekly check of the official page)` : `**Data:** ${file}`,
     e.link ? `**Official site:** ${e.link}` : "",
     "",
     `Dates currently listed:`,
@@ -223,8 +223,8 @@ function checkBadge(e) {
   const checks = e.checks || [];
   if (!checks.length) return "";
   return checks.some((c) => !c.agree)
-    ? `<span class="badge warn" title="Hugging Face and PaperRush list different dates">⚠ Sources differ</span>`
-    : `<span class="badge ok" title="Hugging Face and PaperRush list the same dates">✓ 2 sources</span>`;
+    ? `<span class="badge warn" title="Hugging Face and the official site list different dates">⚠ Sources differ</span>`
+    : `<span class="badge ok" title="Hugging Face and the official site list the same dates">✓ 2 sources</span>`;
 }
 
 function checkWhen(v, tz, notime) {
@@ -239,7 +239,7 @@ function checksBlock(e) {
   if (!checks.length) return "";
   const items = checks.map((c) => c.agree
     ? `<li class="agree">✓ <b>${esc(c.what)}</b>: both sources say ${esc(checkWhen(c.hf, c.hf_tz))}</li>`
-    : `<li class="differ">⚠ <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, PaperRush says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. Check the official site.</li>`).join("");
+    : `<li class="differ">⚠ <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, the official site says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. The official site is usually right, but check it.</li>`).join("");
   return `<ul class="checks">${items}</ul>`;
 }
 
@@ -411,7 +411,7 @@ function details(s, next, now) {
     const when = m.est ? "~" + fmtMonth.format(t) : m.day ? fmtDate.format(new Date(m.day + "T12:00:00")) : fmtDT(t);
     const alt = officialAlt({ m, t });
     const tz = m.est ? "" : m.notime ? `<div class="tz">no time given · assuming end of day AoE</div>` : alt ? `<div class="tz">${esc(alt)}</div>` : "";
-    const src = m.src === "pr" ? ` <span class="src" title="This date comes from PaperRush">PaperRush</span>` : "";
+    const src = m.src === "of" ? ` <span class="src" title="Read from the venue's official page${s.official ? " on " + esc(fmtDate.format(new Date(s.official.fetched_at))) : ""}">Official</span>` : "";
     const left = past ? "done" : compact(t - now, m.est);
     return `<tr class="${past ? "past" : ""}${m === next.m ? " is-next" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span><span class="m-label">${esc(m.label)}</span>${src}</td><td class="when"><span class="w-full">${esc(when)}</span><span class="w-short">${esc(whenShort({ m, t }))}</span>${tz}</td><td class="left">${esc(left)}</td></tr>`;
   }).join("");
@@ -429,10 +429,10 @@ function details(s, next, now) {
   // One row: copy link, and a small menu with each source's data file and report link.
   const srcs = e.sources || ["hf"];
   const menu = srcs.map((src) => {
-    const view = src === "pr" ? PAPERRUSH_SITE : s.source;
+    const view = src === "of" ? (s.official && s.official.url) : s.source;
     const report = reportUrl(s, e, src);
     return `<div class="src-row"><b>${esc(SRC_NAME[src])}</b>
-      <a href="${esc(view)}" target="_blank" rel="noopener">${src === "pr" ? "Their site" : "Data file"} ↗</a>
+      ${view ? `<a href="${esc(view)}" target="_blank" rel="noopener">${src === "of" ? "Official page" : "Data file"} ↗</a>` : ""}
       ${report ? `<a href="${esc(report)}" target="_blank" rel="noopener">Report a wrong date ↗</a>` : ""}</div>`;
   }).join("");
   const links = [
@@ -444,7 +444,7 @@ function details(s, next, now) {
     ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
     ${quick ? `<div class="quick">${quick}</div>` : ""}
     <div class="links">${links}</div>
-    <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}${e.place_src === "pr" ? "Location via PaperRush · " : ""}Sources: ${esc((e.sources || ["hf"]).map((x) => SRC_NAME[x]).join(" + "))}${s.updated ? ` · data last changed ${esc(ago(s.updated))}` : ""}</div></div>`;
+    <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}${e.place_src === "of" ? "Location from the official site · " : ""}Sources: ${esc((e.sources || ["hf"]).map((x) => SRC_NAME[x]).join(" + "))}${s.updated ? ` · data last changed ${esc(ago(s.updated))}` : ""}</div></div>`;
 }
 
 const BUCKETS = [

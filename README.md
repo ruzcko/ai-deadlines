@@ -2,13 +2,13 @@
 
 Live countdowns to AI/ML conference milestones (submission, reviews, decision,
 camera-ready, conference) with per-milestone calendar feeds.
-Planned home: https://ai-deadlines.ruzcko.com
+Live at https://ai-deadlines.ruzcko.com
 
-Dates come from [huggingface/ai-deadlines](https://github.com/huggingface/ai-deadlines)
-(MIT). [PaperRush](https://github.com/awsaf49/paperrush) (Apache-2.0) is a second
-source: its announced dates and host cities fill gaps, and dates both sources list
-are cross-checked ("✓ 2 sources" / "⚠ Sources differ"). PaperRush's own estimates
-are never used. Fix wrong dates upstream; this site picks them up on the next sync.
+Dates come from two sources: [huggingface/ai-deadlines](https://github.com/huggingface/ai-deadlines)
+(MIT), and our own weekly read of each venue's official page. Dates both list are
+cross-checked ("✓ 2 sources" / "⚠ Sources differ"); official-page dates fill gaps
+(host cities, conference dates, editions not listed yet) and are tagged "Official".
+Fix wrong Hugging Face dates upstream; report wrong official-page reads here.
 
 ## How it works
 
@@ -18,6 +18,12 @@ are never used. Fix wrong dates upstream; this site picks them up on the next sy
   - `site/data/conferences.json` for the page
   - `site/cal/{all,submission,reviews,decision,camera,conference}.ics` feeds
     (estimated dates are never put in the feeds)
+- `pipeline/scrape_official.py` (weekly, GitHub Actions, needs `ANTHROPIC_API_KEY`)
+  fetches the pages in `data/official_sources.json`, has Claude (`claude-opus-5-5`,
+  structured JSON output) extract the dates, and commits `data/official/<venue>.json`.
+  Unchanged pages are skipped by content hash. `pipeline/official.py` merges those
+  files into the site data. Run it by hand for a few venues with
+  `python pipeline/scrape_official.py cvpr iclr` (or from the Actions tab).
 - `site/` is a static page (no build step, no dependencies).
 
 ## Run locally
@@ -43,6 +49,6 @@ python -m venv .venv
 ## Credits
 
 See [site/credits.html](site/credits.html) (served at `/credits.html`) for every source and licence:
-Hugging Face ai-deadlines (MIT) and PaperRush (Apache-2.0) data, with our changes described;
+Hugging Face ai-deadlines (MIT) data and our own reads of official pages, with our changes described;
 OpenStreetMap/Nominatim (ODbL) coordinates; Natural Earth (public domain); Leaflet (BSD-2);
 Inter (OFL); resvg-wasm (MPL-2.0). Full licence texts live in `site/licenses/`.
