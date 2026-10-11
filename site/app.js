@@ -288,8 +288,25 @@ function upcomingRows(filter = matches) {
 }
 
 // ---- toolbar ----
+// Sliding chip rows on phones: bring the active chip into view without moving the page.
+function revealActive(container) {
+  const b = container.querySelector('[aria-checked="true"]');
+  if (!b || container.scrollWidth <= container.clientWidth) return;
+  container.scrollLeft = Math.max(0, b.offsetLeft - (container.clientWidth - b.offsetWidth) / 2);
+}
+
+for (const id of ["focus", "feedSeg"]) {
+  document.addEventListener("DOMContentLoaded", () => {
+    const el = $(id);
+    const mark = () => { if (el.scrollLeft > 4) el.dataset.scrolled = "1"; else delete el.dataset.scrolled; };
+    el.addEventListener("scroll", mark, { passive: true });
+    new MutationObserver(mark).observe(el, { childList: true });
+  });
+}
+
 function renderToolbar() {
   $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
+  revealActive($("focus"));
   const n = state.starred.size;
   $("starPill").innerHTML = `★<span class="sp-label"> Starred</span>${n ? ` <span class="sp-n">${n}</span>` : ""}`;
   $("starPill").setAttribute("aria-label", `Starred only${n ? `, ${n} starred` : ""}`);
@@ -545,6 +562,7 @@ function renderFeeds() {
     <a class="fb" href="${esc(google)}" target="_blank" rel="noopener">${FEED_ICONS.google}<span>Google Calendar</span></a>
     <a class="fb" href="#" data-copy="${esc(https)}">${FEED_ICONS.copy}<span>Copy feed URL</span></a>`;
   $("feedWhat").textContent = g === "all" ? "Every milestone, all venues." : `${name} dates only, all venues.`;
+  revealActive($("feedSeg"));
 }
 
 function renderSynced() {

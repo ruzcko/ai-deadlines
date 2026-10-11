@@ -545,13 +545,12 @@ body[data-view="map"] #focus { visibility: hidden; }
   .views { order: -1; width: 100%; }
   .views button { flex: 1; justify-content: center; }
   .views span { display: inline; }
-  /* Flat tab strip: equal cells, plain text, an underline in the milestone colour on the active one. */
-  #focus, #feedSeg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; padding: 0; background: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; overflow: visible; mask-image: none; }
-  #focus button, #feedSeg button { position: relative; justify-content: center; padding: 10px 4px 9px; font-size: 13px; min-width: 0; border-radius: 0; background: none; box-shadow: none; color: var(--muted); }
-  #focus button[aria-checked="true"], #feedSeg button[aria-checked="true"] { color: var(--text); background: none; }
-  #focus button .sw, #feedSeg button .sw { position: absolute; left: 10%; right: 10%; bottom: -1px; width: auto; height: 2px; border-radius: 2px 2px 0 0; opacity: 0; }
-  #focus button[aria-checked="true"] .sw, #feedSeg button[aria-checked="true"] .sw { opacity: 1; }
-  #focus button[aria-checked="true"]:not(:has(.sw))::after, #feedSeg button[aria-checked="true"]:not(:has(.sw))::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -1px; height: 2px; background: var(--text); border-radius: 2px 2px 0 0; }
+  /* One sliding row: chips never wrap, a fade shows there's more, swipes snap to chips, and the
+     active chip is scrolled into view by the script so it's never cut off. */
+  #focus, #feedSeg { display: flex; flex-wrap: nowrap; width: 100%; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); padding-right: 28px; }
+  #focus::-webkit-scrollbar, #feedSeg::-webkit-scrollbar { display: none; }
+  #focus[data-scrolled], #feedSeg[data-scrolled] { mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 36px), transparent); }
+  #focus button, #feedSeg button { flex: none; scroll-snap-align: start; padding: 7px 12px; }
   /* Toolbar: search and three icon buttons on one line. */
   .toolbar { gap: 8px; padding-top: 8px; padding-bottom: 10px; }
   .tb-row:last-child { flex-wrap: nowrap; }
