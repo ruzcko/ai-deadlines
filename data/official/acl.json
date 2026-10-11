@@ -1,0 +1,34 @@
+{
+ "key": "acl",
+ "title": "ACL",
+ "fetched_at": "2026-10-11T06:35:55Z",
+ "urls": [
+  "https://2027.aclweb.org"
+ ],
+ "errors": [],
+ "content_hash": "b23bb77f15232739",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 580,
+  "output": 181
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Kyoto",
+ "country": "Japan",
+ "venue": null,
+ "conference_start": "2027-08-17",
+ "conference_end": "2027-08-22",
+ "milestones": [
+  {
+   "label": "ARR submission deadline",
+   "type": "paper",
+   "date": "2027-01-04",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}
