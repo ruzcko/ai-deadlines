@@ -3,7 +3,7 @@
 const STORE = "ai-deadlines:v1";
 const TOP_RANKS = new Set(["A*", "A"]);
 const MAIN_GROUPS = ["submission", "reviews", "decision", "camera", "conference"];
-const FOCUS = [["submission", "Submissions"], ["reviews", "Reviews"], ["decision", "Decisions"], ["camera", "Camera-ready"], ["conference", "Conferences"], ["all", "All"]];
+const FOCUS = [["all", "All"], ["submission", "Submissions"], ["reviews", "Reviews"], ["decision", "Decisions"], ["camera", "Camera-ready"], ["conference", "Conferences"]];
 const $ = (id) => document.getElementById(id);
 
 const state = {
@@ -21,6 +21,7 @@ const state = {
   theme: "auto",
   open: new Set(),
   view: "list",
+  feed: "all", // which calendar feed the subscribe box shows
   span: "all",
   watch: null, // Set of venue keys from a shared ?watch= link
   allEst: false, // show every "not announced yet" tile, not just the first few
@@ -49,6 +50,7 @@ function load() {
     if (s.clock === "12" || s.clock === "24") state.clock = s.clock;
     if (["light", "dark"].includes(s.theme)) state.theme = s.theme;
     if (["map", "calendar"].includes(s.view)) state.view = s.view;
+    if (typeof s.feed === "string") state.feed = s.feed;
     if (["6", "12", "all"].includes(s.span)) state.span = s.span;
   } catch (_) { /* storage unavailable */ }
   syncGroups();
@@ -58,7 +60,7 @@ function save() {
     localStorage.setItem(STORE, JSON.stringify({
       focus: state.focus, side: state.side, areas: [...state.areas], starred: [...state.starred],
       starredOnly: state.starredOnly, top: state.top, hideEst: state.hideEst, tz: state.tz, clock: state.clock, theme: state.theme,
-      view: state.view, span: state.span,
+      view: state.view, span: state.span, feed: state.feed,
     }));
   } catch (_) { /* storage unavailable */ }
 }
@@ -406,17 +408,19 @@ function details(s, next, now) {
     ...(e.links || []),
   ].filter((l) => l && !seen.has(l.url) && seen.add(l.url))
     .map((l) => `<a class="ql" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("");
-  const reports = (e.sources || ["hf"]).map((src) => {
-    const url = reportUrl(s, e, src);
-    return url && `<a href="${esc(url)}" target="_blank" rel="noopener">${(e.sources || []).length > 1 ? `Report a wrong date (${SRC_NAME[src]})` : "Report a wrong date"} ↗</a>`;
-  });
+  // One row: copy link, and a small menu with each source's data file and report link.
+  const srcs = e.sources || ["hf"];
+  const menu = srcs.map((src) => {
+    const view = src === "pr" ? PAPERRUSH_SITE : s.source;
+    const report = reportUrl(s, e, src);
+    return `<div class="src-row"><b>${esc(SRC_NAME[src])}</b>
+      <a href="${esc(view)}" target="_blank" rel="noopener">${src === "pr" ? "Their site" : "Data file"} ↗</a>
+      ${report ? `<a href="${esc(report)}" target="_blank" rel="noopener">Report a wrong date ↗</a>` : ""}</div>`;
+  }).join("");
   const links = [
-    `<button class="linkbtn" type="button" data-sharecard="${esc(s.key)}">Share card</button>`,
     `<button class="linkbtn" type="button" data-copylink="${esc(s.key)}">Copy link</button>`,
-    `<a href="${esc(s.source)}" target="_blank" rel="noopener">Data source ↗</a>`,
-    s.also && s.source !== s.also && `<a href="${PAPERRUSH_SITE}" target="_blank" rel="noopener">Also on PaperRush ↗</a>`,
-    ...reports,
-  ].filter(Boolean).join("");
+    `<details class="srcmenu"><summary>Sources &amp; corrections</summary><div class="srcmenu-body">${menu}</div></details>`,
+  ].join("");
   const more = hidden ? `<p class="more">+${hidden} side date${hidden === 1 ? "" : "s"} (workshops, tutorials, registration). Turn on <b>Show side events</b> in Filters to see them.</p>` : "";
   return `<div class="details">${estNote}${tent}${checksBlock(e)}<table>${rows}</table>${more}
     ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
@@ -527,20 +531,20 @@ const FEED_ICONS = {
 function renderFeeds() {
   const host = location.host;
   const feeds = [["all", "Everything"], ...Object.entries(DATA.groups).filter(([g]) => g !== "other")];
-  $("feeds").innerHTML = feeds.map(([g, name]) => {
-    const https = `${location.protocol}//${host}/cal/${g}.ics`;
-    const webcal = `webcal://${host}/cal/${g}.ics`;
-    const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
-    const outlook = `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(https)}&name=${encodeURIComponent(`AI deadlines · ${name}`)}`;
-    const sw = g === "all" ? "var(--text)" : `var(--g-${g})`;
-    return `<div class="feed"><span class="fn"><span class="sw" style="background:${sw}"></span>${esc(name)}</span>
-      <span class="fl">
-        <a class="fi" href="${esc(webcal)}" aria-label="Subscribe in Apple Calendar (${esc(name)})" title="Apple Calendar · also Outlook desktop and Thunderbird">${FEED_ICONS.apple}</a>
-        <a class="fi" href="${esc(outlook)}" target="_blank" rel="noopener" aria-label="Subscribe in Outlook.com (${esc(name)})" title="Outlook.com">${FEED_ICONS.outlook}</a>
-        <a class="fi" href="${esc(google)}" target="_blank" rel="noopener" aria-label="Subscribe in Google Calendar (${esc(name)})" title="Google Calendar">${FEED_ICONS.google}</a>
-        <a class="fi" href="#" data-copy="${esc(https)}" aria-label="Copy the feed URL (${esc(name)})" title="Copy feed URL">${FEED_ICONS.copy}</a>
-      </span></div>`;
-  }).join("");
+  if (!feeds.some(([g]) => g === state.feed)) state.feed = "all";
+  $("feedSeg").innerHTML = feeds.map(([g, name]) =>
+    `<button type="button" role="radio" data-feed="${g}" aria-checked="${state.feed === g}">${g !== "all" ? `<span class="sw" style="background:var(--g-${g})"></span>` : ""}${esc(name.replace(" & rebuttal", ""))}</button>`).join("");
+  const [g, name] = feeds.find(([k]) => k === state.feed);
+  const https = `${location.protocol}//${host}/cal/${g}.ics`;
+  const webcal = `webcal://${host}/cal/${g}.ics`;
+  const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
+  const outlook = `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(https)}&name=${encodeURIComponent(`AI deadlines · ${name}`)}`;
+  $("feedActs").innerHTML = `
+    <a class="fb" href="${esc(webcal)}" title="Also works for Outlook desktop and Thunderbird">${FEED_ICONS.apple}<span>Apple Calendar</span></a>
+    <a class="fb" href="${esc(outlook)}" target="_blank" rel="noopener">${FEED_ICONS.outlook}<span>Outlook.com</span></a>
+    <a class="fb" href="${esc(google)}" target="_blank" rel="noopener">${FEED_ICONS.google}<span>Google Calendar</span></a>
+    <a class="fb" href="#" data-copy="${esc(https)}">${FEED_ICONS.copy}<span>Copy feed URL</span></a>`;
+  $("feedWhat").textContent = g === "all" ? "Every milestone, all venues." : `${name} dates only, all venues.`;
 }
 
 function renderSynced() {
@@ -986,16 +990,42 @@ function bind() {
       ev.target.click();
     }
   });
-  $("feeds").addEventListener("click", async (ev) => {
+  $("feedSeg").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-feed]");
+    if (!b) return;
+    state.feed = b.dataset.feed;
+    save(); renderFeeds();
+  });
+  $("feedActs").addEventListener("click", async (ev) => {
     const a = ev.target.closest("[data-copy]");
     if (!a) return;
     ev.preventDefault();
+    const label = a.querySelector("span");
     try {
       await navigator.clipboard.writeText(a.dataset.copy);
-      a.classList.add("done");
-      a.title = "Copied";
-      setTimeout(() => { a.classList.remove("done"); a.title = "Copy feed URL"; }, 1500);
+      a.classList.add("done"); label.textContent = "Copied";
+      setTimeout(() => { a.classList.remove("done"); label.textContent = "Copy feed URL"; }, 1500);
     } catch (_) { window.prompt("Copy this feed URL", a.dataset.copy); }
+  });
+  // Credits open as a sheet over the page; the /credits page stays for direct links.
+  $("creditsLink").addEventListener("click", async (ev) => {
+    ev.preventDefault();
+    const dlg = $("creditsdlg");
+    if (!dlg.dataset.loaded) {
+      try {
+        const html = await fetch("/credits.html").then((r) => r.text());
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const main = doc.querySelector("main.doc");
+        main.querySelector("h1")?.remove();
+        main.querySelector("p:last-child a[href='/']")?.closest("p")?.remove();
+        $("creditsBody").innerHTML = main.innerHTML;
+        dlg.dataset.loaded = "1";
+      } catch (_) { location.href = "/credits"; return; }
+    }
+    dlg.showModal();
+  });
+  $("creditsdlg").addEventListener("click", (ev) => {
+    if (ev.target.closest("[data-close]") || ev.target === $("creditsdlg")) $("creditsdlg").close();
   });
   for (const b of document.querySelectorAll("[data-view]")) b.addEventListener("click", () => setView(b.dataset.view));
   $("span").addEventListener("click", (ev) => {
