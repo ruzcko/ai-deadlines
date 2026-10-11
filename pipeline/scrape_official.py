@@ -127,6 +127,10 @@ class ExtractionError(RuntimeError):
     pass
 
 
+class QuotaExhausted(ExtractionError):
+    """A daily quota is used up: stop the whole run instead of retrying venue after venue."""
+
+
 def extract(api_key, title, text, today):
     """One structured-output call to the Gemini Interactions API. Returns the parsed JSON object."""
     body = {
@@ -146,6 +150,8 @@ def extract(api_key, title, text, today):
         except requests.Timeout:
             print("    timed out, retrying")
             continue
+        if r.status_code == 429 and re.search(r"(?i)per.?day|daily|PerDay", r.text):
+            raise QuotaExhausted("daily quota exhausted: " + re.sub(r"\s+", " ", r.text)[:200])
         if r.status_code in (429, 403) or r.status_code >= 500:
             # 403 right after enabling the API is propagation delay; it clears within minutes.
             wait = 20 * (attempt + 1)
@@ -212,6 +218,11 @@ def run(keys=None, force=False):
                 data = extract(api_key, src["title"], text + "\n\n" + more, today)
                 tokens_in += data["_usage"]["input"]; tokens_out += data["_usage"]["output"]
                 follow = data.get("follow_url")
+        except QuotaExhausted as exc:
+            print(f"  {key}: {exc}")
+            print("Stopping: the rest will be read next week (or re-run tomorrow).")
+            failed += 1
+            break
         except (requests.RequestException, ExtractionError, json.JSONDecodeError) as exc:
             failed += 1
             print(f"  {key}: extraction failed: {exc}")
