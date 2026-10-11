@@ -1,0 +1,42 @@
+name: Read official sites
+
+# Weekly: read each venue's official pages, extract the dates with Gemini
+# (free tier), commit data/official/*.json. The site rebuild then picks them up.
+on:
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+    inputs:
+      venues:
+        description: "Space-separated venue keys (empty = all)"
+        default: ""
+      force:
+        description: "Re-read pages even if unchanged"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-scrape.txt
+      - name: Extract dates from official pages
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python pipeline/scrape_official.py ${{ inputs.venues }} ${{ inputs.force && '--force' || '' }}
+      - name: Commit what changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
+          git add data/official
+          if git diff --cached --quiet; then echo "No changes."; exit 0; fi
+          git commit -m "Official sites: weekly read $(date -u +%Y-%m-%d)"
+          git push
