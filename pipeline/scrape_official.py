@@ -134,13 +134,20 @@ def extract(api_key, title, text, today):
         "system_instruction": SYSTEM,
         "input": f"Conference: {title}\nToday: {today}\n\n{text}",
         "response_format": {"type": "text", "mime_type": "application/json", "schema": SCHEMA},
-        "generation_config": {"thinking_level": "high", "max_output_tokens": 16000},
+        # Extraction needs little reasoning; deep thinking on the free tier is slow and eats the output budget.
+        "generation_config": {"thinking_level": "low", "max_output_tokens": 32000},
     }
-    # The free tier is rate-limited per minute; wait and retry on 429 rather than fail the venue.
+    # The free tier is rate-limited and sometimes slow; wait and retry rather than fail the venue.
+    res = None
     for attempt in range(5):
-        r = requests.post(GEMINI_URL, headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-                          json=body, timeout=180)
-        if r.status_code == 429 or r.status_code >= 500:
+        try:
+            r = requests.post(GEMINI_URL, headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
+                              json=body, timeout=300)
+        except requests.Timeout:
+            print("    timed out, retrying")
+            continue
+        if r.status_code in (429, 403) or r.status_code >= 500:
+            # 403 right after enabling the API is propagation delay; it clears within minutes.
             wait = 20 * (attempt + 1)
             print(f"    HTTP {r.status_code}, waiting {wait}s")
             time.sleep(wait)
@@ -148,9 +155,13 @@ def extract(api_key, title, text, today):
         if not r.ok:
             raise ExtractionError(f"HTTP {r.status_code}: {r.text[:300]}")
         res = r.json()
+        if res.get("status") == "incomplete" and body["generation_config"]["thinking_level"] != "minimal":
+            print("    output cut off, retrying with minimal thinking")
+            body["generation_config"]["thinking_level"] = "minimal"
+            continue
         break
-    else:
-        raise ExtractionError("rate limited repeatedly")
+    if res is None:
+        raise ExtractionError("no response after retries (rate limit, timeout or API not enabled)")
     status = res.get("status")
     if status != "completed":
         raise ExtractionError(f"status {status}" + (" (output cut off)" if status == "incomplete" else ""))
