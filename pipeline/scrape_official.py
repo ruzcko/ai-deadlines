@@ -1,8 +1,9 @@
-"""Read each venue's official pages and extract its dates with Claude.
+"""Read each venue's official pages and extract its dates with a language model.
 
-Runs weekly in GitHub Actions (needs ANTHROPIC_API_KEY). For every venue in
-data/official_sources.json it fetches the listed pages, strips them to text,
-asks Claude for the dates as JSON, and writes data/official/<venue>.json.
+Runs weekly in GitHub Actions (needs GEMINI_API_KEY, Google AI Studio's free
+tier). For every venue in data/official_sources.json it fetches the listed
+pages, strips them to text, asks the model for the dates as JSON matching a
+fixed schema, and writes data/official/<venue>.json.
 sync.py then merges those files as the "Official site" source.
 
 Pages that fail to load keep their previous extraction. Venues whose pages
@@ -24,13 +25,15 @@ import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 
-import anthropic
+import os
+
 import requests
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCES = ROOT / "data" / "official_sources.json"
 OUT = ROOT / "data" / "official"
-MODEL = "claude-opus-5-5"
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/interactions"
 UA = "ai-deadlines/1.0 (+https://ai-deadlines.ruzcko.com; weekly check of published dates)"
 MAX_CHARS = 60_000  # per page, after stripping to text
 MAX_FOLLOW = 2      # extra pages the model may ask for (a dates page it spotted)
@@ -120,36 +123,51 @@ def pages_text(urls):
     return "\n\n".join(parts), got, errors
 
 
-def extract(client, title, text, today):
-    """One structured-output call. Returns the parsed JSON object."""
-    user = f"Conference: {title}\nToday: {today}\n\n{text}"
-    kwargs = dict(
-        model=MODEL,
-        max_tokens=16000,
-        system=SYSTEM,
-        messages=[{"role": "user", "content": user}],
-        output_config={"effort": "high", "format": {"type": "json_schema", "schema": SCHEMA}},
-    )
-    try:
-        # Server-side fallback: if a safeguard declines (unlikely for conference pages), the same request is
-        # re-run on a fallback model inside this call instead of coming back empty.
-        res = client.beta.messages.create(betas=["server-side-fallback-2026-07-01"], fallbacks="default", **kwargs)
-    except anthropic.BadRequestError as exc:
-        if "fallback" not in str(exc).lower():
-            raise
-        res = client.messages.create(**kwargs)
-    if res.stop_reason == "refusal":
-        raise RuntimeError(f"model declined ({getattr(res.stop_details, 'category', None)})")
-    if res.stop_reason == "max_tokens":
-        raise RuntimeError("output cut off at max_tokens")
-    text_out = next(b.text for b in res.content if b.type == "text")
+class ExtractionError(RuntimeError):
+    pass
+
+
+def extract(api_key, title, text, today):
+    """One structured-output call to the Gemini Interactions API. Returns the parsed JSON object."""
+    body = {
+        "model": MODEL,
+        "system_instruction": SYSTEM,
+        "input": f"Conference: {title}\nToday: {today}\n\n{text}",
+        "response_format": {"type": "text", "mime_type": "application/json", "schema": SCHEMA},
+        "generation_config": {"thinking_level": "high", "max_output_tokens": 16000},
+    }
+    # The free tier is rate-limited per minute; wait and retry on 429 rather than fail the venue.
+    for attempt in range(5):
+        r = requests.post(GEMINI_URL, headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
+                          json=body, timeout=180)
+        if r.status_code == 429 or r.status_code >= 500:
+            wait = 20 * (attempt + 1)
+            print(f"    HTTP {r.status_code}, waiting {wait}s")
+            time.sleep(wait)
+            continue
+        if not r.ok:
+            raise ExtractionError(f"HTTP {r.status_code}: {r.text[:300]}")
+        res = r.json()
+        break
+    else:
+        raise ExtractionError("rate limited repeatedly")
+    status = res.get("status")
+    if status != "completed":
+        raise ExtractionError(f"status {status}" + (" (output cut off)" if status == "incomplete" else ""))
+    out = next((s for s in res.get("steps") or [] if s.get("type") == "model_output"), None)
+    text_out = "".join(c.get("text", "") for c in (out or {}).get("content") or [] if c.get("type") == "text")
+    if not text_out:
+        raise ExtractionError("no text in model output")
     data = json.loads(text_out)
-    data["_usage"] = {"input": res.usage.input_tokens, "output": res.usage.output_tokens}
+    usage = res.get("usage") or {}
+    data["_usage"] = {"input": usage.get("total_input_tokens", 0), "output": usage.get("total_output_tokens", 0)}
     return data
 
 
 def run(keys=None, force=False):
-    client = anthropic.Anthropic()
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        sys.exit("GEMINI_API_KEY is not set (get one at https://aistudio.google.com/apikey)")
     sources = load_sources()
     OUT.mkdir(parents=True, exist_ok=True)
     today = datetime.now(timezone.utc).date().isoformat()
@@ -169,7 +187,7 @@ def run(keys=None, force=False):
             skipped += 1
             continue
         try:
-            data = extract(client, src["title"], text, today)
+            data = extract(api_key, src["title"], text, today)
             # One optional hop: the model found the real dates page.
             follow = data.get("follow_url")
             hops = 0
@@ -180,10 +198,10 @@ def run(keys=None, force=False):
                 if not got2:
                     break
                 got += got2
-                data = extract(client, src["title"], text + "\n\n" + more, today)
+                data = extract(api_key, src["title"], text + "\n\n" + more, today)
                 tokens_in += data["_usage"]["input"]; tokens_out += data["_usage"]["output"]
                 follow = data.get("follow_url")
-        except (anthropic.APIError, RuntimeError, json.JSONDecodeError, StopIteration) as exc:
+        except (requests.RequestException, ExtractionError, json.JSONDecodeError) as exc:
             failed += 1
             print(f"  {key}: extraction failed: {exc}")
             continue
@@ -197,7 +215,7 @@ def run(keys=None, force=False):
         changed += 1
         n = len(data.get("milestones") or [])
         print(f"  {key}: {n} dates, year {data.get('year')}, {data.get('city') or '-'}{' (follow-up page read)' if hops else ''}")
-        time.sleep(0.5)
+        time.sleep(4)  # stay well inside the free tier's per-minute limit
     print(f"{changed} updated, {skipped} unchanged, {failed} failed · tokens in {tokens_in:,} out {tokens_out:,}")
     return failed == 0 or changed > 0
 

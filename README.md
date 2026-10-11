@@ -18,9 +18,10 @@ Fix wrong Hugging Face dates upstream; report wrong official-page reads here.
   - `site/data/conferences.json` for the page
   - `site/cal/{all,submission,reviews,decision,camera,conference}.ics` feeds
     (estimated dates are never put in the feeds)
-- `pipeline/scrape_official.py` (weekly, GitHub Actions, needs `ANTHROPIC_API_KEY`)
-  fetches the pages in `data/official_sources.json`, has Claude (`claude-opus-5-5`,
-  structured JSON output) extract the dates, and commits `data/official/<venue>.json`.
+- `pipeline/scrape_official.py` (weekly, GitHub Actions, needs `GEMINI_API_KEY` from
+  Google AI Studio's free tier) fetches the pages in `data/official_sources.json`, has
+  Gemini (`gemini-3.8-flash`, JSON-schema output) extract the dates, and commits
+  `data/official/<venue>.json`.
   Unchanged pages are skipped by content hash. `pipeline/official.py` merges those
   files into the site data. Run it by hand for a few venues with
   `python pipeline/scrape_official.py cvpr iclr` (or from the Actions tab).

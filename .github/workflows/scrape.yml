@@ -1,7 +1,7 @@
 name: Read official sites
 
-# Weekly: read each venue's official pages, extract the dates with Claude,
-# commit data/official/*.json. The site rebuild then picks them up.
+# Weekly: read each venue's official pages, extract the dates with Gemini
+# (free tier), commit data/official/*.json. The site rebuild then picks them up.
 on:
   schedule:
     - cron: "0 5 * * 1"
@@ -29,7 +29,7 @@ jobs:
       - run: pip install -r requirements-scrape.txt
       - name: Extract dates from official pages
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python pipeline/scrape_official.py ${{ inputs.venues }} ${{ inputs.force && '--force' || '' }}
       - name: Commit what changed
