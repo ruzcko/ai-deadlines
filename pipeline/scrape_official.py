@@ -1,18 +1,20 @@
 """Read each venue's official pages and extract its dates with a language model.
 
-Runs weekly in GitHub Actions (needs GEMINI_API_KEY, Google AI Studio's free
-tier). For every venue in data/official_sources.json it fetches the listed
-pages, strips them to text, asks the model for the dates as JSON matching a
-fixed schema, and writes data/official/<venue>.json.
+Runs daily in GitHub Actions (needs GEMINI_API_KEY; Google AI Studio's free
+tier allows about 20 model calls a day). Each run has a call budget: venues
+never read come first, then the ones read longest ago. For each it fetches
+the listed pages, strips them to text, asks the model for the dates as JSON
+matching a fixed schema, and writes data/official/<venue>.json.
 sync.py then merges those files as the "Official site" source.
 
 Pages that fail to load keep their previous extraction. Venues whose pages
-haven't changed since the last run are skipped (content hash), so a normal
-week costs only the venues that actually updated something.
+haven't changed since the last read are skipped without a model call, so
+after the first pass a day's budget goes only to pages that changed.
 
-    python pipeline/scrape_official.py            # all venues
-    python pipeline/scrape_official.py cvpr iclr  # just these
-    python pipeline/scrape_official.py --force    # ignore the hash check
+    python pipeline/scrape_official.py                 # by priority, within the budget
+    python pipeline/scrape_official.py cvpr iclr       # just these
+    python pipeline/scrape_official.py --force         # re-read even if unchanged
+    python pipeline/scrape_official.py --budget 5      # at most 5 model calls
 """
 
 import hashlib
@@ -36,7 +38,8 @@ MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/interactions"
 UA = "ai-deadlines/1.0 (+https://ai-deadlines.ruzcko.com; weekly check of published dates)"
 MAX_CHARS = 60_000  # per page, after stripping to text
-MAX_FOLLOW = 2      # extra pages the model may ask for (a dates page it spotted)
+MAX_FOLLOW = 1      # extra page the model may ask for (a dates page it spotted); costs a call
+DEFAULT_BUDGET = 18  # model calls per run, under the free tier's 20 a day
 
 SCHEMA = {
     "type": "object",
@@ -181,7 +184,7 @@ def extract(api_key, title, text, today):
     return data
 
 
-def run(keys=None, force=False):
+def run(keys=None, force=False, budget=DEFAULT_BUDGET):
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         sys.exit("GEMINI_API_KEY is not set (get one at https://aistudio.google.com/apikey)")
@@ -189,9 +192,22 @@ def run(keys=None, force=False):
     OUT.mkdir(parents=True, exist_ok=True)
     today = datetime.now(timezone.utc).date().isoformat()
     todo = [(k, v) for k, v in sources.items() if not keys or k in keys]
+    # Never-read venues first, then the ones read longest ago.
+    def last_read(k):
+        p = OUT / f"{k}.json"
+        if not p.exists():
+            return ""
+        try:
+            return json.loads(p.read_text(encoding="utf-8")).get("fetched_at", "")
+        except ValueError:
+            return ""
+    todo.sort(key=lambda kv: last_read(kv[0]))
     tokens_in = tokens_out = 0
-    changed = skipped = failed = 0
+    changed = skipped = failed = calls = 0
     for key, src in todo:
+        if calls >= budget:
+            print(f"Budget of {budget} calls used; the rest continues tomorrow.")
+            break
         out_path = OUT / f"{key}.json"
         prev = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else None
         text, got, errors = pages_text(src["urls"])
@@ -204,17 +220,19 @@ def run(keys=None, force=False):
             skipped += 1
             continue
         try:
+            calls += 1
             data = extract(api_key, src["title"], text, today)
             # One optional hop: the model found the real dates page.
             follow = data.get("follow_url")
             hops = 0
-            while follow and follow not in got and hops < MAX_FOLLOW and urllib.parse.urlparse(follow).scheme in ("http", "https"):
+            while follow and follow not in got and hops < MAX_FOLLOW and calls < budget and urllib.parse.urlparse(follow).scheme in ("http", "https"):
                 hops += 1
                 more, got2, err2 = pages_text([follow])
                 errors += err2
                 if not got2:
                     break
                 got += got2
+                calls += 1
                 data = extract(api_key, src["title"], text + "\n\n" + more, today)
                 tokens_in += data["_usage"]["input"]; tokens_out += data["_usage"]["output"]
                 follow = data.get("follow_url")
@@ -238,11 +256,19 @@ def run(keys=None, force=False):
         n = len(data.get("milestones") or [])
         print(f"  {key}: {n} dates, year {data.get('year')}, {data.get('city') or '-'}{' (follow-up page read)' if hops else ''}")
         time.sleep(4)  # stay well inside the free tier's per-minute limit
-    print(f"{changed} updated, {skipped} unchanged, {failed} failed · tokens in {tokens_in:,} out {tokens_out:,}")
+    never = sum(1 for k, _ in todo if not (OUT / f"{k}.json").exists())
+    print(f"{changed} updated, {skipped} unchanged, {failed} failed, {calls} model calls · tokens in {tokens_in:,} out {tokens_out:,}"
+          + (f" · {never} venues still never read" if never else ""))
     return failed == 0 or changed > 0
 
 
 if __name__ == "__main__":
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    ok = run(keys=set(args) or None, force="--force" in sys.argv)
+    argv = sys.argv[1:]
+    budget = DEFAULT_BUDGET
+    if "--budget" in argv:
+        i = argv.index("--budget")
+        budget = int(argv[i + 1])
+        del argv[i:i + 2]
+    keys = [a for a in argv if not a.startswith("--")]
+    ok = run(keys=set(keys) or None, force="--force" in argv, budget=budget)
     sys.exit(0 if ok else 1)
