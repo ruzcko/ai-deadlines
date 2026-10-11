@@ -545,9 +545,13 @@ body[data-view="map"] #focus { visibility: hidden; }
   .views { order: -1; width: 100%; }
   .views button { flex: 1; justify-content: center; }
   .views span { display: inline; }
-  #focus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; overflow: visible; mask-image: none; padding: 3px; }
-  #focus button { justify-content: center; padding: 7px 4px; font-size: 13px; gap: 5px; min-width: 0; }
-  #focus button .sw { flex: none; }
+  /* Flat tab strip: equal cells, plain text, an underline in the milestone colour on the active one. */
+  #focus, #feedSeg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; padding: 0; background: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; overflow: visible; mask-image: none; }
+  #focus button, #feedSeg button { position: relative; justify-content: center; padding: 10px 4px 9px; font-size: 13px; min-width: 0; border-radius: 0; background: none; box-shadow: none; color: var(--muted); }
+  #focus button[aria-checked="true"], #feedSeg button[aria-checked="true"] { color: var(--text); background: none; }
+  #focus button .sw, #feedSeg button .sw { position: absolute; left: 10%; right: 10%; bottom: -1px; width: auto; height: 2px; border-radius: 2px 2px 0 0; opacity: 0; }
+  #focus button[aria-checked="true"] .sw, #feedSeg button[aria-checked="true"] .sw { opacity: 1; }
+  #focus button[aria-checked="true"]:not(:has(.sw))::after, #feedSeg button[aria-checked="true"]:not(:has(.sw))::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -1px; height: 2px; background: var(--text); border-radius: 2px 2px 0 0; }
   /* Toolbar: search and three icon buttons on one line. */
   .toolbar { gap: 8px; padding-top: 8px; padding-bottom: 10px; }
   .tb-row:last-child { flex-wrap: nowrap; }
@@ -557,8 +561,9 @@ body[data-view="map"] #focus { visibility: hidden; }
   .tb-actions > * { flex: none; height: 40px; min-width: 40px; padding: 0 10px; justify-content: center; }
   .tb-actions .tb-label, .tb-actions .chev, .star-pill .sp-label { display: none; }
 
-  .wrapgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
-  .wrapgrid button { justify-content: center; padding: 7px 4px; font-size: 12.5px; min-width: 0; }
+  .subscribe > div > p { display: none; }
+  .subscribe { padding: 18px 16px 16px; }
+  .subscribe h2 { margin-bottom: 8px; }
   .feed-actions { grid-template-columns: 1fr 1fr; }
   .sheet { margin: auto 0 0; width: 100%; max-width: none; max-height: 88dvh; border-radius: 20px 20px 0 0; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
   .srcmenu-body { position: static; min-width: 0; margin-top: 6px; box-shadow: none; }
