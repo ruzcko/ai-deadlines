@@ -561,7 +561,7 @@ body[data-view="map"] #focus { visibility: hidden; }
   .tb-actions > * { flex: none; height: 40px; min-width: 40px; padding: 0 10px; justify-content: center; }
   .tb-actions .tb-label, .tb-actions .chev, .star-pill .sp-label { display: none; }
 
-  .subscribe > div > p { display: none; }
+  .subscribe > div:first-child > p { display: none; }
   .subscribe { padding: 18px 16px 16px; }
   .subscribe h2 { margin-bottom: 8px; }
   .feed-actions { grid-template-columns: 1fr 1fr; }
