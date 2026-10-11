@@ -81,7 +81,10 @@ button { font: inherit; color: inherit; }
 /* ---------- Header ---------- */
 .top { background: var(--bg); position: sticky; top: 0; z-index: 6; }
 .top-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
-.brand { font-weight: 750; text-decoration: none; letter-spacing: -.015em; display: flex; align-items: center; gap: 9px; white-space: nowrap; font-size: 16px; }
+.brand { font-weight: 750; text-decoration: none; letter-spacing: -.015em; display: flex; align-items: center; gap: 9px; white-space: nowrap; font-size: 16px; min-width: 0; }
+.brand span { overflow: hidden; text-overflow: ellipsis; }
+.brand .b-short { display: none; }
+.top-right { flex: none; }
 .brand .logo { width: 22px; height: 22px; color: var(--accent); }
 .top-right { display: flex; align-items: center; gap: 10px; }
 .synced { color: var(--muted); font-size: 13px; }
@@ -485,6 +488,9 @@ body[data-view="map"] #focus { visibility: hidden; }
 @media (max-width: 640px) {
   html { scroll-padding-top: 70px; }
   .synced { display: none; }
+  .brand .b-long { display: none; }
+  .brand .b-short { display: inline; }
+  .top-right { gap: 6px; }
   .hero { margin-top: 4px; }
   .hero .eyebrow { letter-spacing: .05em; font-size: 11.5px; }
   .run { padding: 5px 10px; gap: 5px; }
