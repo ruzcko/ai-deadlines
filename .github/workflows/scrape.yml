@@ -1,10 +1,11 @@
 name: Read official sites
 
-# Weekly: read each venue's official pages, extract the dates with Gemini
-# (free tier), commit data/official/*.json. The site rebuild then picks them up.
+# Daily: read official pages, extract the dates with Gemini (free tier: ~20
+# calls a day, so each run works through a budget, stalest venues first),
+# commit data/official/*.json. The site rebuild then picks them up.
 on:
   schedule:
-    - cron: "0 5 * * 1"
+    - cron: "0 9 * * *"
   workflow_dispatch:
     inputs:
       venues:
@@ -33,6 +34,7 @@ jobs:
         run: |
           python pipeline/scrape_official.py ${{ inputs.venues }} ${{ inputs.force && '--force' || '' }}
       - name: Commit what changed
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898729+github-actions[bot]@users.noreply.github.com"

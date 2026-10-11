@@ -1,4 +1,4 @@
-"""Pull conference data from huggingface/ai-deadlines (plus PaperRush) and export it.
+"""Pull conference data from huggingface/ai-deadlines (plus our own reads of official sites) and export it.
 
 Writes site/data/conferences.json (one entry per venue series, with every
 edition's milestones in UTC) and site/cal/*.ics (one subscribable feed per
@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 
 import yaml
 
-import paperrush
+import official
 
 ROOT = Path(__file__).resolve().parent.parent
 UPSTREAM = ROOT / "data" / "upstream"
@@ -77,7 +77,7 @@ TAG_AREA = {
 }
 MAIN_SUBMISSION = {"abstract", "paper", "submission"}
 WARNINGS = []  # upstream data issues worth reporting
-SOURCES = {"pr_updated": None}
+SOURCES = {"official": None}
 TENTATIVE = re.compile(r"proposed|tentative|subject to change|to be announced|\bTBA\b|\bTBD\b", re.I)
 
 
@@ -392,13 +392,13 @@ def build(now):
             ed["lat"], ed["lng"] = geocode(ed["city"], ed["country"]) or (None, None)
             s["editions"].append(ed)
 
-    conferences, SOURCES["pr_updated"] = paperrush.fetch()
-    added, filled = paperrush.merge(
-        series, conferences, group_of=group_of, geocode=geocode, last_updated=SOURCES["pr_updated"],
-        series_key_of=lambda name: re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-"))
-    print(f"PaperRush: {len(conferences)} editions; new venues {added or 'none'}")
+    records = official.load()
+    filled = official.merge(series, records, group_of=group_of, to_utc=to_utc, geocode=geocode, now=now)
+    SOURCES["official"] = {"venues": len(records),
+                           "updated": max((r["fetched_at"] for r in records.values()), default=None)}
+    print(f"Official sites: {len(records)} venues read")
     for f in filled:
-        print("  filled from PaperRush:", f)
+        print("  filled from official site:", f)
 
     out = []
     for s in series.values():
@@ -459,8 +459,8 @@ def ics(series, groups, name, stamp):
                 desc = f"{s['full_name'] or title}\n{m['label']}"
                 if m.get("tz"):
                     desc += f" ({m['tz']})"
-                if m.get("src") == "pr":
-                    desc += "\nSource: PaperRush"
+                if m.get("src") == "of":
+                    desc += "\nSource: the official site, read by our weekly check"
                 desc += f"\nAlways confirm on the official site: {e['link'] or ''}"
                 ev = ["BEGIN:VEVENT", f"UID:{uid}", f"DTSTAMP:{stamp}"]
                 if m["type"] == "start":
@@ -512,7 +512,7 @@ def main():
     payload = {
         "synced_at": iso(now),
         "upstream": {"repo": UPSTREAM_URL, "commit": sha, "updated": upstream_when},
-        "paperrush": {"repo": paperrush.REPO_URL, "updated": SOURCES["pr_updated"]},
+        "official": SOURCES["official"],
         "groups": {g: GROUP_NAMES[g] for g in GROUPS},
         "areas": AREAS,
         "series": series,

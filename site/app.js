@@ -3,7 +3,7 @@
 const STORE = "ai-deadlines:v1";
 const TOP_RANKS = new Set(["A*", "A"]);
 const MAIN_GROUPS = ["submission", "reviews", "decision", "camera", "conference"];
-const FOCUS = [["submission", "Submissions"], ["reviews", "Reviews"], ["decision", "Decisions"], ["camera", "Camera-ready"], ["conference", "Conferences"], ["all", "All"]];
+const FOCUS = [["all", "All"], ["submission", "Submissions"], ["reviews", "Reviews"], ["decision", "Decisions"], ["camera", "Camera-ready"], ["conference", "Conferences"]];
 const $ = (id) => document.getElementById(id);
 
 const state = {
@@ -21,6 +21,7 @@ const state = {
   theme: "auto",
   open: new Set(),
   view: "list",
+  feed: "all", // which calendar feed the subscribe box shows
   span: "all",
   watch: null, // Set of venue keys from a shared ?watch= link
   allEst: false, // show every "not announced yet" tile, not just the first few
@@ -49,6 +50,7 @@ function load() {
     if (s.clock === "12" || s.clock === "24") state.clock = s.clock;
     if (["light", "dark"].includes(s.theme)) state.theme = s.theme;
     if (["map", "calendar"].includes(s.view)) state.view = s.view;
+    if (typeof s.feed === "string") state.feed = s.feed;
     if (["6", "12", "all"].includes(s.span)) state.span = s.span;
   } catch (_) { /* storage unavailable */ }
   syncGroups();
@@ -58,7 +60,7 @@ function save() {
     localStorage.setItem(STORE, JSON.stringify({
       focus: state.focus, side: state.side, areas: [...state.areas], starred: [...state.starred],
       starredOnly: state.starredOnly, top: state.top, hideEst: state.hideEst, tz: state.tz, clock: state.clock, theme: state.theme,
-      view: state.view, span: state.span,
+      view: state.view, span: state.span, feed: state.feed,
     }));
   } catch (_) { /* storage unavailable */ }
 }
@@ -185,9 +187,9 @@ function urgency(ms) {
 }
 
 // ---- sources, cross-checks, reports ----
-const SRC_NAME = { hf: "Hugging Face", pr: "PaperRush" };
-const PAPERRUSH_SITE = "https://awsaf49.github.io/paperrush/";
-const REPORT_REPO = { hf: "https://github.com/huggingface/ai-deadlines", pr: "https://github.com/awsaf49/paperrush" };
+const SRC_NAME = { hf: "Hugging Face", of: "Official site" };
+// Where a wrong date gets reported: Hugging Face for their data, our own repo for dates we read ourselves.
+const REPORT_REPO = { hf: "https://github.com/huggingface/ai-deadlines", of: "https://github.com/ruzcko/ai-deadlines" };
 const SITE_URL = "https://ai-deadlines.ruzcko.com";
 
 function milestoneValue(m) {
@@ -199,10 +201,10 @@ function milestoneValue(m) {
 function reportUrl(s, e, src) {
   const listed = e.milestones.filter((m) => !m.est && (m.src || "hf") === src && m.type !== "end");
   if (!listed.length) return null;
-  const file = src === "pr" ? `${REPORT_REPO.pr}/blob/main/js/data.js` : (s.source.includes("huggingface") ? s.source : REPORT_REPO.hf);
+  const file = src === "of" ? (s.official && s.official.url) || "(official site)" : (s.source.includes("huggingface") ? s.source : REPORT_REPO.hf);
   const body = [
     `**Venue:** ${s.title} ${e.year}`,
-    `**Data:** ${file}`,
+    src === "of" ? `**Read from:** ${file} (by our weekly check of the official page)` : `**Data:** ${file}`,
     e.link ? `**Official site:** ${e.link}` : "",
     "",
     `Dates currently listed:`,
@@ -221,8 +223,8 @@ function checkBadge(e) {
   const checks = e.checks || [];
   if (!checks.length) return "";
   return checks.some((c) => !c.agree)
-    ? `<span class="badge warn" title="Hugging Face and PaperRush list different dates">⚠ Sources differ</span>`
-    : `<span class="badge ok" title="Hugging Face and PaperRush list the same dates">✓ 2 sources</span>`;
+    ? `<span class="badge warn" title="Hugging Face and the official site list different dates">⚠ Sources differ</span>`
+    : `<span class="badge ok" title="Hugging Face and the official site list the same dates">✓ 2 sources</span>`;
 }
 
 function checkWhen(v, tz, notime) {
@@ -237,7 +239,7 @@ function checksBlock(e) {
   if (!checks.length) return "";
   const items = checks.map((c) => c.agree
     ? `<li class="agree">✓ <b>${esc(c.what)}</b>: both sources say ${esc(checkWhen(c.hf, c.hf_tz))}</li>`
-    : `<li class="differ">⚠ <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, PaperRush says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. Check the official site.</li>`).join("");
+    : `<li class="differ">⚠ <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, the official site says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. The official site is usually right, but check it.</li>`).join("");
   return `<ul class="checks">${items}</ul>`;
 }
 
@@ -286,10 +288,28 @@ function upcomingRows(filter = matches) {
 }
 
 // ---- toolbar ----
+// Sliding chip rows on phones: bring the active chip into view without moving the page.
+function revealActive(container) {
+  const b = container.querySelector('[aria-checked="true"]');
+  if (!b || container.scrollWidth <= container.clientWidth) return;
+  container.scrollLeft = Math.max(0, b.offsetLeft - (container.clientWidth - b.offsetWidth) / 2);
+}
+
+for (const id of ["focus", "feedSeg"]) {
+  document.addEventListener("DOMContentLoaded", () => {
+    const el = $(id);
+    const mark = () => { if (el.scrollLeft > 4) el.dataset.scrolled = "1"; else delete el.dataset.scrolled; };
+    el.addEventListener("scroll", mark, { passive: true });
+    new MutationObserver(mark).observe(el, { childList: true });
+  });
+}
+
 function renderToolbar() {
   $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
+  revealActive($("focus"));
   const n = state.starred.size;
-  $("starPill").innerHTML = `★ Starred${n ? ` <span>${n}</span>` : ""}`;
+  $("starPill").innerHTML = `★<span class="sp-label"> Starred</span>${n ? ` <span class="sp-n">${n}</span>` : ""}`;
+  $("starPill").setAttribute("aria-label", `Starred only${n ? `, ${n} starred` : ""}`);
   $("starPill").setAttribute("aria-pressed", state.starredOnly);
   const picked = Object.entries(DATA.areas).filter(([a]) => state.areas.has(a)).map(([, name]) => name);
   $("areaLabel").textContent = !picked.length ? "All areas" : picked.length === 1 ? picked[0] : `${picked[0]} +${picked.length - 1}`;
@@ -354,10 +374,11 @@ function renderHero() {
   hero.innerHTML = `
     <div class="hero-top">
       <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span><span class="eb-text">${mine.length ? `<span class="eb-star" aria-hidden="true">★</span>` : ""}<span class="eb-pre">${mine.length ? "Your next deadline" : "Next up"} · </span>${esc(m.label)}</span></div>
-      <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}">Share card</button>
+      <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}"><span class="hs-icon">${SHARE_ICON}</span><span class="hs-text">Share card</span></button>
     </div>
     <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
-    <p class="what">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</p>
+    <p class="what">${esc(s.full_name || "")}</p>
+    ${place ? `<p class="place"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 18s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="8" r="2.2" fill="currentColor"/></svg>${esc(place)}</p>` : ""}
     <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "d")}${unit(p.h, "h")}${unit(p.m, "m")}${unit(p.s, "s")}</div>
     <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>` : ""}</div>
     ${runway ? `<div class="runway"><span class="run-label">Next</span>${runway}</div>` : ""}`;
@@ -390,9 +411,9 @@ function details(s, next, now) {
     const when = m.est ? "~" + fmtMonth.format(t) : m.day ? fmtDate.format(new Date(m.day + "T12:00:00")) : fmtDT(t);
     const alt = officialAlt({ m, t });
     const tz = m.est ? "" : m.notime ? `<div class="tz">no time given · assuming end of day AoE</div>` : alt ? `<div class="tz">${esc(alt)}</div>` : "";
-    const src = m.src === "pr" ? ` <span class="src" title="This date comes from PaperRush">PaperRush</span>` : "";
+    const src = m.src === "of" ? ` <span class="src" title="Read from the venue's official page${s.official ? " on " + esc(fmtDate.format(new Date(s.official.fetched_at))) : ""}">Official</span>` : "";
     const left = past ? "done" : compact(t - now, m.est);
-    return `<tr class="${past ? "past" : ""}${m === next.m ? " is-next" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span>${esc(m.label)}${src}</td><td class="when">${esc(when)}${tz}</td><td class="left">${esc(left)}</td></tr>`;
+    return `<tr class="${past ? "past" : ""}${m === next.m ? " is-next" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span><span class="m-label">${esc(m.label)}</span>${src}</td><td class="when"><span class="w-full">${esc(when)}</span><span class="w-short">${esc(whenShort({ m, t }))}</span>${tz}</td><td class="left">${esc(left)}</td></tr>`;
   }).join("");
   const estNote = e.estimated
     ? `<p class="est-note">Not all dates are announced yet. Dates marked ~ are projected from ${esc(s.title)} ${e.estimated_from}, so treat them as a rough plan, not a deadline.${e.last_place ? ` Location not announced; last held in ${esc(e.last_place)}.` : ""}</p>` : "";
@@ -405,23 +426,25 @@ function details(s, next, now) {
     ...(e.links || []),
   ].filter((l) => l && !seen.has(l.url) && seen.add(l.url))
     .map((l) => `<a class="ql" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("");
-  const reports = (e.sources || ["hf"]).map((src) => {
-    const url = reportUrl(s, e, src);
-    return url && `<a href="${esc(url)}" target="_blank" rel="noopener">${(e.sources || []).length > 1 ? `Report a wrong date (${SRC_NAME[src]})` : "Report a wrong date"} ↗</a>`;
-  });
+  // One row: copy link, and a small menu with each source's data file and report link.
+  const srcs = e.sources || ["hf"];
+  const menu = srcs.map((src) => {
+    const view = src === "of" ? (s.official && s.official.url) : s.source;
+    const report = reportUrl(s, e, src);
+    return `<div class="src-row"><b>${esc(SRC_NAME[src])}</b>
+      ${view ? `<a href="${esc(view)}" target="_blank" rel="noopener">${src === "of" ? "Official page" : "Data file"} ↗</a>` : ""}
+      ${report ? `<a href="${esc(report)}" target="_blank" rel="noopener">Report a wrong date ↗</a>` : ""}</div>`;
+  }).join("");
   const links = [
-    `<button class="linkbtn" type="button" data-sharecard="${esc(s.key)}">Share card</button>`,
     `<button class="linkbtn" type="button" data-copylink="${esc(s.key)}">Copy link</button>`,
-    `<a href="${esc(s.source)}" target="_blank" rel="noopener">Data source ↗</a>`,
-    s.also && s.source !== s.also && `<a href="${PAPERRUSH_SITE}" target="_blank" rel="noopener">Also on PaperRush ↗</a>`,
-    ...reports,
-  ].filter(Boolean).join("");
+    `<details class="srcmenu"><summary>Sources &amp; corrections</summary><div class="srcmenu-body">${menu}</div></details>`,
+  ].join("");
   const more = hidden ? `<p class="more">+${hidden} side date${hidden === 1 ? "" : "s"} (workshops, tutorials, registration). Turn on <b>Show side events</b> in Filters to see them.</p>` : "";
   return `<div class="details">${estNote}${tent}${checksBlock(e)}<table>${rows}</table>${more}
     ${e.note ? `<p class="note">${esc(e.note)}</p>` : ""}
     ${quick ? `<div class="quick">${quick}</div>` : ""}
     <div class="links">${links}</div>
-    <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}${e.place_src === "pr" ? "Location via PaperRush · " : ""}Sources: ${esc((e.sources || ["hf"]).map((x) => SRC_NAME[x]).join(" + "))}${s.updated ? ` · data last changed ${esc(ago(s.updated))}` : ""}</div></div>`;
+    <div class="meta">${place ? esc(place) + (e.dates ? " · " + esc(e.dates) : "") + " · " : ""}${e.place_src === "of" ? "Location from the official site · " : ""}Sources: ${esc((e.sources || ["hf"]).map((x) => SRC_NAME[x]).join(" + "))}${s.updated ? ` · data last changed ${esc(ago(s.updated))}` : ""}</div></div>`;
 }
 
 const BUCKETS = [
@@ -515,22 +538,45 @@ function shortLabel(m) {
   return SHORT_LABEL[m.group] || m.label;
 }
 
+// Feed buttons: brand marks from Simple Icons (CC0) for Apple and Google; Outlook and "copy" are our own glyphs.
+const FEED_ICONS = {
+  apple: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>`,
+  outlook: `<span class="fo" aria-hidden="true">O</span>`,
+  google: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>`,
+  copy: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1.5 1.5M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1.5-1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+};
+
 function renderFeeds() {
   const host = location.host;
   const feeds = [["all", "Everything"], ...Object.entries(DATA.groups).filter(([g]) => g !== "other")];
-  $("feeds").innerHTML = feeds.map(([g, name]) => {
-    const https = `${location.protocol}//${host}/cal/${g}.ics`;
-    const webcal = `webcal://${host}/cal/${g}.ics`;
-    const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
-    const sw = g === "all" ? "var(--text)" : `var(--g-${g})`;
-    return `<div class="feed"><span class="fn"><span class="sw" style="background:${sw}"></span>${esc(name)}</span>
-      <span class="fl"><a href="${esc(webcal)}">Apple/Outlook</a><a href="${esc(google)}" target="_blank" rel="noopener">Google</a><a href="#" data-copy="${esc(https)}">Copy URL</a></span></div>`;
-  }).join("");
+  if (!feeds.some(([g]) => g === state.feed)) state.feed = "all";
+  $("feedSeg").innerHTML = feeds.map(([g, name]) =>
+    `<button type="button" role="radio" data-feed="${g}" aria-checked="${state.feed === g}">${g !== "all" ? `<span class="sw" style="background:var(--g-${g})"></span>` : ""}${esc(name.replace(" & rebuttal", ""))}</button>`).join("");
+  const [g, name] = feeds.find(([k]) => k === state.feed);
+  const https = `${location.protocol}//${host}/cal/${g}.ics`;
+  const webcal = `webcal://${host}/cal/${g}.ics`;
+  const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
+  const outlook = `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(https)}&name=${encodeURIComponent(`AI deadlines · ${name}`)}`;
+  $("feedActs").innerHTML = `
+    <a class="fb" href="${esc(webcal)}" title="Also works for Outlook desktop and Thunderbird">${FEED_ICONS.apple}<span>Apple Calendar</span></a>
+    <a class="fb" href="${esc(outlook)}" target="_blank" rel="noopener">${FEED_ICONS.outlook}<span>Outlook.com</span></a>
+    <a class="fb" href="${esc(google)}" target="_blank" rel="noopener">${FEED_ICONS.google}<span>Google Calendar</span></a>
+    <a class="fb" href="#" data-copy="${esc(https)}">${FEED_ICONS.copy}<span>Copy feed URL</span></a>`;
+  $("feedWhat").textContent = g === "all" ? "Every milestone, all venues." : `${name} dates only, all venues.`;
+  revealActive($("feedSeg"));
 }
 
 function renderSynced() {
-  $("synced").textContent = `Dates updated ${ago(DATA.upstream.updated)}`;
-  $("synced").title = `Last checked ${ago(DATA.synced_at)} · upstream ${DATA.upstream.commit.slice(0, 7)}`;
+  // Two clocks: when the source data last changed, and when this site last rebuilt from it.
+  const el = $("synced");
+  const srcDays = (Date.now() - Date.parse(DATA.upstream.updated)) / 86400000;
+  const buildDays = (Date.now() - Date.parse(DATA.synced_at)) / 86400000;
+  el.textContent = `Dates updated ${ago(DATA.upstream.updated)}`;
+  el.title = `Last checked ${ago(DATA.synced_at)} · upstream ${DATA.upstream.commit.slice(0, 7)}`;
+  el.className = "synced";
+  if (buildDays > 3) { el.className += " dead"; el.textContent = `Not refreshed for ${Math.round(buildDays)} days`; el.title = "The refresh job may be broken. " + el.title; }
+  else if (srcDays > 60) { el.className += " dead"; el.title = "The source data hasn't changed in two months; check it's still maintained. " + el.title; }
+  else if (srcDays > 30) { el.className += " stale"; el.title = "The source data hasn't changed in over a month. " + el.title; }
 }
 
 function watchLink(keys) {
@@ -814,14 +860,16 @@ function tick() {
 }
 
 // ---- popovers (Areas, Filters): anchored under their button; a bottom sheet on phones ----
-const POPS = [["areadlg", "areaBtn"], ["filterdlg", "filterBtn"]];
+const POPS = [["areadlg", "areaBtn"], ["filterdlg", "filterBtn"], ["aboutdlg", "aboutBtn"]];
 function openPop(dlgId, btnId) {
   const dlg = $(dlgId), btn = $(btnId);
   const wasOpen = dlg.open;
   closePops();
   if (wasOpen) return;
-  if (matchMedia("(max-width: 640px)").matches) dlg.showModal();
-  else {
+  if (matchMedia("(max-width: 640px)").matches) {
+    dlg.style.top = dlg.style.right = dlg.style.maxHeight = ""; // drop any desktop anchoring
+    dlg.showModal();
+  } else {
     const r = btn.getBoundingClientRect();
     dlg.style.top = `${Math.round(r.bottom + 8)}px`;
     dlg.style.right = `${Math.max(16, Math.round(document.documentElement.clientWidth - r.right))}px`;
@@ -868,6 +916,10 @@ function bind() {
   });
   $("starPill").addEventListener("click", () => { state.starredOnly = !state.starredOnly; save(); render(); });
   $("areaBtn").addEventListener("click", () => openPop("areadlg", "areaBtn"));
+  $("aboutBtn").addEventListener("click", () => openPop("aboutdlg", "aboutBtn"));
+  $("aboutdlg").addEventListener("click", (ev) => {
+    if (ev.target.closest("[data-close]") || ev.target === $("aboutdlg")) closePops();
+  });
   $("areaList").addEventListener("change", (ev) => {
     const a = ev.target.dataset.area;
     if (!a) return;
@@ -908,7 +960,7 @@ function bind() {
   });
   $("resetFilters").addEventListener("click", () => { resetFilters(); closeFilters(); });
   document.addEventListener("click", (ev) => {
-    if (ev.target.closest("#filterBtn, #areaBtn, .popover")) return;
+    if (ev.target.closest("#filterBtn, #areaBtn, #aboutBtn, .popover")) return;
     closePops();
   });
 
@@ -957,11 +1009,42 @@ function bind() {
       ev.target.click();
     }
   });
-  $("feeds").addEventListener("click", (ev) => {
+  $("feedSeg").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-feed]");
+    if (!b) return;
+    state.feed = b.dataset.feed;
+    save(); renderFeeds();
+  });
+  $("feedActs").addEventListener("click", async (ev) => {
     const a = ev.target.closest("[data-copy]");
     if (!a) return;
     ev.preventDefault();
-    copyText(a.dataset.copy, a);
+    const label = a.querySelector("span");
+    try {
+      await navigator.clipboard.writeText(a.dataset.copy);
+      a.classList.add("done"); label.textContent = "Copied";
+      setTimeout(() => { a.classList.remove("done"); label.textContent = "Copy feed URL"; }, 1500);
+    } catch (_) { window.prompt("Copy this feed URL", a.dataset.copy); }
+  });
+  // Credits open as a sheet over the page; the /credits page stays for direct links.
+  $("creditsLink").addEventListener("click", async (ev) => {
+    ev.preventDefault();
+    const dlg = $("creditsdlg");
+    if (!dlg.dataset.loaded) {
+      try {
+        const html = await fetch("/credits.html").then((r) => r.text());
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const main = doc.querySelector("main.doc");
+        main.querySelector("h1")?.remove();
+        main.querySelector("p:last-child a[href='/']")?.closest("p")?.remove();
+        $("creditsBody").innerHTML = main.innerHTML;
+        dlg.dataset.loaded = "1";
+      } catch (_) { location.href = "/credits"; return; }
+    }
+    dlg.showModal();
+  });
+  $("creditsdlg").addEventListener("click", (ev) => {
+    if (ev.target.closest("[data-close]") || ev.target === $("creditsdlg")) $("creditsdlg").close();
   });
   for (const b of document.querySelectorAll("[data-view]")) b.addEventListener("click", () => setView(b.dataset.view));
   $("span").addEventListener("click", (ev) => {
@@ -1035,7 +1118,7 @@ async function main() {
   load();
   loadStars();
   applyTheme();
-  $("tzname").textContent = Intl.DateTimeFormat().resolvedOptions().timeZone + " (your local time), or AoE if you pick it in Filters";
+  $("tzname").textContent = Intl.DateTimeFormat().resolvedOptions().timeZone + " (your local time)";
   try {
     const res = await fetch("data/conferences.json", { cache: "no-cache" });
     DATA = await res.json();

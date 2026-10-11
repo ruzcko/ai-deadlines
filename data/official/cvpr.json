@@ -1,0 +1,100 @@
+{
+ "key": "cvpr",
+ "title": "CVPR",
+ "fetched_at": "2026-10-11T02:25:52Z",
+ "urls": [
+  "https://cvpr.thecvf.com/Conferences/2027/CallForPapers",
+  "https://cvpr.thecvf.com/Conferences/2027/Dates",
+  "https://cvpr.thecvf.com/"
+ ],
+ "errors": [],
+ "content_hash": "4c1e876b3a62a66e",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 2133,
+  "output": 704
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Seattle",
+ "country": "United States",
+ "venue": null,
+ "conference_start": "2027-06-20",
+ "conference_end": "2027-06-25",
+ "milestones": [
+  {
+   "label": "Workshop Proposal Deadline",
+   "type": "workshop",
+   "date": "2026-11-04",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Paper Registration Deadline",
+   "type": "abstract",
+   "date": "2026-11-10",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Submission Deadline",
+   "type": "paper",
+   "date": "2026-11-16",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Supplementary Materials Deadline",
+   "type": "supplementary",
+   "date": "2026-11-23",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop Proposal Decision",
+   "type": "workshop",
+   "date": "2026-12-23",
+   "time": "02:00",
+   "timezone": "UTC",
+   "tentative": false
+  },
+  {
+   "label": "Reviews Released",
+   "type": "review_release",
+   "date": "2027-01-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Rebuttal Period start",
+   "type": "rebuttal_start",
+   "date": "2027-01-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Rebuttal Period end",
+   "type": "rebuttal_end",
+   "date": "2027-02-01",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Final Decisions",
+   "type": "notification",
+   "date": "2027-02-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

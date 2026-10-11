@@ -1,0 +1,466 @@
+{
+ "3dv": {
+  "title": "3DV",
+  "urls": [
+   "https://3dvconf.github.io/2027/"
+  ]
+ },
+ "aaai": {
+  "title": "AAAI",
+  "urls": [
+   "https://aaai.org/conference/aaai/aaai-27/main-technical-track-call/",
+   "https://aaai.org/conference/aaai/aaai-27/submission-instructions",
+   "https://aaai.org/conference/aaai/aaai-27/"
+  ]
+ },
+ "aamas": {
+  "title": "AAMAS",
+  "urls": [
+   "https://warwick.ac.uk/fac/sci/dcs/aamas2027/"
+  ]
+ },
+ "acl": {
+  "title": "ACL",
+  "urls": [
+   "https://2027.aclweb.org"
+  ]
+ },
+ "acm-mm": {
+  "title": "ACM MM",
+  "urls": [
+   "https://2026.acmmm.org/site/important-dates.html",
+   "https://2026.acmmm.org/"
+  ]
+ },
+ "aistats": {
+  "title": "AISTATS",
+  "urls": [
+   "https://virtual.aistats.org/Conferences/2027/CallForPapers",
+   "https://virtual.aistats.org/Conferences/2027/Dates",
+   "https://virtual.aistats.org/Conferences/2027"
+  ]
+ },
+ "alt": {
+  "title": "ALT",
+  "urls": [
+   "https://algorithmiclearningtheory.org/alt2026/"
+  ]
+ },
+ "bis": {
+  "title": "BIS",
+  "urls": [
+   "https://bisconf.org/2026"
+  ]
+ },
+ "bmvc": {
+  "title": "BMVC",
+  "urls": [
+   "https://bmvc2026.bmva.org/calls/call-for-papers/",
+   "https://bmvc2026.bmva.org/dates/",
+   "https://bmvc2026.bmva.org/"
+  ]
+ },
+ "cec": {
+  "title": "CEC",
+  "urls": [
+   "http://ieeecec.org"
+  ]
+ },
+ "chi": {
+  "title": "CHI",
+  "urls": [
+   "https://chi2027.acm.org/authors/papers/",
+   "https://chi2027.acm.org/"
+  ]
+ },
+ "chil": {
+  "title": "CHIL",
+  "urls": [
+   "https://chil.ahli.cc/submit/call-for-papers/"
+  ]
+ },
+ "cikm": {
+  "title": "CIKM",
+  "urls": [
+   "https://cikm2026.diag.uniroma1.it/"
+  ]
+ },
+ "coling": {
+  "title": "COLING",
+  "urls": [
+   "https://www.aclweb.org/portal/content/32nd-international-conference-computational-linguistics-coling-2027",
+   "https://2027.coling-iccl.org/"
+  ]
+ },
+ "collas": {
+  "title": "CoLLAs",
+  "urls": [
+   "https://lifelong-ml.cc"
+  ]
+ },
+ "colm": {
+  "title": "COLM",
+  "urls": [
+   "https://colmweb.org/"
+  ]
+ },
+ "colt": {
+  "title": "COLT",
+  "urls": [
+   "https://learningtheory.org/colt2026/"
+  ]
+ },
+ "conll": {
+  "title": "CoNLL",
+  "urls": [
+   "https://conll.org/"
+  ]
+ },
+ "corl": {
+  "title": "CoRL",
+  "urls": [
+   "https://2026.corl.org/contributions/call-for-papers",
+   "https://www.corl.org/"
+  ]
+ },
+ "cpal": {
+  "title": "CPAL",
+  "urls": [
+   "https://cpal.cc/"
+  ]
+ },
+ "cvpr": {
+  "title": "CVPR",
+  "urls": [
+   "https://cvpr.thecvf.com/Conferences/2027/CallForPapers",
+   "https://cvpr.thecvf.com/Conferences/2027/Dates",
+   "https://cvpr.thecvf.com/"
+  ]
+ },
+ "eacl": {
+  "title": "EACL",
+  "urls": [
+   "https://2027.eacl.org/calls/papers/",
+   "https://2027.eacl.org"
+  ]
+ },
+ "ecai": {
+  "title": "ECAI",
+  "urls": [
+   "https://2026.ijcai.org/important-dates/",
+   "https://2026.ijcai.org/"
+  ]
+ },
+ "eccv": {
+  "title": "ECCV",
+  "urls": [
+   "https://eccv.ecva.net/Conferences/2026"
+  ]
+ },
+ "ecir": {
+  "title": "ECIR",
+  "urls": [
+   "https://www.ecir2027.co.uk/"
+  ]
+ },
+ "ecml-pkdd": {
+  "title": "ECML PKDD",
+  "urls": [
+   "https://ecmlpkdd.org/2026/"
+  ]
+ },
+ "emnlp": {
+  "title": "EMNLP",
+  "urls": [
+   "https://2026.emnlp.org/calls/main_conference_papers/",
+   "https://2026.emnlp.org/"
+  ]
+ },
+ "emnlp-industry-track": {
+  "title": "EMNLP (Industry Track)",
+  "urls": [
+   "https://2026.emnlp.org/"
+  ]
+ },
+ "emnlp-system-demonstrations-track": {
+  "title": "EMNLP (System Demonstrations Track)",
+  "urls": [
+   "https://2026.emnlp.org/"
+  ]
+ },
+ "esann": {
+  "title": "ESANN",
+  "urls": [
+   "https://www.esann.org/"
+  ]
+ },
+ "eurographics": {
+  "title": "Eurographics",
+  "urls": [
+   "https://eg2027.isti.cnr.it/"
+  ]
+ },
+ "euvip": {
+  "title": "EUVIP",
+  "urls": [
+   "https://euvip2026.github.io/"
+  ]
+ },
+ "facct": {
+  "title": "FAccT",
+  "urls": [
+   "https://facctconference.org/2026/index.html"
+  ]
+ },
+ "fg": {
+  "title": "FG",
+  "urls": [
+   "https://fg2026.ieee-biometrics.org/"
+  ]
+ },
+ "hicss": {
+  "title": "HICSS",
+  "urls": [
+   "https://hicss.hawaii.edu/"
+  ]
+ },
+ "icann": {
+  "title": "ICANN",
+  "urls": [
+   "https://e-nns.org/icann2026/call-for-papers-2/",
+   "https://e-nns.org/icann2026/"
+  ]
+ },
+ "icassp": {
+  "title": "ICASSP",
+  "urls": [
+   "https://2027.ieeeicassp.org/call-for-papers/",
+   "https://2027.ieeeicassp.org/important-dates/",
+   "https://2027.ieeeicassp.org"
+  ]
+ },
+ "iccv": {
+  "title": "ICCV",
+  "urls": [
+   "https://www.thecvf.com/?p=137",
+   "https://iccv.thecvf.com/Conferences/2027"
+  ]
+ },
+ "icdar": {
+  "title": "ICDAR",
+  "urls": [
+   "https://icdar2026.org/"
+  ]
+ },
+ "icdm": {
+  "title": "ICDM",
+  "urls": [
+   "http://icdm2026.neu.edu.cn/"
+  ]
+ },
+ "icip": {
+  "title": "ICIP",
+  "urls": [
+   "https://2027.ieeeicip.org/"
+  ]
+ },
+ "iclr": {
+  "title": "ICLR",
+  "urls": [
+   "https://iclr.cc/Conferences/2027/CallForPapers",
+   "https://iclr.cc/Conferences/2027/Dates",
+   "https://iclr.cc/Conferences/2027"
+  ]
+ },
+ "icml": {
+  "title": "ICML",
+  "urls": [
+   "https://icml.cc/Conferences/2026/CallForPapers"
+  ]
+ },
+ "icomp": {
+  "title": "ICOMP",
+  "urls": [
+   "https://icomp.cc/"
+  ]
+ },
+ "icra": {
+  "title": "ICRA",
+  "urls": [
+   "https://2027.ieee-icra.org/contribute/call-for-icra-2027-papers-now-accepting-submissions/",
+   "https://2027.ieee-icra.org/"
+  ]
+ },
+ "ijcai": {
+  "title": "IJCAI",
+  "urls": [
+   "https://2026.ijcai.org/"
+  ]
+ },
+ "ijcnlp-aacl": {
+  "title": "IJCNLP & AACL",
+  "urls": [
+   "https://2025.aaclnet.org/"
+  ]
+ },
+ "ijcnn": {
+  "title": "IJCNN",
+  "urls": [
+   "https://attend.ieee.org/wcci-2026/"
+  ]
+ },
+ "inlg": {
+  "title": "INLG",
+  "urls": [
+   "https://2026.inlgmeeting.org/"
+  ]
+ },
+ "interspeech": {
+  "title": "Interspeech",
+  "urls": [
+   "https://interspeech2026.org/en-AU",
+   "https://interspeech2026.org"
+  ]
+ },
+ "iros": {
+  "title": "IROS",
+  "urls": [
+   "https://2026.ieee-iros.org/contribute/call-for-papers/",
+   "https://iros-pittsburgh.org/",
+   "https://2026.ieee-iros.org/"
+  ]
+ },
+ "iui": {
+  "title": "IUI",
+  "urls": [
+   "https://iui.acm.org/2026/"
+  ]
+ },
+ "kdd": {
+  "title": "KDD",
+  "urls": [
+   "https://kdd2027.kdd.org/ai4sciences-track-call-for-papers",
+   "https://kdd2027.kdd.org"
+  ]
+ },
+ "ksem": {
+  "title": "KSEM",
+  "urls": [
+   "https://ksem2025.scimeeting.cn/"
+  ]
+ },
+ "lrec": {
+  "title": "LREC",
+  "urls": [
+   "https://lrec2026.info/"
+  ]
+ },
+ "mathai": {
+  "title": "MathAI",
+  "urls": [
+   "https://mathai.club"
+  ]
+ },
+ "miccai": {
+  "title": "MICCAI",
+  "urls": [
+   "https://conferences.miccai.org/2026/"
+  ]
+ },
+ "mlsys": {
+  "title": "MLSys",
+  "urls": [
+   "https://mlsys.org/Conferences/2027/CallForResearchPapers",
+   "https://mlsys.org/Conferences/2027/Dates",
+   "https://mlsys.org/Conferences/2027"
+  ]
+ },
+ "naacl": {
+  "title": "NAACL",
+  "urls": [
+   "https://2027.naacl.org/"
+  ]
+ },
+ "neurips": {
+  "title": "NeurIPS",
+  "urls": [
+   "https://neurips.cc/Conferences/2026/CallForPapers",
+   "https://neurips.cc/Conferences/2026/Dates",
+   "https://neurips.cc/"
+  ]
+ },
+ "nlbse": {
+  "title": "NLBSE",
+  "urls": [
+   "https://nlbse2026.github.io/"
+  ]
+ },
+ "rlc": {
+  "title": "RLC",
+  "urls": [
+   "https://rl-conference.cc/"
+  ]
+ },
+ "rss": {
+  "title": "RSS",
+  "urls": [
+   "https://roboticsconference.org"
+  ]
+ },
+ "ruleml-rr": {
+  "title": "RuleML+RR",
+  "urls": [
+   "https://2026.declarativeai.net/events/ruleml-rr"
+  ]
+ },
+ "sgp": {
+  "title": "SGP",
+  "urls": [
+   "https://sgp26.org/"
+  ]
+ },
+ "sibgrapi": {
+  "title": "SIBGRAPI",
+  "urls": [
+   "https://sibgrapi.sbc.org.br/2026/"
+  ]
+ },
+ "siggraph": {
+  "title": "SIGGRAPH",
+  "urls": [
+   "https://www.siggraph.org/"
+  ]
+ },
+ "sigir": {
+  "title": "SIGIR",
+  "urls": [
+   "https://sigir2026.org/en-AU"
+  ]
+ },
+ "uai": {
+  "title": "UAI",
+  "urls": [
+   "https://www.auai.org/uai2026/"
+  ]
+ },
+ "wacv": {
+  "title": "WACV",
+  "urls": [
+   "https://wacv.thecvf.com/Conferences/2027/CallForPapers",
+   "https://wacv.thecvf.com/Conferences/2027/Dates",
+   "https://wacv.thecvf.com/"
+  ]
+ },
+ "wsdm": {
+  "title": "WSDM",
+  "urls": [
+   "https://www.wsdm-conference.org/2027/"
+  ]
+ },
+ "www": {
+  "title": "WWW",
+  "urls": [
+   "https://www2027.thewebconf.org/"
+  ]
+ }
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /og
+
+Sitemap: https://ai-deadlines.ruzcko.com/sitemap.xml
