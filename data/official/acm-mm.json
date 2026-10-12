@@ -1,0 +1,99 @@
+{
+ "key": "acm-mm",
+ "title": "ACM MM",
+ "fetched_at": "2026-10-12T18:43:18Z",
+ "urls": [
+  "https://2026.acmmm.org/site/important-dates.html",
+  "https://2026.acmmm.org/"
+ ],
+ "errors": [],
+ "content_hash": "bcfc1cdca32e0320",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1627,
+  "output": 688
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Rio de Janeiro",
+ "country": "Brazil",
+ "venue": null,
+ "conference_start": "2026-11-10",
+ "conference_end": "2026-11-14",
+ "milestones": [
+  {
+   "label": "Contribution Registration",
+   "type": "abstract",
+   "date": "2026-03-25",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Contribution Submission",
+   "type": "paper",
+   "date": "2026-04-01",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Supplementary Submission",
+   "type": "supplementary",
+   "date": "2026-04-08",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Rebuttal",
+   "type": "rebuttal_end",
+   "date": "2026-06-04",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author Notification",
+   "type": "notification",
+   "date": "2026-07-09",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Camera-Ready",
+   "type": "camera_ready",
+   "date": "2026-08-06",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author Registration",
+   "type": "registration",
+   "date": "2026-08-31",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Workshops Proposal Submission",
+   "type": "workshop",
+   "date": "2026-02-12",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Workshops Proposal Notification",
+   "type": "workshop",
+   "date": "2026-03-05",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates reported correspond to the Main Track, with workshop proposal deadlines included.",
+ "follow_url": null
+}

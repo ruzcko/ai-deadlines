@@ -1,0 +1,50 @@
+{
+ "key": "bis",
+ "title": "BIS",
+ "fetched_at": "2026-10-12T18:48:25Z",
+ "urls": [
+  "https://bisconf.org/2026"
+ ],
+ "errors": [],
+ "content_hash": "196881f98160a712",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1456,
+  "output": 316
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Prague",
+ "country": "Czech Republic",
+ "venue": "Prague University of Economics and Business",
+ "conference_start": "2026-06-10",
+ "conference_end": "2026-06-12",
+ "milestones": [
+  {
+   "label": "Submission deadline for conference papers (extended)",
+   "type": "paper",
+   "date": "2026-01-25",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance/rejection",
+   "type": "notification",
+   "date": "2026-03-09",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Submission of final papers",
+   "type": "camera_ready",
+   "date": "2026-03-25",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

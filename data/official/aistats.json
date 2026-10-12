@@ -1,0 +1,76 @@
+{
+ "key": "aistats",
+ "title": "AISTATS",
+ "fetched_at": "2026-10-12T18:45:37Z",
+ "urls": [
+  "https://virtual.aistats.org/Conferences/2027/CallForPapers",
+  "https://virtual.aistats.org/Conferences/2027/Dates",
+  "https://virtual.aistats.org/Conferences/2027"
+ ],
+ "errors": [],
+ "content_hash": "42686d8ed420bf25",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 6737,
+  "output": 528
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Montreal",
+ "country": "Canada",
+ "venue": null,
+ "conference_start": "2027-05-03",
+ "conference_end": "2027-05-06",
+ "milestones": [
+  {
+   "label": "Abstract submission deadline",
+   "type": "abstract",
+   "date": "2026-09-29",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Full paper submission deadline (including all supplementary material)",
+   "type": "paper",
+   "date": "2026-10-06",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop submission deadline",
+   "type": "workshop",
+   "date": "2026-10-30",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviews and AI review released to authors; author rebuttal period begins",
+   "type": "review_release",
+   "date": "2026-11-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author–reviewer discussion period ends",
+   "type": "rebuttal_end",
+   "date": "2026-12-03",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Paper decision notifications",
+   "type": "notification",
+   "date": "2027-01-20",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

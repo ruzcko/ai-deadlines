@@ -1,0 +1,108 @@
+{
+ "key": "aaai",
+ "title": "AAAI",
+ "fetched_at": "2026-10-12T18:38:00Z",
+ "urls": [
+  "https://aaai.org/conference/aaai/aaai-27/main-technical-track-call/",
+  "https://aaai.org/conference/aaai/aaai-27/submission-instructions",
+  "https://aaai.org/conference/aaai/aaai-27/"
+ ],
+ "errors": [],
+ "content_hash": "cba57dedc40b72b6",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 9389,
+  "output": 823
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Montréal",
+ "country": "Canada",
+ "venue": null,
+ "conference_start": "2027-02-16",
+ "conference_end": "2027-02-23",
+ "milestones": [
+  {
+   "label": "OpenReview submission site opens for author registration",
+   "type": "other",
+   "date": "2026-06-17",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "OpenReview submission site opens for paper submission",
+   "type": "other",
+   "date": "2026-06-30",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Abstracts due",
+   "type": "abstract",
+   "date": "2026-07-21",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Full papers due",
+   "type": "paper",
+   "date": "2026-07-28",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Supplementary material and code due",
+   "type": "supplementary",
+   "date": "2026-07-31",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of Phase 1 rejections",
+   "type": "notification",
+   "date": "2026-09-24",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author feedback window start",
+   "type": "rebuttal_start",
+   "date": "2026-10-24",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author feedback window end",
+   "type": "rebuttal_end",
+   "date": "2026-10-31",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of final acceptance or rejection (Main Technical Track)",
+   "type": "notification",
+   "date": "2026-11-30",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Submission of camera-ready files (Main Technical Track)",
+   "type": "camera_ready",
+   "date": "2026-12-14",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates are for the Main Technical Track; other tracks follow separate schedules.",
+ "follow_url": null
+}

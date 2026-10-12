@@ -1,0 +1,25 @@
+{
+ "key": "alt",
+ "title": "ALT",
+ "fetched_at": "2026-10-12T18:47:50Z",
+ "urls": [
+  "https://algorithmiclearningtheory.org/alt2026/"
+ ],
+ "errors": [],
+ "content_hash": "896a1ad777b258c3",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 528,
+  "output": 110
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Toronto",
+ "country": "Canada",
+ "venue": "Fields Institute",
+ "conference_start": "2026-02-23",
+ "conference_end": "2026-02-26",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}
