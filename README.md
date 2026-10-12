@@ -58,16 +58,11 @@ python -m venv .venv
 .venv/Scripts/python.exe -m http.server 8773 --directory site
 ```
 
-## Deploy (Cloudflare Pages)
+## Deploy
 
-- Pages project `ai-deadlines`, connected to this repo (branch `main`).
-- Build command: `python3 -m pip install -r requirements.txt && python3 pipeline/sync.py`
-- Output directory: `site`
-- `.github/workflows/refresh.yml` checks upstream every 6 hours and pushes
-  `data/upstream.lock` when it changed (and weekly). The push triggers a rebuild,
-  so no deploy hook or API token is needed.
-- `data/geocode.json` caches city coordinates (OpenStreetMap Nominatim); commit
-  it after a local sync adds new cities.
+Any static host that can run `pipeline/sync.py` at build time and serve `site/`
+works. `.github/workflows/refresh.yml` checks upstream every 6 hours and pushes
+`data/upstream.lock` when it changed, which triggers a rebuild.
 
 ## Credits
 
