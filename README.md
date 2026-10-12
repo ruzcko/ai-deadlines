@@ -1,14 +1,35 @@
+<p align="center">
+  <a href="https://ai-deadlines.ruzcko.com"><img src="docs/banner.png" alt="AI Conference Deadlines" width="800"></a>
+</p>
+
+<p align="center">
+  <a href="https://ai-deadlines.ruzcko.com"><img src="https://img.shields.io/badge/live-ai--deadlines.ruzcko.com-ff6369?logo=cloudflare&logoColor=white" alt="Live site"></a>
+  <a href="https://github.com/ruzcko/ai-deadlines/actions/workflows/refresh.yml"><img src="https://github.com/ruzcko/ai-deadlines/actions/workflows/refresh.yml/badge.svg" alt="Refresh data"></a>
+  <a href="https://github.com/ruzcko/ai-deadlines/actions/workflows/scrape.yml"><img src="https://github.com/ruzcko/ai-deadlines/actions/workflows/scrape.yml/badge.svg" alt="Read official sites"></a>
+  <a href="https://github.com/huggingface/ai-deadlines"><img src="https://img.shields.io/badge/data-huggingface%2Fai--deadlines-ffd21e?logo=huggingface&logoColor=black" alt="Data: huggingface/ai-deadlines"></a>
+  <a href="https://github.com/ruzcko/ai-deadlines/stargazers"><img src="https://img.shields.io/github/stars/ruzcko/ai-deadlines?style=flat&logo=github&color=f5c518" alt="Stars"></a>
+</p>
+
 # AI Conference Deadlines
 
 Live countdowns to AI/ML conference milestones (submission, reviews, decision,
-camera-ready, conference) with per-milestone calendar feeds.
-Live at https://ai-deadlines.ruzcko.com
+camera-ready, conference) with a map of host cities, a month calendar, share cards
+and per-milestone calendar feeds. Live at https://ai-deadlines.ruzcko.com
 
 Dates come from two sources: [huggingface/ai-deadlines](https://github.com/huggingface/ai-deadlines)
 (MIT), and our own weekly read of each venue's official page. Dates both list are
 cross-checked ("✓ 2 sources" / "⚠ Sources differ"); official-page dates fill gaps
 (host cities, conference dates, editions not listed yet) and are tagged "Official".
 Fix wrong Hugging Face dates upstream; report wrong official-page reads here.
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshot.png" alt="Desktop: next deadline countdown, deadline gaps for a starred list, milestone filter" width="800">
+</p>
+<p align="center">
+  <img src="docs/screenshot-phone.png" alt="Phone layout" width="300">
+</p>
 
 ## How it works
 
@@ -23,8 +44,7 @@ Fix wrong Hugging Face dates upstream; report wrong official-page reads here.
   `data/official_sources.json`, has Gemini (`gemini-3.8-flash`, JSON-schema output)
   extract the dates, and commits `data/official/<venue>.json`. Each run spends a
   budget of 18 calls on the venues never read, then the stalest; unchanged pages
-  are skipped by content hash.
-  Unchanged pages are skipped by content hash. `pipeline/official.py` merges those
+  are skipped by content hash. `pipeline/official.py` merges those
   files into the site data. Run it by hand for a few venues with
   `python pipeline/scrape_official.py cvpr iclr` (or from the Actions tab).
 - `site/` is a static page (no build step, no dependencies).
