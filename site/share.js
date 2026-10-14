@@ -29,7 +29,8 @@ const CARD_THEMES = {
   },
 };
 const CARD_COLORS = { ...CARD_THEMES.midnight }; // the theme being drawn
-const FONT = 'Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+const FONT = 'Chivo, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+const MONO = '"Chivo Mono", ui-monospace, Consolas, monospace'; // countdown numbers, as on the site
 const CARD_STORE = "ai-deadlines:card";
 const shareState = { kind: null, payload: null, format: "story", theme: "midnight", blob: null, url: null };
 try {
@@ -42,11 +43,11 @@ function saveCardPrefs() {
 }
 
 // ---- text helpers ----
-function font(g, size, weight = 600) { g.font = `${weight} ${Math.round(size)}px ${FONT}`; }
-function fit(g, text, maxW, size, weight, min = 0.4) {
+function font(g, size, weight = 600, face = FONT) { g.font = `${weight} ${Math.round(size)}px ${face}`; }
+function fit(g, text, maxW, size, weight, min = 0.4, face = FONT) {
   let s = size;
-  font(g, s, weight);
-  while (g.measureText(text).width > maxW && s > size * min) { s *= 0.94; font(g, s, weight); }
+  font(g, s, weight, face);
+  while (g.measureText(text).width > maxW && s > size * min) { s *= 0.94; font(g, s, weight, face); }
   return s;
 }
 function wrap(g, text, maxW, maxLines) {
@@ -72,7 +73,8 @@ function wrap(g, text, maxW, maxLines) {
 function cardCount(ms, est) {
   const d = ms / 86400000;
   if (est) return d >= 60 ? [`~${Math.round(d / 30.44)}`, "months away · estimated"] : [`~${Math.max(1, Math.round(d))}`, "days away · estimated"];
-  if (d >= 2) return [String(Math.floor(d)), "days to go"];
+  // Same switch points as the site: days until under a day is left, then hours, then minutes.
+  if (d >= 1) return [String(Math.floor(d)), Math.floor(d) === 1 ? "day to go" : "days to go"];
   const h = Math.floor(ms / 3600000);
   if (h >= 1) return [String(h), h === 1 ? "hour to go" : "hours to go"];
   return [String(Math.max(1, Math.floor(ms / 60000))), "minutes to go"];
@@ -185,7 +187,7 @@ function drawVenue(g, W, H, fmt, { s, e, m }) {
     if (place) { font(g, 26, 500); g.fillStyle = CARD_COLORS.muted; g.fillText(fitLine(g, place, colW), b.x, yy + 58); }
     // Right column: the number.
     const rx = b.x + b.w * 0.62, rw = b.w * 0.38;
-    const ns = fit(g, num, rw, 230, 800);
+    const ns = fit(g, num, rw, 230, 800, 0.4, MONO);
     g.fillStyle = numColor; g.fillText(num, rx, b.y + 60 + ns * 0.95);
     font(g, 30, 600); g.fillStyle = CARD_COLORS.text; g.fillText(unit, rx, b.y + 60 + ns * 0.95 + 50);
     drawTrack(g, e, m, b.x, b.y + b.h - 80, b.w, 22);
@@ -207,7 +209,7 @@ function drawVenue(g, W, H, fmt, { s, e, m }) {
     wrap(g, s.full_name || "", b.w, 2).forEach((line, i) => g.fillText(line, b.x, y + 40 * k + i * 46 * k));
   });
   add(fmt === "story" ? 90 : 40, () => {});
-  add(fmt === "story" ? 330 : 250, (y, k, hh) => { const ns = fit(g, num, b.w, hh * 1.05, 800); g.fillStyle = numColor; g.fillText(num, b.x - ns * 0.03, y + hh * 0.86); });
+  add(fmt === "story" ? 330 : 250, (y, k, hh) => { const ns = fit(g, num, b.w, hh * 1.05, 800, 0.4, MONO); g.fillStyle = numColor; g.fillText(num, b.x - ns * 0.03, y + hh * 0.86); });
   add(64, (y, k) => { font(g, 50 * k, 650); g.fillStyle = CARD_COLORS.text; g.fillText(unit, b.x, y + 50 * k); });
   add(fmt === "story" ? 80 : 40, () => {});
   add(52, (y, k) => { font(g, 40 * k, 600); g.fillStyle = CARD_COLORS.text; g.fillText(fitLine(g, officialWhen(e, m), b.w), b.x, y + 40 * k); });
@@ -243,8 +245,8 @@ function drawList(g, W, H, fmt, { rows, title }) {
       g.fillStyle = c;
       g.beginPath(); g.arc(b.x + 12 * k, y + hh * 0.4, 10 * k, 0, Math.PI * 2); g.fill();
       const [num, unit] = cardCount(Date.parse(r.m.at) - Date.now(), r.m.est);
-      const right = `${num} ${unit.split(" ")[0].replace("months", "mo").replace("days", "d").replace("hours", "h").replace("hour", "h").replace("minutes", "min")}`;
-      font(g, 50 * k, 800);
+      const right = `${num}${unit.split(" ")[0].replace("months", "mo").replace("days", "d").replace("day", "d").replace("hours", "h").replace("hour", "h").replace("minutes", "min")}`;
+      font(g, 50 * k, 800, MONO);
       const rw = g.measureText(right).width;
       g.fillStyle = r.m.est ? CARD_COLORS.muted : c;
       g.fillText(right, b.x + rowW - rw, y + hh * 0.52);
@@ -299,7 +301,7 @@ async function refreshCard() {
   const img = $("sdImg");
   img.removeAttribute("src");
   // Canvas text needs the web font loaded first, or the first card falls back to a system font.
-  try { await Promise.all([document.fonts.load("800 40px Inter"), document.fonts.load("500 40px Inter")]); } catch (_) { /* fall back */ }
+  try { await Promise.all(["800", "750", "700", "650", "600", "500"].map((w) => document.fonts.load(`${w} 40px Chivo`)).concat(document.fonts.load('800 40px "Chivo Mono"'))); } catch (_) { /* fall back */ }
   shareState.blob = await renderCard(shareState.kind, shareState.payload, shareState.format);
   if (img.dataset.url) URL.revokeObjectURL(img.dataset.url);
   img.dataset.url = URL.createObjectURL(shareState.blob);

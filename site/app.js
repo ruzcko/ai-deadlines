@@ -145,24 +145,33 @@ function parts(ms) {
   const s = Math.max(0, Math.floor(ms / 1000));
   return { d: Math.floor(s / 86400), h: Math.floor(s / 3600) % 24, m: Math.floor(s / 60) % 60, s: s % 60 };
 }
+const pad2 = (n) => String(n).padStart(2, "0");
+// One unit leads at each stage; the next smaller one joins once it matters:
+// 7 days or more: days · under 7 days: days + hours · under a day: hours + minutes · under an hour: minutes + seconds.
 function compact(ms, estimated) {
   const p = parts(ms);
-  if (estimated) return p.d < 45 ? "Due soon?" : p.d >= 60 ? `~${Math.round(p.d / 30.4)} mo` : `~${p.d} d`;
-  if (p.d >= 2) return `${p.d}d ${p.h}h`;
-  const h = p.d * 24 + p.h;
-  return h ? `${h}h ${String(p.m).padStart(2, "0")}m` : `${p.m}m ${String(p.s).padStart(2, "0")}s`;
+  if (estimated) return p.d < 45 ? "TBA, due soon" : p.d >= 60 ? `~${Math.round(p.d / 30.4)} mo` : `~${p.d} d`;
+  if (p.d >= 7) return `${p.d}d`;
+  if (p.d >= 1) return `${p.d}d ${p.h}h`;
+  if (p.h >= 1) return `${p.h}h ${pad2(p.m)}m`;
+  return p.m ? `${p.m}m ${pad2(p.s)}s` : `${p.s}s`;
 }
-// Departures-board countdown: one big number, a small unit line.
+// Row countdown box, departures-board style: [number, its unit, the smaller remainder] → 5 / days / 7h.
 function cdParts(ms, est) {
   const p = parts(ms);
   if (est) {
-    if (p.d < 45) return ["Soon?", "not announced"];
-    return p.d >= 60 ? [`~${Math.round(p.d / 30.4)}`, "months"] : [`~${p.d}`, "days"];
+    if (p.d < 45) return ["TBA", "due soon", ""];
+    return p.d >= 60 ? [`~${Math.round(p.d / 30.4)}`, "months", ""] : [`~${p.d}`, "days", ""];
   }
-  if (p.d >= 2) return [String(p.d), p.d < 14 ? `days ${p.h}h` : "days"];
-  const h = p.d * 24 + p.h;
-  if (h >= 1) return [String(h), `${h === 1 ? "hour" : "hours"} ${p.m}m`]; // big number's unit as a word, remainder compact
-  return [String(p.m), `min ${p.s}s`];
+  if (p.d >= 7) return [String(p.d), "days", ""];
+  if (p.d >= 1) return [String(p.d), p.d === 1 ? "day" : "days", `${p.h}h`];
+  if (p.h >= 1) return [String(p.h), p.h === 1 ? "hour" : "hours", `${pad2(p.m)}m`];
+  if (p.m >= 1) return [String(p.m), "min", `${pad2(p.s)}s`];
+  return [String(p.s), "sec", ""];
+}
+function cdBoxHtml(ms, est) {
+  const [big, unit, rem] = cdParts(ms, est);
+  return `<span class="big">${esc(big)}</span><span class="small">${esc(unit)}</span><span class="rem">${esc(rem)}</span>`;
 }
 // Single-unit countdown for tight spots: "32d", "17h", "45m".
 function shortCd(ms) {
@@ -460,7 +469,6 @@ function bucketOf(next, now) {
 function rowHtml({ s, next }, now) {
   const e = next.edition;
   const ms = next.t - now;
-  const [big, small] = cdParts(ms, next.m.est);
   const rank = s.rank ? `<span class="rank" title="${esc(s.rank.system)} ranking">${esc(s.rank.value)}</span>` : "";
   const flags = (e.tentative && !next.m.est ? `<span class="badge tent">Tentative</span>` : "") + checkBadge(e);
   const place = [e.city, e.country].filter(Boolean).join(", ");
@@ -468,7 +476,7 @@ function rowHtml({ s, next }, now) {
   const starred = state.starred.has(s.key);
   return `<li class="row ${next.m.est ? "est-row" : urgency(ms)}${open ? " open" : ""}" id="${esc(s.key)}" data-key="${esc(s.key)}">
     <div class="row-main" role="button" tabindex="0" aria-expanded="${open}">
-      <div class="cdbox" data-at="${esc(next.m.at)}" data-est="${next.m.est ? 1 : ""}"><span class="big">${esc(big)}</span><span class="small">${esc(small)}</span></div>
+      <div class="cdbox" data-at="${esc(next.m.at)}" data-est="${next.m.est ? 1 : ""}">${cdBoxHtml(ms, next.m.est)}</div>
       <div class="info">
         <div class="t"><span class="name">${esc(s.title)} ${e.year}</span>${rank}${flags}</div>
         <div class="what"><span class="sw" style="background:var(--g-${next.m.group})"></span><b class="lab-full" title="${esc(next.m.label)}">${esc(next.m.label)}</b><b class="lab-short" title="${esc(next.m.label)}">${esc(shortLabel(next.m))}</b><span class="dot">·</span><span class="when">${esc(whenShort(next))}</span></div>
@@ -836,9 +844,7 @@ function tick() {
   for (const el of document.querySelectorAll(".cdbox[data-at]")) {
     const ms = Date.parse(el.dataset.at) - now;
     if (ms <= 0) { expired = true; break; }
-    const [big, small] = cdParts(ms, !!el.dataset.est);
-    el.firstElementChild.textContent = big;
-    el.lastElementChild.textContent = small;
+    cdParts(ms, !!el.dataset.est).forEach((text, i) => { if (el.children[i]) el.children[i].textContent = text; });
   }
   for (const el of document.querySelectorAll(".run em[data-at]")) {
     const ms = Date.parse(el.dataset.at) - now;

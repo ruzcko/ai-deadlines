@@ -52,7 +52,7 @@
     function overrideCss(o) {
       return `
         body, button, input, kbd { font-family: ${o.body}, system-ui, sans-serif !important; }
-        .hero h1, .brand, .info .name, .cal-nav h2, .sd-head h2 { font-family: ${o.head}, serif !important; ${o.headStretch ? `font-stretch: ${o.headStretch};` : ""} ${o.headWeight ? `font-weight: ${o.headWeight} !important;` : ""} }
+        .hero h1, .hero h1 button, .brand, .info .name, .cal-nav h2, .sd-head h2 { font-family: ${o.head}, serif !important; ${o.headStretch ? `font-stretch: ${o.headStretch};` : ""} ${o.headWeight ? `font-weight: ${o.headWeight} !important;` : ""} }
         .clock .n, .cdbox .big, .run em, .count, .details td.when, .details td.left, .cal-n, .info .when, .bucket h3 .n {
           font-family: ${o.num}, ui-monospace, monospace !important; ${o.numStretch ? `font-stretch: ${o.numStretch};` : ""} ${o.numSpacing ? `letter-spacing: ${o.numSpacing};` : ""} }`;
     }

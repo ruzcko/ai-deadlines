@@ -8,7 +8,9 @@ The values below come from `site/style.css` as of 2026-10-14.
 
 ## 1. The idea
 
-**Open question.** The site works and reads clearly, but it doesn't have a look of its own yet: on 2026-10-10 the palette felt like default "vibe-coding" colours. Three candidate palettes are saved in commit `e5b6504` (`palettes.html`):
+**A departures board for papers** (type chosen 2026-10-14): a sturdy grotesque for words, with every countdown, time and count in mono, like flight times ticking down.
+
+**The palette is still open.** On 2026-10-10 the colours felt like default "vibe-coding" colours. Three candidate palettes are saved in commit `e5b6504` (`palettes.html`). **Signal** suits the departures-board type best:
 
 - **Ink & Paper:** an ink hero on cream, with a vermilion accent.
 - **Signal:** a black departures-board hero with amber digit tiles.
@@ -69,12 +71,19 @@ By default the hero follows the page (`--hero-bg: var(--surface)` and so on). A 
 
 ## 3. Type
 
-**Font:** Inter today, self-hosted in `site/fonts/`. **Under review:** `design/type-specimen.html` shows the real site in four fonts side by side (Inter; Newsreader + Source Sans 3; Chivo + Chivo Mono; Archivo with condensed numbers).
+**Fonts (chosen 2026-10-14):** **Chivo** for words and **Chivo Mono** for numbers. Both are variable fonts (weights 100–900), OFL, and self-hosted in `site/fonts/`. `design/font-options.html` is the comparison we chose from (Inter; Newsreader + Source Sans 3; Chivo + Chivo Mono; Archivo). It's a standalone file, so open it directly in a browser.
+
+| Token | Use for |
+|---|---|
+| `--sans` | Everything by default |
+| `--mono` | The hero clock, row countdown boxes, "Next" chip counts, timeline dates and time-left, calendar day numbers, row times, bucket counts |
+
+**Mono spaces are a full character wide**, so in mono write short units without a space: `2d`, not `2 d`.
 
 Fonts are set in three places. Change all three together, or the share cards and link previews won't match the site:
-1. `site/style.css`: the `@font-face` rule and the `body` font (and `.search kbd`, which names Inter), plus the `<link rel="preload">` in `site/index.html`.
-2. `site/share.js`: the `FONT` constant (share cards are drawn on a canvas, which only uses fonts that are already loaded).
-3. `functions/og.js`: the TTF files it loads (resvg can't read woff2) and the per-character width estimates, which were measured for Inter.
+1. `site/style.css`: the `@font-face` rules and `--sans` / `--mono`, plus the `<link rel="preload">` lines in `site/index.html`.
+2. `site/share.js`: `FONT` and `MONO`. Share cards are drawn on a canvas, which only uses fonts that are already loaded, so `refreshCard` loads every weight it draws first.
+3. `functions/og.js`: the TTF files it loads (resvg can't read woff2) and the width estimate. There's no text measuring there; Chivo measures at most about 0.6 em per character at 500 and 800 on venue names, and Chivo Mono is exactly 0.6 em.
 
 Numbers that tick or line up use `font-variant-numeric: tabular-nums` (the list is near the top of `style.css`).
 
@@ -92,6 +101,25 @@ Numbers that tick or line up use `font-variant-numeric: tabular-nums` (the list 
 | Labels, badges, ALL-CAPS headings | 11–12.5 | 600–700 |
 
 The CSS uses 22 font sizes and 8 weights, some only half a pixel or 50 weight units apart. When the font changes, settle on a short scale (for example 11, 13, 15, 17, 20, 26 and the two clamps) and four weights (400, 600, 700, 800).
+
+### Countdowns
+
+One unit leads at each stage, and the next smaller unit joins only when it matters. The row box (`cdParts` in `app.js`) stacks the number, its unit under it, then the remainder in small mono below a thin rule:
+
+| Time left | Row box | Compact (timeline) |
+|---|---|---|
+| 7 days or more | 28 / days | 28d |
+| 1 to 7 days | 5 / days / 7h | 5d 7h |
+| 1 to 24 hours | 17 / hours / 45m | 17h 45m |
+| 1 to 60 minutes | 45 / min / 12s | 45m 12s |
+| Under a minute | 42 / sec | 42s |
+| Estimated, 60 days or more | ~3 / months | ~3 mo |
+| Estimated, 45–60 days | ~50 / days | ~50 d |
+| Estimated, under 45 days | TBA / due soon | TBA, due soon |
+
+- **TBA** ("to be announced") means the venue hasn't published the date yet. Not TBD, which would suggest nobody has decided.
+- The hero clock always shows all four units (days, hours, min, sec) with full-word labels under the digits.
+- Share cards and link previews are still images, so they show one number: days until under a day is left, then hours, then minutes.
 
 ## 4. Shape and space
 
