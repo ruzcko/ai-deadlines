@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Deadlines type specimen</title>
+  <!-- Design exploration only, not part of the site. Serve the repo root (launch entry "ai-deadlines-design")
+       and open /design/type-specimen.html. Each frame is the real app; only its fonts are overridden. -->
+  <style>
+    :root { color-scheme: light dark; --bg: #f6f6f3; --fg: #121418; --muted: #5f636b; --line: #e3e3dd; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #0d0f13; --fg: #eceef2; --muted: #a0a5ae; --line: #262a32; } }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; }
+    .intro { max-width: 1680px; margin: 0 auto; padding: 20px 16px 4px; }
+    .intro h1 { margin: 0 0 6px; font-size: 24px; }
+    .intro p { margin: 0 0 8px; color: var(--muted); max-width: 70ch; }
+    .bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+    .bar button { font: inherit; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer; }
+    .bar button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+    .grid { max-width: 1680px; margin: 0 auto; padding: 8px 16px 48px; display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 392px), 1fr)); }
+    figure { margin: 0; }
+    figcaption { margin-bottom: 8px; }
+    figcaption b { display: block; font-size: 15px; }
+    figcaption span { color: var(--muted); font-size: 13px; }
+    iframe { display: block; width: 390px; max-width: 100%; height: 820px; border: 1px solid var(--line); border-radius: 18px; background: var(--bg); }
+  </style>
+</head>
+<body>
+  <div class="intro">
+    <h1>Which font should AI Deadlines use?</h1>
+    <p>Each frame is the real site at phone size. Only the fonts change. Look hardest at the big countdown, the day counts in each row, and the venue names. Scroll inside a frame to see more of it.</p>
+    <div class="bar" role="group" aria-label="Theme for all frames">
+      <button type="button" data-theme="light" aria-pressed="true">Light</button>
+      <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <script>
+    const OPTIONS = [
+      { name: "Now: Inter", lic: "OFL", feel: "Clean, but it's the default of a huge share of new sites, which is part of why the site reads as generic.", css: null },
+      { name: "A · Newsreader + Source Sans 3", lic: "OFL · Google Fonts", feel: "A journal or a paper: serif headings and numbers, calm sans text. Speaks to people who write papers.",
+        fonts: "family=Newsreader:opsz,wght@6..72,500..800&family=Source+Sans+3:wght@400..700",
+        body: '"Source Sans 3"', head: "Newsreader", num: "Newsreader", headWeight: 700 },
+      { name: "B · Chivo + Chivo Mono", lic: "OFL · Google Fonts", feel: "A departures board: a sturdy grotesque, with every countdown and date in mono, like flight times ticking down.",
+        fonts: "family=Chivo:wght@400..900&family=Chivo+Mono:wght@400..800",
+        body: "Chivo", head: "Chivo", num: '"Chivo Mono"', numSpacing: "-.04em" },
+      { name: "C · Archivo (condensed numbers)", lic: "OFL · Google Fonts", feel: "A scoreboard: narrow, heavy numbers fit big countdowns on a phone; headings are tighter and firmer.",
+        fonts: "family=Archivo:wdth,wght@62..125,400..900",
+        body: "Archivo", head: "Archivo", num: "Archivo", numStretch: "72%", headStretch: "90%" },
+    ];
+
+    function overrideCss(o) {
+      return `
+        body, button, input, kbd { font-family: ${o.body}, system-ui, sans-serif !important; }
+        .hero h1, .brand, .info .name, .cal-nav h2, .sd-head h2 { font-family: ${o.head}, serif !important; ${o.headStretch ? `font-stretch: ${o.headStretch};` : ""} ${o.headWeight ? `font-weight: ${o.headWeight} !important;` : ""} }
+        .clock .n, .cdbox .big, .run em, .count, .details td.when, .details td.left, .cal-n, .info .when, .bucket h3 .n {
+          font-family: ${o.num}, ui-monospace, monospace !important; ${o.numStretch ? `font-stretch: ${o.numStretch};` : ""} ${o.numSpacing ? `letter-spacing: ${o.numSpacing};` : ""} }`;
+    }
+
+    let theme = "light";
+    const frames = [];
+    function applyTheme(f) {
+      try { f.contentDocument.documentElement.dataset.theme = theme; } catch (_) { /* not loaded yet */ }
+    }
+    for (const o of OPTIONS) {
+      const fig = document.createElement("figure");
+      fig.innerHTML = `<figcaption><b></b><span></span></figcaption><iframe loading="lazy" src="/site/index.html"></iframe>`;
+      fig.querySelector("b").textContent = `${o.name} (${o.lic})`;
+      fig.querySelector("span").textContent = o.feel;
+      fig.querySelector("iframe").title = o.name;
+      const f = fig.querySelector("iframe");
+      f.addEventListener("load", () => {
+        const d = f.contentDocument;
+        if (o.fonts) {
+          const link = d.createElement("link");
+          link.rel = "stylesheet";
+          link.href = `https://fonts.googleapis.com/css2?${o.fonts}&display=swap`;
+          d.head.append(link);
+          const st = d.createElement("style");
+          st.textContent = overrideCss(o);
+          d.head.append(st);
+        }
+        applyTheme(f);
+      });
+      frames.push(f);
+      document.getElementById("grid").append(fig);
+    }
+    document.querySelector(".bar").addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-theme]");
+      if (!b) return;
+      theme = b.dataset.theme;
+      for (const x of document.querySelectorAll("[data-theme]")) x.setAttribute("aria-pressed", x === b);
+      frames.forEach(applyTheme);
+    });
+  </script>
+</body>
+</html>
