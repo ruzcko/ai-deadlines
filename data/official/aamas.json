@@ -1,0 +1,98 @@
+{
+ "key": "aamas",
+ "title": "AAMAS",
+ "fetched_at": "2026-10-14T14:24:55Z",
+ "urls": [
+  "https://warwick.ac.uk/fac/sci/dcs/aamas2027/"
+ ],
+ "errors": [],
+ "content_hash": "0abfc09e88a5533a",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1127,
+  "output": 720
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Hanoi",
+ "country": "Vietnam",
+ "venue": "JW Marriott Hotel",
+ "conference_start": "2027-05-03",
+ "conference_end": "2027-05-07",
+ "milestones": [
+  {
+   "label": "Abstract submission",
+   "type": "abstract",
+   "date": "2026-10-01",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Paper submission",
+   "type": "paper",
+   "date": "2026-10-08",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Rebuttal period (start)",
+   "type": "rebuttal_start",
+   "date": "2026-11-20",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Rebuttal period (end)",
+   "type": "rebuttal_end",
+   "date": "2026-11-24",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author notification",
+   "type": "notification",
+   "date": "2026-12-21",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready paper",
+   "type": "camera_ready",
+   "date": "2027-01-25",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Workshop Proposal Submission Deadline",
+   "type": "workshop",
+   "date": "2026-10-29",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "AAMAS 2027 Early Registration Deadline",
+   "type": "registration",
+   "date": "2027-03-17",
+   "time": null,
+   "timezone": null,
+   "tentative": true
+  },
+  {
+   "label": "Proposal Submission",
+   "type": "tutorial",
+   "date": "2026-12-10",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates are reported for the Main Track; Blue Sky Ideas, AAAI Fast Tracks, and Workshops/Tutorials are also listed.",
+ "follow_url": null
+}

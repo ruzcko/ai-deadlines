@@ -1,0 +1,51 @@
+{
+ "key": "coling",
+ "title": "COLING",
+ "fetched_at": "2026-10-14T14:44:49Z",
+ "urls": [
+  "https://www.aclweb.org/portal/content/32nd-international-conference-computational-linguistics-coling-2027",
+  "https://2027.coling-iccl.org/"
+ ],
+ "errors": [],
+ "content_hash": "e88eb1ba088ba3b9",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1634,
+  "output": 322
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Macau",
+ "country": "China",
+ "venue": null,
+ "conference_start": "2027-05-09",
+ "conference_end": "2027-05-14",
+ "milestones": [
+  {
+   "label": "ARR submission deadline",
+   "type": "paper",
+   "date": "2026-10-12",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Commitment after meta-reviews",
+   "type": "paper",
+   "date": "2026-12-23",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance",
+   "type": "notification",
+   "date": "2027-02-10",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}
