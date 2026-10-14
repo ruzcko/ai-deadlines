@@ -11,9 +11,10 @@ const CARD_FORMATS = {
 // Card themes. Every color is a 6-digit hex (the glow and dots append alpha to it), except `line`.
 // Milestone colors are tuned per theme so they stay readable on its background.
 const CARD_THEMES = {
-  midnight: {
-    name: "Midnight", bg1: "#16181f", bg2: "#0b0c10", glow: 0x55, text: "#f2f3f6", muted: "#a3a8b2", faint: "#5d626c", line: "#2c313a",
-    accent: "#ff6369", submission: "#ff6369", reviews: "#b98cf0", decision: "#52a9ff", camera: "#3dd68c", conference: "#e8eaee", other: "#80858f",
+  // The site's own look: a black departures board with amber digits (num). A saved "midnight" falls back to it.
+  signal: {
+    name: "Signal", bg1: "#17191d", bg2: "#000000", glow: 0x40, glowColor: "#ffb81c", text: "#f5f2ea", muted: "#a7a39a", faint: "#8a867c", line: "#26282e",
+    accent: "#ff5b2e", num: "#ffb81c", submission: "#ff5b2e", reviews: "#f5c542", decision: "#4cc3ff", camera: "#4cd08a", conference: "#f5f2ea", other: "#6b6860",
   },
   paper: {
     name: "Paper", bg1: "#faf6ee", bg2: "#ebe2d0", glow: 0x26, text: "#1c1a16", muted: "#5e584d", faint: "#9a9282", line: "#d8cfbd",
@@ -28,11 +29,11 @@ const CARD_THEMES = {
     accent: "#ffd166", submission: "#ffd166", reviews: "#f7c6ff", decision: "#c3e4ff", camera: "#c2f7d3", conference: "#ffffff", other: "#ffd9cf",
   },
 };
-const CARD_COLORS = { ...CARD_THEMES.midnight }; // the theme being drawn
+const CARD_COLORS = { ...CARD_THEMES.signal }; // the theme being drawn
 const FONT = 'Chivo, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 const MONO = '"Chivo Mono", ui-monospace, Consolas, monospace'; // countdown numbers, as on the site
 const CARD_STORE = "ai-deadlines:card";
-const shareState = { kind: null, payload: null, format: "story", theme: "midnight", blob: null, url: null };
+const shareState = { kind: null, payload: null, format: "story", theme: "signal", blob: null, url: null };
 try {
   const saved = JSON.parse(localStorage.getItem(CARD_STORE) || "{}");
   if (CARD_THEMES[saved.theme]) shareState.theme = saved.theme;
@@ -165,7 +166,7 @@ function drawTrack(g, e, next, x, y, w, size) {
 
 function drawVenue(g, W, H, fmt, { s, e, m }) {
   const color = CARD_COLORS[m.group] || CARD_COLORS.accent;
-  const numColor = m.est ? CARD_COLORS.muted : m.group === "conference" ? CARD_COLORS.text : color;
+  const numColor = m.est ? CARD_COLORS.muted : CARD_COLORS.num || (m.group === "conference" ? CARD_COLORS.text : color);
   background(g, W, H, color);
   const b = safeBox(fmt, W, H);
   const [num, unit] = cardCount(Date.parse(m.at) - Date.now(), m.est);
@@ -284,7 +285,7 @@ function layout(blocks, b) {
 
 function renderCard(kind, payload, fmt, theme = shareState.theme) {
   Object.keys(CARD_COLORS).forEach((k) => delete CARD_COLORS[k]);
-  Object.assign(CARD_COLORS, CARD_THEMES[theme] || CARD_THEMES.midnight);
+  Object.assign(CARD_COLORS, CARD_THEMES[theme] || CARD_THEMES.signal);
   const { w, h } = CARD_FORMATS[fmt];
   const c = document.createElement("canvas");
   c.width = w;

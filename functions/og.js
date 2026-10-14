@@ -95,7 +95,7 @@ function venueSvg({ s, e, m, t }, now, eyebrowPrefix = "") {
   y = Math.max(y + 56, 420);
   body += txt(X, y, fit(when, leftW, 30, false, 20), 700, C.text, when);
   if (place) body += txt(X, y + 40, 26, 500, C.muted, place);
-  body += txt(W - X, 340, ns, 800, m.est ? C.muted : color, num, `text-anchor="end" letter-spacing="-6" ${MONO}`);
+  body += txt(W - X, 340, ns, 800, m.est ? C.muted : C.num || color, num, `text-anchor="end" letter-spacing="-6" ${MONO}`);
   body += txt(W - X, 392, 32, 700, C.text, unit, 'text-anchor="end"');
   body += timeline(e, m, now, 528);
   body += txt(X, 588, 22, 500, C.faint, `${SITE}/?v=${s.key}  ·  ${asOf(now)}`);
@@ -117,12 +117,12 @@ function listSvg(rows, now) {
   });
   body += txt(X, 588, 22, 500, C.faint, `${SITE}  ·  ${asOf(now)}`);
   if (rows.length > shown.length) body += txt(W - X, 588, 22, 700, C.muted, `+${rows.length - shown.length} more`, 'text-anchor="end"');
-  return frame(C.accent, body);
+  return frame(C.num, body);
 }
 
 function emptySvg() {
-  return frame(C.accent, txt(X, 300, 84, 800, C.text, "Every AI deadline,", 'letter-spacing="-2"') +
-    txt(X, 400, 84, 800, C.accent, "counting down.", 'letter-spacing="-2"') +
+  return frame(C.num, txt(X, 300, 84, 800, C.text, "Every AI deadline,", 'letter-spacing="-2"') +
+    txt(X, 400, 84, 800, C.num, "counting down.", 'letter-spacing="-2"') +
     txt(X, 470, 30, 500, C.muted, "Submission to camera-ready · map · calendar feeds") +
     txt(X, 588, 22, 500, C.faint, SITE));
 }
