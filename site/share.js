@@ -9,6 +9,7 @@ const CARD_FORMATS = {
   wide: { w: 1200, h: 630, label: "Wide" },
 };
 // Card themes. Every color is a 6-digit hex (the glow and dots append alpha to it), except `line`.
+// Text colours are 4.5:1 and milestone colours 3:1 against bg1, bg2 and the midpoint between them (checked 2026-10-14).
 // Milestone colors are tuned per theme so they stay readable on its background.
 const CARD_THEMES = {
   // The site's own look: a black departures board with amber digits (num). A saved "midnight" falls back to it.
@@ -17,15 +18,15 @@ const CARD_THEMES = {
     accent: "#ff5b2e", num: "#ffb81c", submission: "#ff5b2e", reviews: "#f5c542", decision: "#4cc3ff", camera: "#4cd08a", conference: "#f5f2ea", other: "#6b6860",
   },
   paper: {
-    name: "Paper", bg1: "#faf6ee", bg2: "#ebe2d0", glow: 0x26, text: "#1c1a16", muted: "#5e584d", faint: "#9a9282", line: "#d8cfbd",
-    accent: "#d23f2e", submission: "#d23f2e", reviews: "#7a3fb2", decision: "#1d5fc2", camera: "#23803c", conference: "#1c1a16", other: "#8a8375",
+    name: "Paper", bg1: "#faf6ee", bg2: "#ebe2d0", glow: 0x26, text: "#1c1a16", muted: "#5e584d", faint: "#696358", line: "#d8cfbd",
+    accent: "#d23f2e", submission: "#d23f2e", reviews: "#7a3fb2", decision: "#1d5fc2", camera: "#23803c", conference: "#1c1a16", other: "#878073",
   },
   aurora: {
-    name: "Aurora", bg1: "#0f2d4f", bg2: "#03101d", glow: 0x66, glowColor: "#38e6c5", text: "#eef7ff", muted: "#a7bdd3", faint: "#64809c", line: "#1f3d5c",
+    name: "Aurora", bg1: "#0f2d4f", bg2: "#03101d", glow: 0x66, glowColor: "#38e6c5", text: "#eef7ff", muted: "#a7bdd3", faint: "#8097ae", line: "#1f3d5c",
     accent: "#38e6c5", submission: "#ff8593", reviews: "#c8a6ff", decision: "#6ccbff", camera: "#5ff0b1", conference: "#eef7ff", other: "#7d93a8",
   },
   sunset: {
-    name: "Sunset", bg1: "#2b0f45", bg2: "#e0522e", glow: 0x55, glowColor: "#ffd166", text: "#ffffff", muted: "#ffe3d9", faint: "#ffc0b0", line: "#ffffff38",
+    name: "Sunset", bg1: "#2b0f45", bg2: "#9c2e14", /* burnt orange, so white text is 7.5:1 at this end (3.9 on the old #e0522e) */ glow: 0x55, glowColor: "#ffd166", text: "#ffffff", muted: "#ffe3d9", faint: "#ffc0b0", line: "#ffffff38",
     accent: "#ffd166", submission: "#ffd166", reviews: "#f7c6ff", decision: "#c3e4ff", camera: "#c2f7d3", conference: "#ffffff", other: "#ffd9cf",
   },
 };

@@ -232,7 +232,7 @@ function checkBadge(e) {
   const checks = e.checks || [];
   if (!checks.length) return "";
   return checks.some((c) => !c.agree)
-    ? `<span class="badge warn" title="Hugging Face and the official site list different dates">⚠ Sources differ</span>`
+    ? `<span class="badge warn" title="Hugging Face and the official site list different dates">${WARN_ICON} Sources differ</span>`
     : `<span class="badge ok" title="Hugging Face and the official site list the same dates">✓ 2 sources</span>`;
 }
 
@@ -248,7 +248,7 @@ function checksBlock(e) {
   if (!checks.length) return "";
   const items = checks.map((c) => c.agree
     ? `<li class="agree">✓ <b>${esc(c.what)}</b>: both sources say ${esc(checkWhen(c.hf, c.hf_tz))}</li>`
-    : `<li class="differ">⚠ <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, the official site says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. The official site is usually right, but check it.</li>`).join("");
+    : `<li class="differ">${WARN_ICON} <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, the official site says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. The official site is usually right, but check it.</li>`).join("");
   return `<ul class="checks">${items}</ul>`;
 }
 
@@ -530,6 +530,8 @@ function estSection(rows, now) {
 
 // The share glyph people know from their own device: box-and-arrow on Apple, three dots elsewhere.
 const IS_APPLE = /Mac|iPhone|iPad|iPod/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent);
+// Tabler alert-triangle, inline so it never renders as a colour emoji (U+26A0 does on phones).
+const WARN_ICON = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M10.363 3.591 2.257 17.125a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636-2.87L13.637 3.59a1.914 1.914 0 0 0-3.274 0z"/><path d="M12 16h.01"/></svg>';
 const SHARE_ICON = IS_APPLE
   ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5M5 10.5v5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   : '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.4 8.8 5.2-2.6M7.4 11.2l5.2 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="5.2" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="14.8" cy="5.2" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="14.8" cy="14.8" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
@@ -661,7 +663,7 @@ function renderGaps() {
     if (!i) return card;
     const days = (p.t - inWin[i - 1].t) / 86400000;
     const cls = gapClass(days);
-    return `<span class="garrow ${cls}">${cls === "tight" ? "⚠ " : ""}${esc(gapText(days))}<i>→</i></span>${card}`;
+    return `<span class="garrow ${cls}">${cls === "tight" ? WARN_ICON + " " : ""}${esc(gapText(days))}<i>→</i></span>${card}`;
   }).join("");
   const later = pts.length - inWin.length;
   const wasOpen = box.dataset.ready ? box.open : true;
@@ -811,11 +813,14 @@ async function renderMap() {
     marker.bindTooltip(items.map((it) => `${esc(it.s.title)} ’${String(it.e.year).slice(2)}`).join(" · "), {
       permanent: true, direction: "right", offset: [8, 0], className: "map-label",
     });
-    marker.bindPopup(`<div class="pop"><div class="pop-place">${esc(place)}</div>${items.map(({ s, e: ed, assumed }) => `
+    const popup = `<div class="pop"><div class="pop-place">${esc(place)}</div>${items.map(({ s, e: ed, assumed }) => `
       <div class="pop-item"><a href="#${esc(s.key)}"><b>${esc(s.title)} ${ed.year}</b></a>
       <div>${esc(fmtRange(ed))}${assumed ? ` <span class="badge est">Dates assumed</span>` : ""}</div>
-      ${(ed.checks || []).some((c) => !c.agree && c.what === "Conference starts") ? `<div class="warn-text">⚠ Sources differ on the dates</div>` : ""}
-      <div class="muted">${nextDeadlineText(s)}</div></div>`).join("")}</div>`);
+      ${(ed.checks || []).some((c) => !c.agree && c.what === "Conference starts") ? `<div class="warn-text">${WARN_ICON} Sources differ on the dates</div>` : ""}
+      <div class="muted">${nextDeadlineText(s)}</div></div>`).join("")}</div>`;
+    // The dot is 12-24px; an invisible 44px circle under it is what a finger actually taps.
+    L.circleMarker([e.lat, e.lng], { radius: 22, stroke: false, fillOpacity: 0, bubblingMouseEvents: false }).bindPopup(popup).addTo(mapLayer);
+    marker.bindPopup(popup);
     marker.addTo(mapLayer);
     for (const it of items) markers.set(it.s.key, marker);
     bounds.push([e.lat, e.lng]);
@@ -873,13 +878,21 @@ function openPop(dlgId, btnId) {
   closePops();
   if (wasOpen) return;
   if (matchMedia("(max-width: 640px)").matches) {
-    dlg.style.top = dlg.style.right = dlg.style.maxHeight = ""; // drop any desktop anchoring
+    dlg.style.top = dlg.style.bottom = dlg.style.right = dlg.style.maxHeight = ""; // drop any desktop anchoring
     dlg.showModal();
   } else {
     const r = btn.getBoundingClientRect();
-    dlg.style.top = `${Math.round(r.bottom + 8)}px`;
     dlg.style.right = `${Math.max(16, Math.round(document.documentElement.clientWidth - r.right))}px`;
-    dlg.style.maxHeight = `${Math.max(240, Math.round(innerHeight - r.bottom - 24))}px`;
+    const below = Math.round(innerHeight - r.bottom - 24);
+    if (below >= 240 || r.top < innerHeight / 2) {
+      dlg.style.bottom = "";
+      dlg.style.top = `${Math.round(r.bottom + 8)}px`;
+      dlg.style.maxHeight = `${Math.max(240, below)}px`;
+    } else { // no room under the button (a short window scrolled so the toolbar sits low): open above it
+      dlg.style.top = "";
+      dlg.style.bottom = `${Math.round(innerHeight - r.top + 8)}px`;
+      dlg.style.maxHeight = `${Math.max(240, Math.round(r.top - 24))}px`;
+    }
     dlg.show();
   }
   btn.setAttribute("aria-expanded", "true");
