@@ -1,0 +1,74 @@
+{
+ "key": "colt",
+ "title": "COLT",
+ "fetched_at": "2026-10-15T14:05:00Z",
+ "urls": [
+  "https://learningtheory.org/colt2026/"
+ ],
+ "errors": [],
+ "content_hash": "61d8a21d99508c8b",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 836,
+  "output": 500
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "San Diego",
+ "country": "United States",
+ "venue": "Bahia Resort Hotel",
+ "conference_start": "2026-06-29",
+ "conference_end": "2026-07-03",
+ "milestones": [
+  {
+   "label": "Submission deadline",
+   "type": "paper",
+   "date": "2026-02-04",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviews released",
+   "type": "review_release",
+   "date": "2026-04-03",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Initial author response due",
+   "type": "rebuttal_end",
+   "date": "2026-04-10",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Discussion period (end)",
+   "type": "other",
+   "date": "2026-04-20",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author notification",
+   "type": "notification",
+   "date": "2026-05-04",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Workshop/Tutorial/Community event proposals",
+   "type": "workshop",
+   "date": "2026-05-07",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

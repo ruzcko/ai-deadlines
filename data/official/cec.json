@@ -1,0 +1,74 @@
+{
+ "key": "cec",
+ "title": "CEC",
+ "fetched_at": "2026-10-15T13:54:32Z",
+ "urls": [
+  "http://ieeecec.org"
+ ],
+ "errors": [],
+ "content_hash": "7a433515e9dc6ee1",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 2522,
+  "output": 497
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Edinburgh",
+ "country": "UK",
+ "venue": null,
+ "conference_start": "2027-07-25",
+ "conference_end": "2027-07-28",
+ "milestones": [
+  {
+   "label": "Special Session & Workshop Proposals Deadline",
+   "type": "workshop",
+   "date": "2026-11-15",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Competition & Tutorial Proposals Deadline",
+   "type": "tutorial",
+   "date": "2026-12-15",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Full Paper Submission Deadline",
+   "type": "paper",
+   "date": "2027-02-28",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Short Paper Submission Deadline",
+   "type": "paper",
+   "date": "2027-03-15",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Paper Acceptance Notification",
+   "type": "notification",
+   "date": "2027-04-07",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Final Paper Submission & Early Registration Deadline",
+   "type": "camera_ready",
+   "date": "2027-05-01",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}
