@@ -6,6 +6,26 @@ const MAIN_GROUPS = ["submission", "reviews", "decision", "camera", "conference"
 const FOCUS = [["all", "All"], ["submission", "Submissions"], ["reviews", "Reviews"], ["decision", "Decisions"], ["camera", "Camera-ready"], ["conference", "Conferences"]];
 const $ = (id) => document.getElementById(id);
 
+// Icons: Tabler (MIT, tabler.io/icons), 2px stroke, inline so they take currentColor. Never hand-drawn.
+const ICON = {
+  pin: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"/><path d="M17.657 16.657L13.414 20.9a2 2 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0"/></g></svg>',
+  ext: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17M8 7h9v9"/></svg>',
+  arrow: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-4 4l4-4m-4-4l4 4"/></svg>',
+  check: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/></svg>',
+  star: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></svg>',
+  starFill: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"/></svg>',
+  starIc: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"/></svg>',
+  contrast: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M12 17a5 5 0 0 0 0-10z"/></g></svg>',
+  sun: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0m-5 0h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7l-.7.7m0 11.4l.7.7m-12.1-.7l-.7.7"/></svg>',
+  moon: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z"/></svg>',
+  shareApple: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1m-4 5V3M9 6l3-3l3 3"/></svg>',
+  share: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0m12-6a3 3 0 1 0 6 0a3 3 0 1 0-6 0m0 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0m-6.3-7.3l6.6-3.4m-6.6 6l6.6 3.4"/></svg>',
+  apple: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.286 7.008C5.07 7.008 4 10.238 4 12.928C4 16.157 6.143 21 8.286 21c1.165-.05 1.799-.538 3.214-.538c1.406 0 1.607.538 3.214.538S19 17.771 19 15.619c-.03-.011-2.649-.434-2.679-3.23c-.02-2.335 2.589-3.179 2.679-3.228c-1.096-1.606-3.162-2.113-3.75-2.153c-1.535-.12-3.032 1.077-3.75 1.077c-.729 0-2.036-1.077-3.214-1.077M12 4a2 2 0 0 0 2-2a2 2 0 0 0-2 2"/></svg>',
+  google: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.945 11a9 9 0 1 1-3.284-5.997l-2.655 2.392A5.5 5.5 0 1 0 17.125 14H13v-3z"/></svg>',
+  mail: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m3 7l9 6l9-6"/></g></svg>',
+  link: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 15l6-6m-4-3l.463-.536a5 5 0 0 1 7.071 7.072L18 13m-5 5l-.397.534a5.07 5.07 0 0 1-7.127 0a4.97 4.97 0 0 1 0-7.071L6 11"/></svg>',
+};
+
 const state = {
   q: "",
   focus: "submission",
@@ -233,7 +253,7 @@ function checkBadge(e) {
   if (!checks.length) return "";
   return checks.some((c) => !c.agree)
     ? `<span class="badge warn" title="Hugging Face and the official site list different dates">${WARN_ICON} Sources differ</span>`
-    : `<span class="badge ok" title="Hugging Face and the official site list the same dates">✓ 2 sources</span>`;
+    : `<span class="badge ok" title="Hugging Face and the official site list the same dates">${ICON.check} 2 sources</span>`;
 }
 
 function checkWhen(v, tz, notime) {
@@ -247,7 +267,7 @@ function checksBlock(e) {
   const checks = e.checks || [];
   if (!checks.length) return "";
   const items = checks.map((c) => c.agree
-    ? `<li class="agree">✓ <b>${esc(c.what)}</b>: both sources say ${esc(checkWhen(c.hf, c.hf_tz))}</li>`
+    ? `<li class="agree">${ICON.check} <b>${esc(c.what)}</b>: both sources say ${esc(checkWhen(c.hf, c.hf_tz))}</li>`
     : `<li class="differ">${WARN_ICON} <b>${esc(c.what)}</b>: Hugging Face says ${esc(checkWhen(c.hf, c.hf_tz))}, the official site says ${esc(checkWhen(c.pr, c.pr_tz, c.pr_notime))}. The official site is usually right, but check it.</li>`).join("");
   return `<ul class="checks">${items}</ul>`;
 }
@@ -317,7 +337,7 @@ function renderToolbar() {
   $("focus").innerHTML = FOCUS.map(([k, name]) => `<button type="button" role="radio" data-focus="${k}" aria-checked="${state.focus === k}">${k !== "all" ? `<span class="sw" style="background:var(--g-${k})"></span>` : ""}${esc(name)}</button>`).join("");
   revealActive($("focus"));
   const n = state.starred.size;
-  $("starPill").innerHTML = `★<span class="sp-label"> Starred</span>${n ? ` <span class="sp-n">${n}</span>` : ""}`;
+  $("starPill").innerHTML = `${ICON.star}<span class="sp-label"> Starred</span>${n ? ` <span class="sp-n">${n}</span>` : ""}`;
   $("starPill").setAttribute("aria-label", `Starred only${n ? `, ${n} starred` : ""}`);
   $("starPill").setAttribute("aria-pressed", state.starredOnly);
   const picked = Object.entries(DATA.areas).filter(([a]) => state.areas.has(a)).map(([, name]) => name);
@@ -340,9 +360,9 @@ function renderToolbar() {
 }
 
 const THEME_ICON = {
-  auto: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13Z" fill="currentColor"/></svg>',
-  light: '<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" fill="currentColor"/><path d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
-  dark: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.6A7 7 0 0 1 7.4 3.5a7 7 0 1 0 9.1 9.1Z" fill="currentColor"/></svg>',
+  auto: ICON.contrast,
+  light: ICON.sun,
+  dark: ICON.moon,
 };
 function renderThemeBtn() {
   const b = $("themeBtn");
@@ -357,6 +377,18 @@ function applyTheme() {
 }
 
 // ---- hero ----
+// The hero's lamp row: one lamp per milestone group, like indicator lamps on a console.
+const LAMPS = [["submission", "Submit"], ["reviews", "Reviews"], ["decision", "Decision"], ["camera", "Camera"], ["conference", "Conf"]];
+function lamps(e, next, now) {
+  const items = LAMPS.map(([g, label]) => {
+    const ms = e.milestones.filter((x) => x.group === g);
+    const state = next.group === g ? "next" : !ms.length ? "none" : ms.every((x) => Date.parse(x.at) <= now) ? "done" : "";
+    const said = { next: "next", none: "no date", done: "done", "": "to come" }[state];
+    return `<li class="${state}" style="--c:var(--g-${g})"><i></i>${label}<span class="vh">: ${said}</span></li>`;
+  }).join("");
+  return `<ul class="lamps" aria-label="Milestones">${items}</ul>`;
+}
+
 function renderHero() {
   const hero = $("hero");
   // Personal first: with starred venues, the hero is "your next deadline".
@@ -382,14 +414,15 @@ function renderHero() {
   hero.dataset.at = m.at;
   hero.innerHTML = `
     <div class="hero-top">
-      <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span><span class="eb-text">${mine.length ? `<span class="eb-star" aria-hidden="true">★</span>` : ""}<span class="eb-pre">${mine.length ? "Your next deadline" : "Next up"} · </span>${esc(m.label)}</span></div>
+      <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span><span class="eb-text">${mine.length ? `<span class="eb-star" aria-hidden="true">${ICON.starIc}</span>` : ""}<span class="eb-pre">${mine.length ? "Your next deadline" : "Next up"} · </span>${esc(m.label)}</span></div>
       <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}"><span class="hs-icon">${SHARE_ICON}</span><span class="hs-text">Share card</span></button>
     </div>
     <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
     <p class="what">${esc(s.full_name || "")}</p>
-    ${place ? `<p class="place"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 18s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="10" cy="8" r="2.2" fill="currentColor"/></svg>${esc(place)}</p>` : ""}
+    ${place ? `<p class="place">${ICON.pin}${esc(place)}</p>` : ""}
     <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "d")}${unit(p.h, "h")}${unit(p.m, "m")}${unit(p.s, "s")}</div>
-    <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ↗</a>` : ""}</div>
+    ${lamps(e, m, now)}
+    <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ${ICON.ext}</a>` : ""}</div>
     ${runway ? `<div class="runway"><span class="run-label">Next</span>${runway}</div>` : ""}`;
 }
 
@@ -434,15 +467,15 @@ function details(s, next, now) {
     e.note_link && { label: "Call for papers", url: e.note_link },
     ...(e.links || []),
   ].filter((l) => l && !seen.has(l.url) && seen.add(l.url))
-    .map((l) => `<a class="ql" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("");
+    .map((l) => `<a class="ql" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ${ICON.ext}</a>`).join("");
   // One row: copy link, and a small menu with each source's data file and report link.
   const srcs = e.sources || ["hf"];
   const menu = srcs.map((src) => {
     const view = src === "of" ? (s.official && s.official.url) : s.source;
     const report = reportUrl(s, e, src);
     return `<div class="src-row"><b>${esc(SRC_NAME[src])}</b>
-      ${view ? `<a href="${esc(view)}" target="_blank" rel="noopener">${src === "of" ? "Official page" : "Data file"} ↗</a>` : ""}
-      ${report ? `<a href="${esc(report)}" target="_blank" rel="noopener">Report a wrong date ↗</a>` : ""}</div>`;
+      ${view ? `<a href="${esc(view)}" target="_blank" rel="noopener">${src === "of" ? "Official page" : "Data file"} ${ICON.ext}</a>` : ""}
+      ${report ? `<a href="${esc(report)}" target="_blank" rel="noopener">Report a wrong date ${ICON.ext}</a>` : ""}</div>`;
   }).join("");
   const links = [
     `<button class="linkbtn" type="button" data-copylink="${esc(s.key)}">Copy link</button>`,
@@ -483,7 +516,7 @@ function rowHtml({ s, next }, now) {
         <div class="sub">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</div>
       </div>
       <div class="row-acts">
-        <button class="star" type="button" data-star="${esc(s.key)}" aria-pressed="${starred}" aria-label="${starred ? "Unstar" : "Star"} ${esc(s.title)}">${starred ? "★" : "☆"}</button>
+        <button class="star" type="button" data-star="${esc(s.key)}" aria-pressed="${starred}" aria-label="${starred ? "Unstar" : "Star"} ${esc(s.title)}">${starred ? ICON.starFill : ICON.star}</button>
         <button class="share-btn" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}" title="Share card">${SHARE_ICON}</button>
       </div>
       ${track(next)}
@@ -498,7 +531,7 @@ function renderRows() {
   if (!rows.length) {
     const emptyStars = state.starredOnly && !state.starred.size;
     list.innerHTML = `<div class="empty-state">${emptyStars
-      ? `<h3>Your list is empty</h3><p>Tap ☆ on any venue to keep it here. Your list stays on this device.</p><button class="btn" type="button" data-reset="stars">Show all venues</button>`
+      ? `<h3>Your list is empty</h3><p>Tap the star on any venue to keep it here. Your list stays on this device.</p><button class="btn" type="button" data-reset="stars">Show all venues</button>`
       : `<h3>Nothing matches</h3><p>No upcoming ${state.focus === "all" ? "dates" : esc(FOCUS.find(([k]) => k === state.focus)[1].toLowerCase())} for these filters${nothing ? ` (${nothing} venue${nothing === 1 ? " has" : "s have"} nothing ahead)` : ""}.</p><button class="btn" type="button" data-reset="all">Reset filters</button>`}</div>`;
     return;
   }
@@ -532,9 +565,7 @@ function estSection(rows, now) {
 const IS_APPLE = /Mac|iPhone|iPad|iPod/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent);
 // Tabler alert-triangle, inline so it never renders as a colour emoji (U+26A0 does on phones).
 const WARN_ICON = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4"/><path d="M10.363 3.591 2.257 17.125a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636-2.87L13.637 3.59a1.914 1.914 0 0 0-3.274 0z"/><path d="M12 16h.01"/></svg>';
-const SHARE_ICON = IS_APPLE
-  ? '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 12.5V3M6.5 6.5 10 3l3.5 3.5M5 10.5v5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5v-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-  : '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.4 8.8 5.2-2.6M7.4 11.2l5.2 2.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="5.2" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="14.8" cy="5.2" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="14.8" cy="14.8" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+const SHARE_ICON = IS_APPLE ? ICON.shareApple : ICON.share;
 
 const SHORT_LABEL = { submission: "Paper", reviews: "Reviews", decision: "Decision", camera: "Camera-ready", conference: "Conference", other: "Event" };
 function shortLabel(m) {
@@ -548,12 +579,12 @@ function shortLabel(m) {
   return SHORT_LABEL[m.group] || m.label;
 }
 
-// Feed buttons: brand marks from Simple Icons (CC0) for Apple and Google; Outlook and "copy" are our own glyphs.
+// Feed buttons: Tabler icons (Apple and Google brand marks, a mail icon for Outlook, a link for "copy").
 const FEED_ICONS = {
-  apple: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>`,
-  outlook: `<span class="fo" aria-hidden="true">O</span>`,
-  google: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>`,
-  copy: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1.5 1.5M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1.5-1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  apple: ICON.apple,
+  outlook: ICON.mail,
+  google: ICON.google,
+  copy: ICON.link,
 };
 
 function renderFeeds() {
@@ -607,7 +638,7 @@ function renderListbar() {
   }
   if (state.starredOnly && state.starred.size) {
     bar.hidden = false;
-    bar.innerHTML = `<span><b>★ Your list</b> · ${state.starred.size} venue${state.starred.size === 1 ? "" : "s"}, kept on this device</span>
+    bar.innerHTML = `<span><b>${ICON.starIc} Your list</b> · ${state.starred.size} venue${state.starred.size === 1 ? "" : "s"}, kept on this device</span>
       <span class="lb-actions"><button class="pill" type="button" data-copywatch>Copy link</button><button class="pill" type="button" data-sharecard="list">Share card</button></span>`;
     return;
   }
@@ -663,7 +694,7 @@ function renderGaps() {
     if (!i) return card;
     const days = (p.t - inWin[i - 1].t) / 86400000;
     const cls = gapClass(days);
-    return `<span class="garrow ${cls}">${cls === "tight" ? WARN_ICON + " " : ""}${esc(gapText(days))}<i>→</i></span>${card}`;
+    return `<span class="garrow ${cls}">${cls === "tight" ? WARN_ICON + " " : ""}${esc(gapText(days))}<i>${ICON.arrow}</i></span>${card}`;
   }).join("");
   const later = pts.length - inWin.length;
   const wasOpen = box.dataset.ready ? box.open : true;

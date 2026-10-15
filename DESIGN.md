@@ -2,7 +2,7 @@
 
 The rules for how the site looks and sounds. Read this before you change `site/style.css`, `site/share.js` (share cards), `functions/og.js` or `lib/deadline.js` (link previews), and update it when a rule changes.
 
-**Status (2026-10-15):** the look below, **Apollo console**, was chosen on 2026-10-15 and is **not built yet**. Every value in sections 2–6 is **Proposed** until the build lands; the live site still uses the previous look, Signal (see "History" at the end). Section 8's rules and fixes already hold in the code and carry over.
+**Status (2026-10-15):** **Apollo console** is built on the `preview` branch (values below come from `site/style.css` as of 2026-10-15). Section 8's rules and fixes carry over from the Signal build.
 
 **Contrast rule:** text needs at least **4.5:1** against its background (3:1 for text 24 px and up, or 19 px bold and up). Icons and control borders need **3:1**. Check both themes.
 
@@ -22,7 +22,7 @@ What doesn't change, whatever the look:
 
 ## 2. Colour
 
-Design tokens are the CSS variables in `:root`. Always use a token, never a raw hex, so dark mode keeps working. All values are **Proposed** (2026-10-15) and were checked with the contrast maths before writing this file.
+Design tokens are the CSS variables in `:root`. Always use a token, never a raw hex, so dark mode keeps working. All values below are in `site/style.css` (2026-10-15) and pass the browser checks in section 8.
 
 ### Base
 
@@ -99,7 +99,7 @@ These are for **dots, lamps and fills**. When one has to be **text** (the day co
 
 ## 3. Type
 
-**Fonts (chosen 2026-10-15):** **IBM Plex Sans Condensed** for words and **IBM Plex Mono** for numbers. IBM built the computers in the Apollo mission control centre, and Plex is IBM's own typeface; the condensed width fits long venue names and dates on one line on a phone. Licence: OFL 1.1. To be self-hosted in `site/fonts/` (woff2 for the page, TTF for link previews), with the licence in `site/licenses/`. **Proposed:** not downloaded yet.
+**Fonts (chosen 2026-10-15):** **IBM Plex Sans Condensed** for words and **IBM Plex Mono** for numbers. IBM built the computers in the Apollo mission control centre, and Plex is IBM's own typeface; the condensed width fits long venue names and dates on one line on a phone. Licence: OFL 1.1. Self-hosted in `site/fonts/`: Latin-subset woff2 files for the page (Plex Sans Condensed 400, 600, 700; Plex Mono 500, 600; about 110 KB) and TTFs for link previews (Sans Condensed SemiBold and Bold, Mono SemiBold). Licence in `site/licenses/ibm-plex-OFL-1.1.txt`.
 
 | Token | Use for |
 |---|---|
@@ -111,24 +111,25 @@ These are for **dots, lamps and fills**. When one has to be **text** (the day co
 Fonts are set in three places. Change all three together, or the share cards and link previews won't match the site:
 1. `site/style.css`: the `@font-face` rules and `--sans` / `--mono`, plus the `<link rel="preload">` lines in `site/index.html`.
 2. `site/share.js`: `FONT` and `MONO`. Canvas only draws fonts that are already loaded, so `refreshCard` loads every weight it draws first.
-3. `functions/og.js`: the TTF files (resvg can't read woff2) and the width estimate (Plex Sans Condensed is narrower than Chivo: re-measure), plus `lib/deadline.js` colours.
+3. `functions/og.js`: the TTF files (resvg can't read woff2) and the width estimate (Plex Sans Condensed measures up to 0.63 em per character on venue names; Plex Mono is exactly 0.6), plus `lib/deadline.js` colours. Text below 700 names `IBM Plex Sans Condensed SemiBold` first, in case resvg registers the SemiBold file under its legacy family name.
 
 Numbers that tick or line up use `font-variant-numeric: tabular-nums` (Plex Mono is tabular by nature).
 
-### Sizes (Proposed)
+### Sizes
 
-A **type scale** is a short, fixed list of sizes, so the page looks planned. The Signal build used 22 sizes and 8 weights; the rebuild settles on these:
+A **type scale** is a short, fixed list of sizes, so the page looks planned. The Signal build used 22 sizes and 8 weights; Apollo uses 8 sizes (11, 12, 13, 14, 15, 17, 20, 26) plus the two hero clamps, and 3 + 2 weights:
 
 | Role | Size | Weight |
 |---|---|---|
-| Hero readout digits | `clamp(40px, 11vw, 80px)` | Mono 600 |
+| Hero readout digits | `clamp(36px, 11vw, 76px)` | Mono 600 |
 | Hero venue name | `clamp(30px, 6vw, 44px)` | 700 |
 | Row countdown | 26 | Mono 600 |
 | Section title, calendar month | 20 | 700 |
 | Venue name in a row | 17 | 700 |
 | Body | 15 | 400 |
+| Secondary text (row details, popover text) | 14 | 400 or 600 |
 | Small text | 13 | 400 or 600 |
-| Labels, eyebrows, buttons (ALL CAPS) | 12, `letter-spacing: .06em` | 600 |
+| Labels, eyebrows, buttons, segmented controls (ALL CAPS) | 12, `letter-spacing: .04em` to `.08em` | 600 |
 | Lamp labels, badges | 11, `letter-spacing: .06em` | 600 |
 
 **Weights:** Plex Sans Condensed 400 (body), 600 (labels, emphasis), 700 (headings); Plex Mono 500 (times) and 600 (readouts). Plex Sans Condensed has no 800: never ask for it.
@@ -152,20 +153,21 @@ One unit leads at each stage, and the next smaller unit joins only when it matte
 - The hero readout always shows all four units (days, hours, min, sec) on one panel, with labels under the digits. No `T–` prefix.
 - Share cards and link previews are still images, so they show one number: days until under a day is left, then hours, then minutes.
 
-## 4. Shape and space (Proposed)
+## 4. Shape and space
 
 | | Value |
 |---|---|
-| Corner radius | 3 for controls, chips, badges and buttons · 4 for cards, the hero and dialogs · 50% for lamps and dots. **No pill shapes.** |
+| Corner radius | 2 for small tags · 3 for controls, chips, badges and buttons · 4 for cards, the hero and dialogs · 6 at the top of phone bottom sheets · 50% for lamps and dots. **No pill shapes.** |
 | Spacing | Steps of 4: 4, 8, 12, 16, 24, 32 |
 | Page width | 960 px max, 16 px side gutter |
 | Breakpoints | 720, 640 (phone layout: the toolbar stacks and the calendar becomes an agenda), 480; plus `pointer: coarse` wider than 640 (tablets get the phone calendar and gaps) |
 | Shadow | None. Panels are separated by `--line` borders, like console panels. Popovers keep `--pop-shadow` so they lift off the page |
 
-## 5. Components (Proposed)
+## 5. Components
 
 - **Hero (the screen):** eyebrow (milestone, ALL CAPS), venue name (own casing), place, the readout panel, the lamp row (Submit · Reviews · Decision · Camera · Conf; the next one lit in `--lamp`, done ones in their milestone colour, future ones as unlit rings), the exact time in your zone and in AoE, then the "Next" runway of the following three.
 - **Deadline gaps:** a strip that shows how close your starred deadlines are to each other.
+- **Shared or starred list bar:** a plain panel with a 4 px `--star` edge on the left (an amber lamp edge, not a tint).
 - **Toolbar:** milestone focus (segmented), List / Map / Calendar, search, Starred, Areas, Filters.
 - **Row:** a small black screen on the left with the countdown in `--clock` (red in the last week), venue and next milestone, badges, star and share. Tap to open the timeline, quick links and sources.
 - **Buttons:** primary = `--key` fill with `--on-key` text, ALL CAPS, one per view. Secondary = `--surface` with a `--line` border. Corners 3 px.
@@ -174,15 +176,17 @@ One unit leads at each stage, and the next smaller unit joins only when it matte
 - **Calendar:** a month grid with chips for mouse users, an agenda list on phones and touch tablets.
 - **Map:** Leaflet with a Natural Earth basemap in console greys, plus a "To be announced" list.
 - **Dialogs:** Filters, Areas, About, Credits and Share. Bottom sheet on phones, 4 px corners on desktop.
-- **Icons:** **Tabler** (on Iconify), 2 px stroke, round caps, inline SVG with `stroke="currentColor"`. All existing hand-drawn icons are replaced in the rebuild. New icons come from Tabler only.
-- **Browser colours:** `theme-color` in `index.html` and `manifest.webmanifest` use `--bg`. The favicon and PNG icons are re-exported: a red lamp on a black screen.
+- **Icons:** **Tabler Icons** (MIT, via Iconify), 2 px stroke, round caps, inline SVG with `stroke="currentColor"`, kept in the `ICON` object at the top of `app.js` (and inline in `index.html`). Disclosure chevrons are Tabler paths used as CSS masks (`--chev-right`, `--chev-down`). Outlook has no Tabler mark, so its calendar button uses `mail`. New icons come from Tabler only; never hand-drawn.
+- **Logo:** a lamp: a filled `--accent` circle inside a `--faint` ring. Two circles, so it's geometry rather than a drawn icon.
+- **Browser colours:** `theme-color` in `index.html` uses `--bg` per theme; `manifest.webmanifest` uses the dark `--bg`. The SVG favicon and the PNG icons in `site/icons/` (made with PIL on 2026-10-15) show the red lamp in a grey ring on the black screen; the maskable icon keeps it inside the safe circle.
 
-## 6. Share cards and link previews (Proposed)
+## 6. Share cards and link previews
 
-- **Share cards** (`CARD_THEMES` in `share.js`): the default theme becomes **Console** (black screen, `--clock` white digits, amber lamp for the next milestone, lamp-cap milestone colours). Signal is retired. Paper, Aurora and Sunset stay as extra options (decided 2026-10-15; dropping one is a one-line change).
+- **Share cards** (`CARD_THEMES` in `share.js`): **Console** is the default (the black screen, warm-white digits, lamp-cap milestone colours, no glow). **Daylight** is the console panel in light grey and replaces Paper (cream). Aurora and Sunset stay as extra options (decided 2026-10-15; dropping one is a one-line change). A saved `signal` or `midnight` choice falls back to Console, and `paper` to Daylight.
 - Formats: Story (9:16), Square and Wide. Story cards keep content out of the top 14% and bottom 20%, where Stories put their buttons.
 - Every theme's text colours are 4.5:1 and milestone colours 3:1 against both ends and the middle of its background (the lint and browser checks don't see canvas colours, so check these by hand).
-- **Link previews** (`/og`, 1200 × 630): the Console colours, from `COLORS` in `lib/deadline.js`, Plex TTFs in `functions/og.js`.
+- **Link previews** (`/og`, 1200 × 630): the Console colours, from `COLORS` in `lib/deadline.js`, Plex TTFs in `functions/og.js`, no glow.
+- **README images** (`docs/banner.png`, `docs/screenshot*.png`) still show the Signal look; re-make them after Apollo is live.
 
 ## 7. Voice
 
@@ -247,7 +251,7 @@ Use the design-brief skill's scripts (`~/.claude/skills/design-brief/references/
 
 **2026-10-14, second pass (Signal):** both themes, at 375 px (touch) and 1100 px (mouse), eight states each: List with a row, its sources menu and the gaps card open; the Filters, Areas, About, Credits and Share dialogs; Map with a popup open; Calendar. At 375 px: 3,576 text elements and 258 controls. At 1100 px: 3,826 text elements and 430 controls. Result: 0 contrast failures, 0 controls under 44 px, 0 overlaps. Design lint: 0 errors, 2 warnings (the off-white `--bg` and the round `.pill`; both go away with Apollo).
 
-**2026-10-15, Apollo tokens (maths only):** every text token in section 2 is 4.5:1 or better and every milestone colour 3:1 or better on `--bg`, `--surface` and `--surface-2` in both themes. The browser checks are still owed after the build.
+**2026-10-15, Apollo build:** both themes, at 375 px (touch) and 1100 px (mouse), eight states each: List with a row, its sources menu and the gaps card open; the Filters, Areas, About, Credits and Share dialogs; Map with a popup open; Calendar. At 375 px: 3,676 text elements and 261 controls per theme. At 1100 px: 3,918 text elements and 414 controls per theme. Result: 0 contrast failures, 0 controls under 44 px, 0 overlaps (the only "covered" controls were page controls behind an open dialog or popover). Design lint: 0 errors, 0 warnings. Share-card themes Console and Daylight checked by maths along their gradients: worst pairs 5.4:1 (Console `other`) and 3.6:1 (Daylight `reviews`, a 3:1 dot colour). Link previews can only be checked on a Pages deploy.
 
 ## History
 
