@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Deadlines directions</title>
+<!--
+  Design brief, step 2 (2026-10-15). Three directions for AI Deadlines, built from the design-brief starter.
+  Brief: ML researchers checking on their phones; the countdown to your next deadline comes first;
+  concepts picked: a conference badge (A) and mission control (B); C is today's Signal look, kept as a baseline.
+  Standalone: open this file directly in a browser. No server, no build step.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Azeret+Mono:wght@500;700&family=Barlow+Semi+Condensed:wght@500;600;700&family=Martian+Mono:wdth,wght@87.5,500;87.5,700&family=Chivo:wght@400;600;800&family=Chivo+Mono:wght@500;700&display=swap">
+<style>
+  /* ---------- Page frame (neutral) ---------- */
+  :root { --f-bg: #e9ebee; --f-fg: #18181a; --f-muted: #5c5c62; --f-line: #d4d6da; }
+  :root[data-theme="dark"] { --f-bg: #0f0f11; --f-fg: #ececee; --f-muted: #a2a2aa; --f-line: #2a2a2f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--f-bg); color: var(--f-fg); font: 15px/1.5 system-ui, sans-serif; } /* design-lint: ignore (neutral frame) */
+  .intro { max-width: 1280px; margin: 0 auto; padding: 24px 16px 8px; }
+  .intro h1 { margin: 0 0 4px; font-size: 22px; }
+  .intro p { margin: 0 0 8px; color: var(--f-muted); max-width: 70ch; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 0; }
+  .bar button { font: inherit; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--f-line); background: transparent; color: inherit; cursor: pointer; }
+  .bar button[aria-pressed="true"] { background: var(--f-fg); color: var(--f-bg); border-color: var(--f-fg); }
+  .grid { max-width: 1280px; margin: 0 auto; padding: 16px 16px 48px; display: grid; gap: 24px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); align-items: start; }
+
+  /* ---------- One direction = one token set ---------- */
+  .dir { background: var(--bg); color: var(--ink); font-family: var(--sans); border: 1px solid var(--line);
+         border-radius: var(--r-card); padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
+  .dir .label { font: 600 12px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .dir h2 { font: 700 26px/1.15 var(--display); margin: 0; }
+  .dir .why { margin: 0; font-size: 14px; }
+  .dir .why b { font-weight: 700; }
+
+  .hero { position: relative; background: var(--hero-bg); color: var(--hero-fg); border-radius: var(--r-card); padding: 20px 16px; }
+  .hero .eyebrow { font: 600 12px/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--hero-muted); margin: 0 0 6px; }
+  .hero .title { font: 700 30px/1.05 var(--display); margin: 0 0 2px; }
+  .hero .place { margin: 0 0 14px; font-size: 14px; color: var(--hero-muted); }
+  .clock { display: flex; gap: 8px; }
+  .unit { flex: 1; text-align: center; }
+  .unit .n { display: block; font: 700 clamp(34px, 9vw, 44px)/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--hero-accent); }
+  .unit .l { display: block; margin-top: 6px; font: 600 11px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--hero-muted); }
+  .hero .meta { margin: 14px 0 0; font-size: 14px; color: var(--hero-muted); }
+  .hero .meta b { color: var(--hero-fg); font-weight: 600; }
+  .hero .lanyard, .hero .band, .hero .lights { display: none; }
+
+  .row { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-ctl); padding: 12px; display: flex; gap: 12px; align-items: center; }
+  .row .box { min-width: 58px; padding: 8px 4px; text-align: center; background: var(--surface-2); border-radius: calc(var(--r-ctl) - 4px); }
+  .row .box b { display: block; font: 700 24px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--accent-ink); }
+  .row .box small { font-size: 12px; color: var(--muted); }
+  .row .name { font: 700 16px/1.2 var(--display); margin: 0 0 2px; }
+  .row .sub { margin: 0; font-size: 13px; color: var(--muted); }
+  .row .sub .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--m-sub); margin-right: 6px; }
+  .row .sub em { font-style: normal; color: var(--accent-ink); font-weight: 700; }
+
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { font: 600 15px/1 var(--sans); min-height: 44px; padding: 0 18px; border-radius: var(--r-ctl); border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+  .btn.primary { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--on-accent); }
+
+  .type p { margin: 0 0 4px; }
+  .type .sample-mono { font: 500 15px/1.4 var(--mono); font-variant-numeric: tabular-nums; }
+  .type .fonts { font-size: 13px; color: var(--muted); }
+
+  .milestones { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+  .milestones li { display: inline-flex; align-items: center; gap: 6px; }
+  .milestones i { width: 10px; height: 10px; border-radius: 50%; }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+  .sw { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 12px; background: var(--surface); }
+  .sw i { display: block; height: 32px; }
+  .sw span { display: block; padding: 4px 6px; color: var(--muted); }
+  .checks { font: 500 12px/1.6 var(--sans); color: var(--muted); margin: 0; padding: 0; list-style: none; }
+  .checks .fail { color: var(--accent-ink); font-weight: 700; }
+
+  /* ---------- Direction A: Badge ----------
+     A conference badge on its lanyard. White badge card, a colour band for the milestone (the colour
+     coding PaperRush puts on its cards), the venue set big like a name, rounded plastic corners. */
+  .dir-a { --display: "Bricolage Grotesque", sans-serif; --sans: "Atkinson Hyperlegible", sans-serif; --mono: "Azeret Mono", monospace;
+    --r-card: 18px; --r-ctl: 12px;
+    --bg: #e8ecf1; --surface: #ffffff; --surface-2: #eef1f5; --ink: #14171c; --muted: #4f5662; --line: #d3d9e1;
+    --accent: #0f8a78; --accent-ink: #0b6b5d; --on-accent: #ffffff;
+    --hero-bg: #ffffff; --hero-fg: #14171c; --hero-muted: #4f5662; --hero-accent: #14171c; --hero-tile: #eef1f5;
+    --lanyard: #0f8a78; --band-fg: #ffffff;
+    --m-sub: #c94216; --m-rev: #b07d00; --m-dec: #1c6fb0; --m-cam: #1f8a4c; --m-conf: #5b5f6b; }
+  [data-theme="dark"] .dir-a {
+    --bg: #0d1014; --surface: #171b21; --surface-2: #1f242c; --ink: #eef1f5; --muted: #a3abb8; --line: #2a3039;
+    --accent: #2bc4ab; --accent-ink: #3fd6bd; --on-accent: #0d1014;
+    --hero-bg: #1b2027; --hero-fg: #eef1f5; --hero-muted: #a3abb8; --hero-accent: #eef1f5; --hero-tile: #252b34;
+    --lanyard: #2bc4ab; --band-fg: #0d1014;
+    --m-sub: #ff7a4d; --m-rev: #f2c14e; --m-dec: #5fb3f0; --m-cam: #4cd08a; --m-conf: #c3c8d2; }
+  .dir-a h2, .dir-a .hero .title { font-weight: 800; letter-spacing: -.02em; }
+  .dir-a .hero { margin-top: 34px; padding-top: 0; overflow: visible; box-shadow: 0 1px 0 var(--line), 0 10px 30px rgb(20 23 28 / .08); border: 1px solid var(--line); } /* design-lint: ok soft badge shadow */
+  .dir-a .hero .lanyard { display: block; position: absolute; left: 50%; top: -34px; width: 30px; height: 46px; margin-left: -15px; background: var(--lanyard); border-radius: 4px 4px 0 0; }
+  .dir-a .hero .lanyard::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 44px; height: 10px; margin-left: -22px; border-radius: 6px; background: var(--hero-bg); border: 2px solid var(--line); }
+  .dir-a .hero .band { display: block; margin: 0 -16px 16px; padding: 22px 16px 10px; border-radius: 17px 17px 0 0; background: var(--m-sub); color: var(--band-fg); font: 700 13px/1 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
+  .dir-a .hero .title { font-size: 38px; }
+  .dir-a .unit { background: var(--hero-tile); border-radius: 12px; padding: 10px 0 9px; }
+  .dir-a .row { border-left: 6px solid var(--m-sub); }
+
+  /* ---------- Direction B: Mission control ----------
+     A launch console. The countdown is a T-minus readout on a dark screen in phosphor green, and each
+     milestone is a status lamp. Condensed signage type, square corners. The screen stays dark in both
+     themes; in light mode the console panel around it goes pale grey. */
+  .dir-b { --display: "Barlow Semi Condensed", sans-serif; --sans: "Barlow Semi Condensed", sans-serif; --mono: "Martian Mono", monospace;
+    --r-card: 4px; --r-ctl: 3px;
+    --bg: #dde2e6; --surface: #f3f5f6; --surface-2: #e4e9ec; --ink: #0f1417; --muted: #47515a; --line: #bcc5cc;
+    --accent: #13a454; --accent-ink: #0a6a35; --on-accent: #ffffff;
+    --hero-bg: #08100c; --hero-fg: #dcf7e6; --hero-muted: #8aae99; --hero-accent: #4cf08f; --hero-tile: #0f1b15; --hero-line: #1e3328;
+    --lamp: #ffb547;
+    --m-sub: #d9481c; --m-rev: #a37400; --m-dec: #1c6fb0; --m-cam: #1f8a4c; --m-conf: #5b6670; }
+  [data-theme="dark"] .dir-b {
+    --bg: #06090b; --surface: #0e1418; --surface-2: #151d22; --ink: #dfe8ec; --muted: #93a3ac; --line: #223038;
+    --accent: #4cf08f; --accent-ink: #4cf08f; --on-accent: #06090b;
+    --hero-bg: #000000; --hero-fg: #dcf7e6; --hero-muted: #8aae99; --hero-accent: #4cf08f; --hero-tile: #0b140f; --hero-line: #1a2c22;
+    --m-sub: #ff7a4d; --m-rev: #f2c14e; --m-dec: #5fb3f0; --m-cam: #4cf08f; --m-conf: #b9c4cb; }
+  .dir-b h2, .dir-b .hero .title { font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+  .dir-b .hero { border: 1px solid var(--hero-line); }
+  .dir-b .clock { gap: 0; background: var(--hero-tile); border: 1px solid var(--hero-line); border-radius: 3px; padding: 12px 6px 10px; }
+  .dir-b .clock::before { content: "T\2013"; align-self: flex-start; font: 700 clamp(26px, 7vw, 34px)/1 var(--mono); color: var(--hero-muted); padding: 4px 4px 0 6px; }
+  .dir-b .unit + .unit { border-left: 1px solid var(--hero-line); }
+  .dir-b .unit .n { font-size: clamp(30px, 8vw, 38px); text-shadow: 0 0 12px color-mix(in srgb, var(--hero-accent) 45%, transparent); }
+  .dir-b .hero .lights { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+  .dir-b .lights li { text-align: center; font: 600 11px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--hero-muted); }
+  .dir-b .lights i { display: block; width: 14px; height: 14px; margin: 0 auto 6px; border-radius: 50%; background: var(--hero-tile); border: 2px solid var(--hero-muted); }
+  .dir-b .lights .on i { background: var(--lamp); border-color: var(--lamp); box-shadow: 0 0 10px var(--lamp); }
+  .dir-b .lights .on { color: var(--lamp); }
+  .dir-b .btn { text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+  .dir-b .row .box { background: var(--hero-bg); }
+  .dir-b .row .box b { color: var(--hero-accent); }
+  .dir-b .row .box small { color: var(--hero-muted); }
+
+  /* ---------- Direction C: Signal (today) ----------
+     The site as it is now: a departures board. Off-white page, a black board with amber digits on
+     split-flap tiles. Shown so the new looks can be compared with what's live. */
+  .dir-c { --display: "Chivo", sans-serif; --sans: "Chivo", sans-serif; --mono: "Chivo Mono", monospace;
+    --r-card: 22px; --r-ctl: 10px;
+    --bg: #f1efe9; /* design-lint: ok today's live look, shown as the baseline */ --surface: #ffffff; --surface-2: #e8e5dd; --ink: #111111; --muted: #57544d; --line: #dcd8ce;
+    --accent: #e0421b; --accent-ink: #b93716; --on-accent: #ffffff;
+    --hero-bg: #0b0c0e; --hero-fg: #f5f2ea; --hero-muted: #9d998f; --hero-accent: #ffb81c; --hero-tile: #17191d;
+    --m-sub: #e0421b; --m-rev: #b58900; --m-dec: #0a74b8; --m-cam: #1f8a4c; --m-conf: #4a4740; }
+  [data-theme="dark"] .dir-c {
+    --bg: #0a0b0d; --surface: #131418; --surface-2: #1b1d22; --ink: #f5f2ea; --muted: #a7a39a; --line: #26282e;
+    --accent: #ff5b2e; --accent-ink: #ff5b2e; --on-accent: #0a0b0d;
+    --hero-bg: #000000; --hero-fg: #f5f2ea; --hero-muted: #9d998f; --hero-accent: #ffb81c; --hero-tile: #15161a;
+    --m-sub: #ff5b2e; --m-rev: #f5c542; --m-dec: #4cc3ff; --m-cam: #4cd08a; --m-conf: #f5f2ea; }
+  .dir-c h2, .dir-c .hero .title { font-weight: 800; letter-spacing: -.03em; }
+  .dir-c .unit { background: var(--hero-tile); border-radius: 8px; padding: 8px 0 7px; } /* split-flap tiles */
+  .dir-c .unit .l { margin-top: 8px; }
+</style>
+</head>
+<body>
+<header class="intro">
+  <h1 id="page-title">AI Deadlines: three directions</h1>
+  <p id="page-sub"></p>
+  <div class="bar" role="group" aria-label="Theme">
+    <button type="button" data-set="light">Light</button>
+    <button type="button" data-set="dark">Dark</button>
+    <button type="button" data-set="system">Match my device</button>
+  </div>
+</header>
+
+<main class="grid">
+  <section class="dir dir-a" data-key="a"></section>
+  <section class="dir dir-b" data-key="b"></section>
+  <section class="dir dir-c" data-key="c"></section>
+</main>
+
+<script>
+// ---------- The site's real content ----------
+const CONTENT = {
+  title: "AI Deadlines: three directions",
+  sub: "Each column is one possible look: a font pairing, a colour palette, and how your next deadline is shown. A and B are new; C is the live site today, for comparison. Pick one, or mix (for example \"B's hero with A's fonts\").",
+  hero: { eyebrow: "Paper registration deadline", title: "CVPR 2027", place: "Seattle, USA",
+          meta: "<b>Wed, Nov 11, 8:59 PM</b> your time · Tue, Nov 10, 11:59 PM AoE",
+          target: Date.parse("2026-11-11T11:59:00Z") },
+  row: { box: "4", unit: "days", name: "WWW 2027", sub: "Abstract · Oct 19, 8:59 PM · Dublin", flag: "This week" },
+  lights: [["Submit", true], ["Reviews", false], ["Decision", false], ["Camera", false], ["Conf", false]],
+  primary: "Add to calendar", secondary: "Share card",
+  directions: {
+    a: { name: "A · Badge", feels: "Feels like the badge on your lanyard at the conference.",
+         why: "<b>Grade: B+.</b> Friendly and clearly about conferences; the milestone colour band reads at a glance on a phone, and Atkinson Hyperlegible is built for small screens. Less urgent than the others: a badge is calm, so the countdown has to carry the tension.",
+         fonts: "Bricolage Grotesque (venue names) · Atkinson Hyperlegible (text) · Azeret Mono (numbers)" },
+    b: { name: "B · Mission control", feels: "Feels like the countdown on a launch console.",
+         why: "<b>Grade: A−.</b> The strongest match for \"time is running out\": T-minus readout, a lamp per milestone, condensed type that fits long venue names on a phone. Risk: green-on-black can tip into hacker cliché, so the green stays on the readout only.",
+         fonts: "Barlow Semi Condensed (headlines and text) · Martian Mono (numbers)" },
+    c: { name: "C · Signal (today)", feels: "Feels like an airport departures board.",
+         why: "<b>Grade: B.</b> What's live now. Glanceable and already passes every check. It shares B's dark-board idea but with amber split-flap tiles; the off-white page is one of Claude's default looks.",
+         fonts: "Chivo (headlines and text) · Chivo Mono (numbers)" },
+  },
+};
+// Token pairs to check on each direction: [text token, background token, minimum ratio].
+const PAIRS = [
+  ["--ink", "--bg", 4.5], ["--muted", "--bg", 4.5], ["--muted", "--surface", 4.5], ["--accent-ink", "--surface", 4.5], ["--accent-ink", "--surface-2", 4.5],
+  ["--on-accent", "--accent-ink", 4.5], ["--hero-fg", "--hero-bg", 4.5], ["--hero-muted", "--hero-bg", 4.5], ["--hero-muted", "--hero-tile", 4.5],
+  ["--hero-accent", "--hero-tile", 3], ["--m-sub", "--surface", 3], ["--m-rev", "--surface", 3], ["--m-dec", "--surface", 3], ["--m-cam", "--surface", 3], ["--m-conf", "--surface", 3],
+];
+const EXTRA = { a: [["--band-fg", "--m-sub", 4.5]], b: [["--lamp", "--hero-bg", 4.5]], c: [] };
+const SWATCHES = ["--bg", "--surface", "--ink", "--muted", "--accent", "--accent-ink", "--hero-bg", "--hero-accent"];
+const MILESTONES = [["--m-sub", "Submission"], ["--m-rev", "Reviews"], ["--m-dec", "Decision"], ["--m-cam", "Camera-ready"], ["--m-conf", "Conference"]];
+
+// ---------- Rendering ----------
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+document.getElementById("page-title").textContent = CONTENT.title;
+document.getElementById("page-sub").textContent = CONTENT.sub;
+for (const el of document.querySelectorAll(".dir")) {
+  const d = CONTENT.directions[el.dataset.key], h = CONTENT.hero, r = CONTENT.row;
+  el.innerHTML = `
+    <div><p class="label">${esc(d.name)}</p><h2>${esc(d.feels)}</h2></div>
+    <p class="why">${d.why}</p>
+    <div class="hero">
+      <span class="lanyard" aria-hidden="true"></span>
+      <div class="band">${esc(h.eyebrow)}</div>
+      <p class="eyebrow">${el.dataset.key === "a" ? "Your next deadline" : esc(h.eyebrow)}</p>
+      <p class="title">${esc(h.title)}</p>
+      <p class="place">${esc(h.place)}</p>
+      <div class="clock">${["days", "hours", "min", "sec"].map((u) => `<div class="unit"><span class="n" data-u="${u}">00</span><span class="l">${u}</span></div>`).join("")}</div>
+      <ul class="lights">${CONTENT.lights.map(([l, on]) => `<li class="${on ? "on" : ""}"><i></i>${esc(l)}</li>`).join("")}</ul>
+      <p class="meta">${h.meta}</p>
+    </div>
+    <div class="row">
+      <div class="box"><b>${esc(r.box)}</b><small>${esc(r.unit)}</small></div>
+      <div><p class="name">${esc(r.name)}</p><p class="sub"><span class="dot"></span>${esc(r.sub)} · <em>${esc(r.flag)}</em></p></div>
+    </div>
+    <ul class="milestones">${MILESTONES.map(([t, l]) => `<li><i style="background:var(${t})"></i>${esc(l)}</li>`).join("")}</ul>
+    <div class="actions"><button class="btn primary" type="button">${esc(CONTENT.primary)}</button><button class="btn" type="button">${esc(CONTENT.secondary)}</button></div>
+    <div class="type">
+      <p>Body text reads like this: plain, specific sentences at 15 px, about deadlines in your time and in AoE.</p>
+      <p class="sample-mono">0123456789 · Oct 19 · 08:59 · 5d 7h</p>
+      <p class="fonts">${esc(d.fonts)}</p>
+    </div>
+    <div class="swatches">${SWATCHES.map((t) => `<div class="sw"><i style="background:var(${t})"></i><span>${t.slice(2)}</span></div>`).join("")}</div>
+    <ul class="checks" aria-label="Contrast checks"></ul>`;
+}
+
+// Live countdown, to show whether the digits stay still as they change (tabular figures).
+const tick = () => {
+  let s = Math.max(0, Math.floor((CONTENT.hero.target - Date.now()) / 1000));
+  const v = { days: Math.floor(s / 86400), hours: Math.floor(s / 3600) % 24, min: Math.floor(s / 60) % 60, sec: s % 60 };
+  document.querySelectorAll(".unit .n").forEach((n) => { n.textContent = String(v[n.dataset.u]).padStart(2, "0"); });
+};
+tick(); setInterval(tick, 1000);
+
+// Contrast ratios for each direction's token pairs, in the current theme.
+const cv = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+const rgb = (s) => { cv.clearRect(0, 0, 1, 1); cv.fillStyle = "#000"; cv.fillStyle = s; cv.fillRect(0, 0, 1, 1); return [...cv.getImageData(0, 0, 1, 1).data].slice(0, 3); };
+const lum = (c) => c.reduce((a, v, i) => { v /= 255; v = v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; return a + v * [0.2126, 0.7152, 0.0722][i]; }, 0);
+const ratio = (a, b) => { const x = lum(rgb(a)), y = lum(rgb(b)); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+const checkAll = () => {
+  for (const el of document.querySelectorAll(".dir")) {
+    const cs = getComputedStyle(el), get = (t) => cs.getPropertyValue(t).trim();
+    const pairs = PAIRS.concat(EXTRA[el.dataset.key] || []);
+    const rows = pairs.map(([fg, bg, min]) => { const r = ratio(get(fg), get(bg)); return { fg, bg, min, r, ok: r >= min }; });
+    const failing = rows.filter((x) => !x.ok).length;
+    el.querySelector(".checks").innerHTML = `<li class="${failing ? "fail" : ""}">${rows.length - failing}/${rows.length} pairs pass in this theme</li>` +
+      rows.filter((x) => !x.ok).map((x) => `<li class="fail">${x.fg.slice(2)} on ${x.bg.slice(2)}: ${x.r.toFixed(1)}:1 FAIL (needs ${x.min})</li>`).join("");
+  }
+};
+
+// Theme: light, dark, or follow the device. Saved per browser if storage is available.
+const mq = matchMedia("(prefers-color-scheme: dark)");
+let mode = "system"; try { mode = localStorage.getItem("directions-theme") || "system"; } catch (e) {}
+const apply = () => {
+  document.documentElement.dataset.theme = mode === "system" ? (mq.matches ? "dark" : "light") : mode;
+  document.querySelectorAll("[data-set]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.set === mode)));
+  checkAll();
+};
+document.querySelectorAll("[data-set]").forEach((b) => b.addEventListener("click", () => {
+  mode = b.dataset.set; try { localStorage.setItem("directions-theme", mode); } catch (e) {} apply();
+}));
+mq.addEventListener("change", () => { if (mode === "system") apply(); });
+apply();
+</script>
+</body>
+</html>
