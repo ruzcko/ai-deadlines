@@ -69,4 +69,4 @@ works. `.github/workflows/refresh.yml` checks upstream every 6 hours and pushes
 See [site/credits.html](site/credits.html) (served at `/credits.html`) for every source and licence:
 Hugging Face ai-deadlines (MIT) data and our own reads of official pages, with our changes described;
 OpenStreetMap/Nominatim (ODbL) coordinates; Natural Earth (public domain); Leaflet (BSD-2);
-Chivo and Chivo Mono (OFL); resvg-wasm (MPL-2.0). Full licence texts live in `site/licenses/`.
+IBM Plex Sans Condensed and IBM Plex Mono (OFL); Tabler Icons (MIT); resvg-wasm (MPL-2.0). Full licence texts live in `site/licenses/`.

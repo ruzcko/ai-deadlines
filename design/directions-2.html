@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Deadlines round two</title>
+<!--
+  Design brief, step 2, round two (2026-10-15). The user liked B (mission control) and C (Signal) from
+  directions.html and asked to avoid "AI slop" colours. All three here use B's console layout: a T-minus
+  readout and a status lamp per milestone. Colours come from real objects, not habit:
+    - no cream or off-white page with a terracotta accent (Claude's own look),
+    - no neon green on black (the terminal cliché) except in R3, which is B kept for comparison,
+    - no purple, indigo or blue-to-purple gradients, no Tailwind palette values,
+    - milestone colours are indicator-lamp colours (IEC 60073: red = act now, yellow/amber = attention,
+      blue = action needed, green = done/normal, white = neutral), which is what a console would use.
+  Standalone: open this file directly in a browser. No server, no build step.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;600;800&family=Chivo+Mono:wght@500;700&family=IBM+Plex+Sans+Condensed:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&family=Barlow+Semi+Condensed:wght@500;600;700&family=Martian+Mono:wdth,wght@87.5,500;87.5,700&display=swap">
+<style>
+  /* ---------- Page frame (neutral) ---------- */
+  :root { --f-bg: #e9ebee; --f-fg: #18181a; --f-muted: #5c5c62; --f-line: #d4d6da; }
+  :root[data-theme="dark"] { --f-bg: #0f0f11; --f-fg: #ececee; --f-muted: #a2a2aa; --f-line: #2a2a2f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--f-bg); color: var(--f-fg); font: 15px/1.5 system-ui, sans-serif; } /* design-lint: ignore (neutral frame) */
+  .intro { max-width: 1280px; margin: 0 auto; padding: 24px 16px 8px; }
+  .intro h1 { margin: 0 0 4px; font-size: 22px; }
+  .intro p { margin: 0 0 8px; color: var(--f-muted); max-width: 76ch; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 0; }
+  .bar button { font: inherit; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--f-line); background: transparent; color: inherit; cursor: pointer; }
+  .bar button[aria-pressed="true"] { background: var(--f-fg); color: var(--f-bg); border-color: var(--f-fg); }
+  .grid { max-width: 1280px; margin: 0 auto; padding: 16px 16px 48px; display: grid; gap: 24px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); align-items: start; }
+
+  /* ---------- Shared console layout (B's hero for all three) ---------- */
+  .dir { background: var(--bg); color: var(--ink); font-family: var(--sans); border: 1px solid var(--line);
+         border-radius: var(--r-card); padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; }
+  .dir .label { font: 600 12px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .dir h2 { font: 700 26px/1.15 var(--display); margin: 0; letter-spacing: var(--h-track); text-transform: var(--h-case); }
+  .dir .why { margin: 0; font-size: 14px; }
+  .dir .why b { font-weight: 700; }
+
+  .hero { background: var(--hero-bg); color: var(--hero-fg); border: 1px solid var(--hero-line); border-radius: var(--r-card); padding: 20px 16px; }
+  .hero .eyebrow { font: 600 12px/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--hero-muted); margin: 0 0 6px; }
+  .hero .title { font: 700 30px/1.05 var(--display); margin: 0 0 2px; letter-spacing: var(--h-track); text-transform: var(--h-case); }
+  .hero .place { margin: 0 0 14px; font-size: 14px; color: var(--hero-muted); }
+  .clock { display: flex; background: var(--hero-tile); border: 1px solid var(--hero-line); border-radius: var(--r-ctl); padding: 12px 6px 10px; }
+  .clock::before { content: "T\2013"; align-self: flex-start; font: 700 clamp(24px, 7vw, 32px)/1 var(--mono); color: var(--hero-muted); padding: 5px 4px 0 6px; }
+  .unit { flex: 1; text-align: center; }
+  .unit + .unit { border-left: 1px solid var(--hero-line); }
+  .unit .n { display: block; font: 700 clamp(30px, 8vw, 38px)/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--hero-accent); text-shadow: 0 0 var(--glow) color-mix(in srgb, var(--hero-accent) 45%, transparent); }
+  .unit .l { display: block; margin-top: 6px; font: 600 11px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--hero-muted); }
+  .lights { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+  .lights li { text-align: center; font: 600 11px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--hero-muted); }
+  .lights i { display: block; width: 14px; height: 14px; margin: 0 auto 6px; border-radius: 50%; background: var(--hero-tile); border: 2px solid var(--hero-muted); }
+  .lights .on i { background: var(--lamp); border-color: var(--lamp); box-shadow: 0 0 10px var(--lamp); }
+  .lights .on { color: var(--lamp); }
+  .hero .meta { margin: 14px 0 0; font-size: 14px; color: var(--hero-muted); }
+  .hero .meta b { color: var(--hero-fg); font-weight: 600; }
+
+  .row { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-ctl); padding: 12px; display: flex; gap: 12px; align-items: center; }
+  .row .box { min-width: 58px; padding: 8px 4px; text-align: center; background: var(--hero-bg); border-radius: calc(var(--r-ctl) - 1px); }
+  .row .box b { display: block; font: 700 24px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--hero-accent); }
+  .row .box small { font-size: 12px; color: var(--hero-muted); }
+  .row .name { font: 700 16px/1.2 var(--display); margin: 0 0 2px; }
+  .row .sub { margin: 0; font-size: 13px; color: var(--muted); }
+  .row .sub .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--m-sub); margin-right: 6px; }
+  .row .sub em { font-style: normal; color: var(--accent-ink); font-weight: 700; }
+
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { font: 700 15px/1 var(--sans); min-height: 44px; padding: 0 18px; border-radius: var(--r-ctl); border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; text-transform: var(--btn-case); letter-spacing: var(--btn-track); }
+  .btn.primary { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-fg); }
+
+  .type p { margin: 0 0 4px; }
+  .type .sample-mono { font: 500 15px/1.4 var(--mono); font-variant-numeric: tabular-nums; }
+  .type .fonts { font-size: 13px; color: var(--muted); }
+
+  .milestones { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); margin: 0; padding: 0; list-style: none; }
+  .milestones li { display: inline-flex; align-items: center; gap: 6px; }
+  .milestones i { width: 10px; height: 10px; border-radius: 50%; }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+  .sw { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 12px; background: var(--surface); }
+  .sw i { display: block; height: 32px; }
+  .sw span { display: block; padding: 4px 6px; color: var(--muted); }
+  .checks { font: 500 12px/1.6 var(--sans); color: var(--muted); margin: 0; padding: 0; list-style: none; }
+  .checks .fail { color: var(--accent-ink); font-weight: 700; }
+
+  /* ---------- R1: Amber board ----------
+     C's departures-board amber on B's console. A cool graphite page (no cream), black screen, amber digits
+     and lamps. The primary button is an amber key with black text, like a lit console key. */
+  .dir-a { --display: "Chivo", sans-serif; --sans: "Chivo", sans-serif; --mono: "Chivo Mono", monospace;
+    --r-card: 10px; --r-ctl: 6px; --h-track: -.02em; --h-case: none; --btn-case: none; --btn-track: 0; --glow: 0px;
+    --bg: #e2e5e8; --surface: #ffffff; --surface-2: #eceef0; --ink: #101215; --muted: #4b5159; --line: #c9ced4;
+    --accent: #ffb000; --accent-ink: #8a5300; --btn-bg: #ffb000; --btn-fg: #101215;
+    --hero-bg: #0a0b0d; --hero-fg: #f2f0ea; --hero-muted: #a19f98; --hero-accent: #ffb000; --hero-tile: #15171a; --hero-line: #272a2f; --lamp: #ffb000;
+    --m-sub: #d1281f; --m-rev: #a86e00; --m-dec: #1f62b8; --m-cam: #1d7f45; --m-conf: #59606a; }
+  [data-theme="dark"] .dir-a {
+    --bg: #08090b; --surface: #121418; --surface-2: #1a1d22; --ink: #eceef0; --muted: #9ea4ac; --line: #262a30;
+    --accent: #ffb000; --accent-ink: #ffb000; --btn-bg: #ffb000; --btn-fg: #101215;
+    --hero-bg: #000000; --hero-tile: #121417; --hero-line: #24272c;
+    --m-sub: #ff5a4a; --m-rev: #ffb000; --m-dec: #5aa7ff; --m-cam: #45d17f; --m-conf: #e6e8ea; }
+
+  /* ---------- R2: Apollo console ----------
+     1960s mission control: grey consoles, black screens with plain white characters, and coloured lamp
+     caps as the only colour. IBM Plex (IBM built the Apollo control centre's computers), condensed, for
+     long venue names. No accent hue at all: the dark key is the primary button, red is kept for "act now". */
+  .dir-b { --display: "IBM Plex Sans Condensed", sans-serif; --sans: "IBM Plex Sans Condensed", sans-serif; --mono: "IBM Plex Mono", monospace;
+    --r-card: 4px; --r-ctl: 3px; --h-track: .01em; --h-case: uppercase; --btn-case: uppercase; --btn-track: .05em; --glow: 0px;
+    --bg: #d8dde0; --surface: #f4f6f6; --surface-2: #e6eaeb; --ink: #12171a; --muted: #455055; --line: #bcc5ca;
+    --accent: #c62a20; --accent-ink: #b3261e; --btn-bg: #12171a; --btn-fg: #f4f6f6;
+    --hero-bg: #0b0f12; --hero-fg: #eef2f3; --hero-muted: #97a3a9; --hero-accent: #f4f1e6; --hero-tile: #121a1f; --hero-line: #24313a; --lamp: #ffb000;
+    --m-sub: #c62a20; --m-rev: #a86e00; --m-dec: #1f62b8; --m-cam: #1d7f45; --m-conf: #5d676d; }
+  [data-theme="dark"] .dir-b {
+    --bg: #070a0c; --surface: #10161a; --surface-2: #172026; --ink: #e6ecee; --muted: #95a3aa; --line: #23303a;
+    --accent: #ff6b5c; --accent-ink: #ff6b5c; --btn-bg: #e6ecee; --btn-fg: #070a0c;
+    --hero-bg: #000000; --hero-tile: #0d1317; --hero-line: #1f2a31;
+    --m-sub: #ff6b5c; --m-rev: #ffb000; --m-dec: #5aa7ff; --m-cam: #45d17f; --m-conf: #e6ecee; }
+
+  /* ---------- R3: Phosphor (B kept) ----------
+     Round one's B, unchanged except for lamp-cap milestone colours, so you can see the green next to the
+     two alternatives. Green on black is the terminal cliché; here it stays on the readout only. */
+  .dir-c { --display: "Barlow Semi Condensed", sans-serif; --sans: "Barlow Semi Condensed", sans-serif; --mono: "Martian Mono", monospace;
+    --r-card: 4px; --r-ctl: 3px; --h-track: .02em; --h-case: uppercase; --btn-case: uppercase; --btn-track: .06em; --glow: 12px;
+    --bg: #dde2e6; --surface: #f3f5f6; --surface-2: #e4e9ec; --ink: #0f1417; --muted: #47515a; --line: #bcc5cc;
+    --accent: #13a454; --accent-ink: #0a6a35; --btn-bg: #0a6a35; --btn-fg: #ffffff;
+    --hero-bg: #08100c; --hero-fg: #dcf7e6; --hero-muted: #8aae99; --hero-accent: #4cf08f; --hero-tile: #0f1b15; --hero-line: #1e3328; --lamp: #ffb547;
+    --m-sub: #d1281f; --m-rev: #a86e00; --m-dec: #1f62b8; --m-cam: #1d7f45; --m-conf: #59606a; }
+  [data-theme="dark"] .dir-c {
+    --bg: #06090b; --surface: #0e1418; --surface-2: #151d22; --ink: #dfe8ec; --muted: #93a3ac; --line: #223038;
+    --accent: #4cf08f; --accent-ink: #4cf08f; --btn-bg: #4cf08f; --btn-fg: #06090b;
+    --hero-bg: #000000; --hero-tile: #0b140f; --hero-line: #1a2c22;
+    --m-sub: #ff5a4a; --m-rev: #ffb000; --m-dec: #5aa7ff; --m-cam: #45d17f; --m-conf: #e6e8ea; }
+</style>
+</head>
+<body>
+<header class="intro">
+  <h1 id="page-title"></h1>
+  <p id="page-sub"></p>
+  <div class="bar" role="group" aria-label="Theme">
+    <button type="button" data-set="light">Light</button>
+    <button type="button" data-set="dark">Dark</button>
+    <button type="button" data-set="system">Match my device</button>
+  </div>
+</header>
+
+<main class="grid">
+  <section class="dir dir-a" data-key="a"></section>
+  <section class="dir dir-b" data-key="b"></section>
+  <section class="dir dir-c" data-key="c"></section>
+</main>
+
+<script>
+// ---------- The site's real content ----------
+const CONTENT = {
+  title: "AI Deadlines: round two (B × C)",
+  sub: "All three use B's console: a T-minus readout and a lamp per milestone. Colours come from real consoles and indicator lamps instead of habit: no cream page, no terracotta, no purple. Milestone colours follow indicator-lamp rules: red = act now, amber = attention, blue = action needed, green = done, white = neutral.",
+  hero: { eyebrow: "Paper registration deadline", title: "CVPR 2027", place: "Seattle, USA",
+          meta: "<b>Wed, Nov 11, 8:59 PM</b> your time · Tue, Nov 10, 11:59 PM AoE",
+          target: Date.parse("2026-11-11T11:59:00Z") },
+  row: { box: "4", unit: "days", name: "WWW 2027", sub: "Abstract · Oct 19, 8:59 PM · Dublin", flag: "This week" },
+  lights: [["Submit", true], ["Reviews", false], ["Decision", false], ["Camera", false], ["Conf", false]],
+  primary: "Add to calendar", secondary: "Share card",
+  directions: {
+    a: { name: "R1 · Amber board", feels: "A departures board built into a launch console.",
+         why: "<b>Grade: A.</b> Keeps what already works on the live site (amber digits, Chivo) and adds B's T-minus and lamps. The graphite page replaces the cream, so it no longer reads as Claude's look. Amber is warm and urgent without being an alarm.",
+         fonts: "Chivo (headlines and text) · Chivo Mono (numbers), already self-hosted" },
+    b: { name: "R2 · Apollo console", feels: "The 1969 mission control room.",
+         why: "<b>Grade: A−.</b> The least \"AI\" of the three: no accent hue at all, white characters on black screens, colour only from the lamps. Calm and serious, which suits researchers. Risk: with so little colour the page can feel austere; the lamps have to carry it.",
+         fonts: "IBM Plex Sans Condensed (headlines and text) · IBM Plex Mono (numbers)" },
+    c: { name: "R3 · Phosphor (B kept)", feels: "Round one's B, for comparison.",
+         why: "<b>Grade: B.</b> Same as before with lamp-cap milestone colours. Most dramatic of the three, but bright green on black is the terminal cliché, which is the \"AI slop\" look you asked to avoid.",
+         fonts: "Barlow Semi Condensed (headlines and text) · Martian Mono (numbers)" },
+  },
+};
+// Token pairs to check on each direction: [text token, background token, minimum ratio].
+const PAIRS = [
+  ["--ink", "--bg", 4.5], ["--muted", "--bg", 4.5], ["--muted", "--surface", 4.5], ["--accent-ink", "--surface", 4.5],
+  ["--btn-fg", "--btn-bg", 4.5], ["--hero-fg", "--hero-bg", 4.5], ["--hero-muted", "--hero-bg", 4.5], ["--hero-muted", "--hero-tile", 4.5],
+  ["--hero-accent", "--hero-tile", 4.5], ["--lamp", "--hero-bg", 4.5],
+  ["--m-sub", "--surface", 3], ["--m-rev", "--surface", 3], ["--m-dec", "--surface", 3], ["--m-cam", "--surface", 3], ["--m-conf", "--surface", 3],
+  ["--m-sub", "--bg", 3], ["--m-conf", "--bg", 3],
+];
+const SWATCHES = ["--bg", "--surface", "--ink", "--muted", "--accent-ink", "--btn-bg", "--hero-bg", "--hero-accent"];
+const MILESTONES = [["--m-sub", "Submission (red)"], ["--m-rev", "Reviews (amber)"], ["--m-dec", "Decision (blue)"], ["--m-cam", "Camera-ready (green)"], ["--m-conf", "Conference (white)"]];
+
+// ---------- Rendering ----------
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+document.getElementById("page-title").textContent = CONTENT.title;
+document.getElementById("page-sub").textContent = CONTENT.sub;
+for (const el of document.querySelectorAll(".dir")) {
+  const d = CONTENT.directions[el.dataset.key], h = CONTENT.hero, r = CONTENT.row;
+  el.innerHTML = `
+    <div><p class="label">${esc(d.name)}</p><h2>${esc(d.feels)}</h2></div>
+    <p class="why">${d.why}</p>
+    <div class="hero">
+      <p class="eyebrow">${esc(h.eyebrow)}</p>
+      <p class="title">${esc(h.title)}</p>
+      <p class="place">${esc(h.place)}</p>
+      <div class="clock">${["days", "hours", "min", "sec"].map((u) => `<div class="unit"><span class="n" data-u="${u}">00</span><span class="l">${u}</span></div>`).join("")}</div>
+      <ul class="lights">${CONTENT.lights.map(([l, on]) => `<li class="${on ? "on" : ""}"><i></i>${esc(l)}</li>`).join("")}</ul>
+      <p class="meta">${h.meta}</p>
+    </div>
+    <div class="row">
+      <div class="box"><b>${esc(r.box)}</b><small>${esc(r.unit)}</small></div>
+      <div><p class="name">${esc(r.name)}</p><p class="sub"><span class="dot"></span>${esc(r.sub)} · <em>${esc(r.flag)}</em></p></div>
+    </div>
+    <ul class="milestones">${MILESTONES.map(([t, l]) => `<li><i style="background:var(${t})"></i>${esc(l)}</li>`).join("")}</ul>
+    <div class="actions"><button class="btn primary" type="button">${esc(CONTENT.primary)}</button><button class="btn" type="button">${esc(CONTENT.secondary)}</button></div>
+    <div class="type">
+      <p>Body text reads like this: plain, specific sentences at 15 px, about deadlines in your time and in AoE.</p>
+      <p class="sample-mono">0123456789 · Oct 19 · 08:59 · 5d 7h</p>
+      <p class="fonts">${esc(d.fonts)}</p>
+    </div>
+    <div class="swatches">${SWATCHES.map((t) => `<div class="sw"><i style="background:var(${t})"></i><span>${t.slice(2)}</span></div>`).join("")}</div>
+    <ul class="checks" aria-label="Contrast checks"></ul>`;
+}
+
+const tick = () => {
+  let s = Math.max(0, Math.floor((CONTENT.hero.target - Date.now()) / 1000));
+  const v = { days: Math.floor(s / 86400), hours: Math.floor(s / 3600) % 24, min: Math.floor(s / 60) % 60, sec: s % 60 };
+  document.querySelectorAll(".unit .n").forEach((n) => { n.textContent = String(v[n.dataset.u]).padStart(2, "0"); });
+};
+tick(); setInterval(tick, 1000);
+
+const cv = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+const rgb = (s) => { cv.clearRect(0, 0, 1, 1); cv.fillStyle = "#000"; cv.fillStyle = s; cv.fillRect(0, 0, 1, 1); return [...cv.getImageData(0, 0, 1, 1).data].slice(0, 3); };
+const lum = (c) => c.reduce((a, v, i) => { v /= 255; v = v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; return a + v * [0.2126, 0.7152, 0.0722][i]; }, 0);
+const ratio = (a, b) => { const x = lum(rgb(a)), y = lum(rgb(b)); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+const checkAll = () => {
+  for (const el of document.querySelectorAll(".dir")) {
+    const cs = getComputedStyle(el), get = (t) => cs.getPropertyValue(t).trim();
+    const rows = PAIRS.map(([fg, bg, min]) => { const r = ratio(get(fg), get(bg)); return { fg, bg, min, r, ok: r >= min }; });
+    const failing = rows.filter((x) => !x.ok).length;
+    el.querySelector(".checks").innerHTML = `<li class="${failing ? "fail" : ""}">${rows.length - failing}/${rows.length} pairs pass in this theme</li>` +
+      rows.filter((x) => !x.ok).map((x) => `<li class="fail">${x.fg.slice(2)} on ${x.bg.slice(2)}: ${x.r.toFixed(1)}:1 FAIL (needs ${x.min})</li>`).join("");
+  }
+};
+
+const mq = matchMedia("(prefers-color-scheme: dark)");
+let mode = "system"; try { mode = localStorage.getItem("directions-theme") || "system"; } catch (e) {}
+const apply = () => {
+  document.documentElement.dataset.theme = mode === "system" ? (mq.matches ? "dark" : "light") : mode;
+  document.querySelectorAll("[data-set]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.set === mode)));
+  checkAll();
+};
+document.querySelectorAll("[data-set]").forEach((b) => b.addEventListener("click", () => {
+  mode = b.dataset.set; try { localStorage.setItem("directions-theme", mode); } catch (e) {} apply();
+}));
+mq.addEventListener("change", () => { if (mode === "system") apply(); });
+apply();
+</script>
+</body>
+</html>

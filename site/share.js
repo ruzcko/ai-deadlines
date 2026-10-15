@@ -9,33 +9,37 @@ const CARD_FORMATS = {
   wide: { w: 1200, h: 630, label: "Wide" },
 };
 // Card themes. Every color is a 6-digit hex (the glow and dots append alpha to it), except `line`.
+// Text colours are 4.5:1 and milestone colours 3:1 against bg1, bg2 and the midpoint between them (checked 2026-10-14).
 // Milestone colors are tuned per theme so they stay readable on its background.
 const CARD_THEMES = {
-  midnight: {
-    name: "Midnight", bg1: "#16181f", bg2: "#0b0c10", glow: 0x55, text: "#f2f3f6", muted: "#a3a8b2", faint: "#5d626c", line: "#2c313a",
-    accent: "#ff6369", submission: "#ff6369", reviews: "#b98cf0", decision: "#52a9ff", camera: "#3dd68c", conference: "#e8eaee", other: "#80858f",
+  // The site's own look: the black screen with warm-white digits. A saved "signal" or "midnight" falls back to it.
+  console: {
+    name: "Console", bg1: "#0b0f12", bg2: "#000000", glow: 0x00, glowColor: "#0b0f12", text: "#eef2f3", muted: "#97a3a9", faint: "#8a979e", line: "#24313a",
+    accent: "#ff6b5c", num: "#f4f1e6", submission: "#ff6b5c", reviews: "#ffb000", decision: "#5aa7ff", camera: "#45d17f", conference: "#e6ecee", other: "#7f8a90",
   },
-  paper: {
-    name: "Paper", bg1: "#faf6ee", bg2: "#ebe2d0", glow: 0x26, text: "#1c1a16", muted: "#5e584d", faint: "#9a9282", line: "#d8cfbd",
-    accent: "#d23f2e", submission: "#d23f2e", reviews: "#7a3fb2", decision: "#1d5fc2", camera: "#23803c", conference: "#1c1a16", other: "#8a8375",
+  // The console panel in daylight. A saved "paper" falls back to it.
+  daylight: {
+    name: "Daylight", bg1: "#f4f6f6", bg2: "#d8dde0", glow: 0x00, glowColor: "#f4f6f6", text: "#12171a", muted: "#455055", faint: "#4f5a60", line: "#bcc5ca",
+    accent: "#c62a20", num: "#12171a", submission: "#c62a20", reviews: "#9a6500", decision: "#1f62b8", camera: "#1d7f45", conference: "#12171a", other: "#687176",
   },
   aurora: {
-    name: "Aurora", bg1: "#0f2d4f", bg2: "#03101d", glow: 0x66, glowColor: "#38e6c5", text: "#eef7ff", muted: "#a7bdd3", faint: "#64809c", line: "#1f3d5c",
+    name: "Aurora", bg1: "#0f2d4f", bg2: "#03101d", glow: 0x66, glowColor: "#38e6c5", text: "#eef7ff", muted: "#a7bdd3", faint: "#8097ae", line: "#1f3d5c",
     accent: "#38e6c5", submission: "#ff8593", reviews: "#c8a6ff", decision: "#6ccbff", camera: "#5ff0b1", conference: "#eef7ff", other: "#7d93a8",
   },
   sunset: {
-    name: "Sunset", bg1: "#2b0f45", bg2: "#e0522e", glow: 0x55, glowColor: "#ffd166", text: "#ffffff", muted: "#ffe3d9", faint: "#ffc0b0", line: "#ffffff38",
+    name: "Sunset", bg1: "#2b0f45", bg2: "#9c2e14", /* burnt orange, so white text is 7.5:1 at this end (3.9 on the old #e0522e) */ glow: 0x55, glowColor: "#ffd166", text: "#ffffff", muted: "#ffe3d9", faint: "#ffc0b0", line: "#ffffff38",
     accent: "#ffd166", submission: "#ffd166", reviews: "#f7c6ff", decision: "#c3e4ff", camera: "#c2f7d3", conference: "#ffffff", other: "#ffd9cf",
   },
 };
-const CARD_COLORS = { ...CARD_THEMES.midnight }; // the theme being drawn
-const FONT = 'Chivo, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-const MONO = '"Chivo Mono", ui-monospace, Consolas, monospace'; // countdown numbers, as on the site
+const CARD_COLORS = { ...CARD_THEMES.console }; // the theme being drawn
+const FONT = '"IBM Plex Sans Condensed", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+const MONO = '"IBM Plex Mono", ui-monospace, Consolas, monospace'; // countdown numbers, as on the site
 const CARD_STORE = "ai-deadlines:card";
-const shareState = { kind: null, payload: null, format: "story", theme: "midnight", blob: null, url: null };
+const shareState = { kind: null, payload: null, format: "story", theme: "console", blob: null, url: null };
 try {
   const saved = JSON.parse(localStorage.getItem(CARD_STORE) || "{}");
-  if (CARD_THEMES[saved.theme]) shareState.theme = saved.theme;
+  const theme = { signal: "console", midnight: "console", paper: "daylight" }[saved.theme] || saved.theme; // retired themes
+  if (CARD_THEMES[theme]) shareState.theme = theme;
   if (CARD_FORMATS[saved.format]) shareState.format = saved.format;
 } catch (_) { /* storage unavailable */ }
 function saveCardPrefs() {
@@ -130,7 +134,7 @@ function brand(g, x, y, size) {
   g.beginPath();
   g.arc(x + size * 0.35, y + size * 0.5, size * 0.3, 0, Math.PI * 2);
   g.fill();
-  font(g, size * 0.82, 650);
+  font(g, size * 0.82, 600);
   g.fillStyle = CARD_COLORS.muted;
   g.textBaseline = "middle";
   g.fillText("AI Conference Deadlines", x + size * 0.9, y + size * 0.52);
@@ -165,7 +169,7 @@ function drawTrack(g, e, next, x, y, w, size) {
 
 function drawVenue(g, W, H, fmt, { s, e, m }) {
   const color = CARD_COLORS[m.group] || CARD_COLORS.accent;
-  const numColor = m.est ? CARD_COLORS.muted : m.group === "conference" ? CARD_COLORS.text : color;
+  const numColor = m.est ? CARD_COLORS.muted : CARD_COLORS.num || (m.group === "conference" ? CARD_COLORS.text : color);
   background(g, W, H, color);
   const b = safeBox(fmt, W, H);
   const [num, unit] = cardCount(Date.parse(m.at) - Date.now(), m.est);
@@ -177,21 +181,21 @@ function drawVenue(g, W, H, fmt, { s, e, m }) {
     brand(g, b.x, b.y, 30);
     font(g, 24, 700); g.fillStyle = color;
     g.fillText(m.label.toUpperCase().slice(0, 48), b.x, b.y + 100);
-    const ts = fit(g, `${s.title} ${e.year}`, colW, 84, 800);
+    const ts = fit(g, `${s.title} ${e.year}`, colW, 84, 700);
     g.fillStyle = CARD_COLORS.text; g.fillText(`${s.title} ${e.year}`, b.x, b.y + 100 + ts * 1.05);
-    font(g, 26, 500); g.fillStyle = CARD_COLORS.muted;
+    font(g, 26, 400); g.fillStyle = CARD_COLORS.muted;
     let yy = b.y + 100 + ts * 1.05 + 46;
     for (const line of wrap(g, s.full_name || "", colW, 2)) { g.fillText(line, b.x, yy); yy += 34; }
     font(g, 28, 600); g.fillStyle = CARD_COLORS.text;
     g.fillText(fitLine(g, officialWhen(e, m), colW), b.x, yy + 20);
-    if (place) { font(g, 26, 500); g.fillStyle = CARD_COLORS.muted; g.fillText(fitLine(g, place, colW), b.x, yy + 58); }
+    if (place) { font(g, 26, 400); g.fillStyle = CARD_COLORS.muted; g.fillText(fitLine(g, place, colW), b.x, yy + 58); }
     // Right column: the number.
     const rx = b.x + b.w * 0.62, rw = b.w * 0.38;
-    const ns = fit(g, num, rw, 230, 800, 0.4, MONO);
+    const ns = fit(g, num, rw, 230, 600, 0.4, MONO);
     g.fillStyle = numColor; g.fillText(num, rx, b.y + 60 + ns * 0.95);
     font(g, 30, 600); g.fillStyle = CARD_COLORS.text; g.fillText(unit, rx, b.y + 60 + ns * 0.95 + 50);
     drawTrack(g, e, m, b.x, b.y + b.h - 80, b.w, 22);
-    font(g, 22, 500); g.fillStyle = CARD_COLORS.faint;
+    font(g, 22, 400); g.fillStyle = CARD_COLORS.faint;
     g.fillText(`${url}  ·  ${asOf()}`, b.x, b.y + b.h - 6);
     return;
   }
@@ -203,24 +207,24 @@ function drawVenue(g, W, H, fmt, { s, e, m }) {
   add(fmt === "story" ? 110 : 70, () => {});
   add(44, (y, k) => { font(g, 36 * k, 700); g.fillStyle = color; g.fillText(fitLine(g, m.label.toUpperCase(), b.w), b.x, y + 36 * k); });
   add(20, () => {});
-  add(140, (y, k) => { const ts = fit(g, `${s.title} ${e.year}`, b.w, 132 * k, 800); g.fillStyle = CARD_COLORS.text; g.fillText(`${s.title} ${e.year}`, b.x, y + ts * 0.92); });
+  add(140, (y, k) => { const ts = fit(g, `${s.title} ${e.year}`, b.w, 132 * k, 700); g.fillStyle = CARD_COLORS.text; g.fillText(`${s.title} ${e.year}`, b.x, y + ts * 0.92); });
   add(96, (y, k) => {
-    font(g, 36 * k, 500); g.fillStyle = CARD_COLORS.muted;
+    font(g, 36 * k, 400); g.fillStyle = CARD_COLORS.muted;
     wrap(g, s.full_name || "", b.w, 2).forEach((line, i) => g.fillText(line, b.x, y + 40 * k + i * 46 * k));
   });
   add(fmt === "story" ? 90 : 40, () => {});
-  add(fmt === "story" ? 330 : 250, (y, k, hh) => { const ns = fit(g, num, b.w, hh * 1.05, 800, 0.4, MONO); g.fillStyle = numColor; g.fillText(num, b.x - ns * 0.03, y + hh * 0.86); });
-  add(64, (y, k) => { font(g, 50 * k, 650); g.fillStyle = CARD_COLORS.text; g.fillText(unit, b.x, y + 50 * k); });
+  add(fmt === "story" ? 330 : 250, (y, k, hh) => { const ns = fit(g, num, b.w, hh * 1.05, 600, 0.4, MONO); g.fillStyle = numColor; g.fillText(num, b.x - ns * 0.03, y + hh * 0.86); });
+  add(64, (y, k) => { font(g, 50 * k, 600); g.fillStyle = CARD_COLORS.text; g.fillText(unit, b.x, y + 50 * k); });
   add(fmt === "story" ? 80 : 40, () => {});
   add(52, (y, k) => { font(g, 40 * k, 600); g.fillStyle = CARD_COLORS.text; g.fillText(fitLine(g, officialWhen(e, m), b.w), b.x, y + 40 * k); });
-  if (place) add(50, (y, k) => { font(g, 36 * k, 500); g.fillStyle = CARD_COLORS.muted; g.fillText(fitLine(g, place, b.w), b.x, y + 36 * k); });
+  if (place) add(50, (y, k) => { font(g, 36 * k, 400); g.fillStyle = CARD_COLORS.muted; g.fillText(fitLine(g, place, b.w), b.x, y + 36 * k); });
   add(fmt === "story" ? 90 : 50, () => {});
   // In Stories the right edge of the lower half is covered, so the timeline stops short there.
   add(40, (y, k) => drawTrack(g, e, m, b.x + 14 * k, y + 20 * k, (fmt === "story" ? b.w * 0.82 : b.w) - 28 * k, 30 * k));
   add(fmt === "story" ? 90 : 50, () => {});
   // The link sits bottom-left: Stories put their reply/like controls on the right.
   add(40, (y, k) => { font(g, 30 * k, 600); g.fillStyle = CARD_COLORS.muted; g.fillText(fitLine(g, url, b.w * 0.72), b.x, y + 30 * k); });
-  add(36, (y, k) => { font(g, 26 * k, 500); g.fillStyle = CARD_COLORS.faint; g.fillText(asOf(), b.x, y + 28 * k); });
+  add(36, (y, k) => { font(g, 26 * k, 400); g.fillStyle = CARD_COLORS.faint; g.fillText(asOf(), b.x, y + 28 * k); });
   layout(blocks, b);
 }
 
@@ -235,7 +239,7 @@ function drawList(g, W, H, fmt, { rows, title }) {
   const add = (h, draw) => blocks.push({ h, draw });
   add(44, (y, k) => brand(g, b.x, y, 44 * k));
   add(fmt === "story" ? 90 : 50, () => {});
-  add(120, (y, k) => { const ts = fit(g, title, b.w, 104 * k, 800); g.fillStyle = CARD_COLORS.text; g.fillText(title, b.x, y + ts * 0.9); });
+  add(120, (y, k) => { const ts = fit(g, title, b.w, 104 * k, 700); g.fillStyle = CARD_COLORS.text; g.fillText(title, b.x, y + ts * 0.9); });
   add(fmt === "wide" ? 20 : 40, () => {});
   for (const r of shown) {
     add(fmt === "wide" ? 88 : 132, (y, k, hh) => {
@@ -246,21 +250,21 @@ function drawList(g, W, H, fmt, { rows, title }) {
       g.beginPath(); g.arc(b.x + 12 * k, y + hh * 0.4, 10 * k, 0, Math.PI * 2); g.fill();
       const [num, unit] = cardCount(Date.parse(r.m.at) - Date.now(), r.m.est);
       const right = `${num}${unit.split(" ")[0].replace("months", "mo").replace("days", "d").replace("day", "d").replace("hours", "h").replace("hour", "h").replace("minutes", "min")}`;
-      font(g, 50 * k, 800, MONO);
+      font(g, 50 * k, 600, MONO);
       const rw = g.measureText(right).width;
       g.fillStyle = r.m.est ? CARD_COLORS.muted : c;
       g.fillText(right, b.x + rowW - rw, y + hh * 0.52);
       const leftW = rowW - rw - 60 * k;
-      const ts = fit(g, `${r.s.title} ${r.e.year}`, leftW, 46 * k, 750);
+      const ts = fit(g, `${r.s.title} ${r.e.year}`, leftW, 46 * k, 700);
       g.fillStyle = CARD_COLORS.text; g.fillText(`${r.s.title} ${r.e.year}`, b.x + 40 * k, y + hh * 0.4 + ts * 0.32);
-      font(g, 30 * k, 500); g.fillStyle = CARD_COLORS.muted;
+      font(g, 30 * k, 400); g.fillStyle = CARD_COLORS.muted;
       g.fillText(fitLine(g, `${r.m.label} · ${officialWhen(r.e, r.m)}`, leftW), b.x + 40 * k, y + hh * 0.4 + ts * 0.32 + 42 * k);
     });
   }
   if (rows.length > shown.length) add(50, (y, k) => { font(g, 30 * k, 600); g.fillStyle = CARD_COLORS.faint; g.fillText(`+${rows.length - shown.length} more`, b.x + 40 * k, y + 36 * k); });
   add(fmt === "story" ? 70 : 30, () => {});
   add(40, (y, k) => { font(g, 30 * k, 600); g.fillStyle = CARD_COLORS.muted; g.fillText(siteHost(), b.x, y + 30 * k); });
-  add(36, (y, k) => { font(g, 26 * k, 500); g.fillStyle = CARD_COLORS.faint; g.fillText(asOf(), b.x, y + 28 * k); });
+  add(36, (y, k) => { font(g, 26 * k, 400); g.fillStyle = CARD_COLORS.faint; g.fillText(asOf(), b.x, y + 28 * k); });
   layout(blocks, b);
 }
 
@@ -284,7 +288,7 @@ function layout(blocks, b) {
 
 function renderCard(kind, payload, fmt, theme = shareState.theme) {
   Object.keys(CARD_COLORS).forEach((k) => delete CARD_COLORS[k]);
-  Object.assign(CARD_COLORS, CARD_THEMES[theme] || CARD_THEMES.midnight);
+  Object.assign(CARD_COLORS, CARD_THEMES[theme] || CARD_THEMES.console);
   const { w, h } = CARD_FORMATS[fmt];
   const c = document.createElement("canvas");
   c.width = w;
@@ -301,7 +305,7 @@ async function refreshCard() {
   const img = $("sdImg");
   img.removeAttribute("src");
   // Canvas text needs the web font loaded first, or the first card falls back to a system font.
-  try { await Promise.all(["800", "750", "700", "650", "600", "500"].map((w) => document.fonts.load(`${w} 40px Chivo`)).concat(document.fonts.load('800 40px "Chivo Mono"'))); } catch (_) { /* fall back */ }
+  try { await Promise.all(["400", "600", "700"].map((w) => document.fonts.load(`${w} 40px "IBM Plex Sans Condensed"`)).concat(document.fonts.load('600 40px "IBM Plex Mono"'))); } catch (_) { /* fall back */ }
   shareState.blob = await renderCard(shareState.kind, shareState.payload, shareState.format);
   if (img.dataset.url) URL.revokeObjectURL(img.dataset.url);
   img.dataset.url = URL.createObjectURL(shareState.blob);
