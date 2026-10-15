@@ -186,7 +186,7 @@ One unit leads at each stage, and the next smaller unit joins only when it matte
 - Formats: Story (9:16), Square and Wide. Story cards keep content out of the top 14% and bottom 20%, where Stories put their buttons.
 - Every theme's text colours are 4.5:1 and milestone colours 3:1 against both ends and the middle of its background (the lint and browser checks don't see canvas colours, so check these by hand).
 - **Link previews** (`/og`, 1200 × 630): the Console colours, from `COLORS` in `lib/deadline.js`, Plex TTFs in `functions/og.js`, no glow.
-- **README images** (`docs/banner.png`, `docs/screenshot*.png`) still show the Signal look; re-make them after Apollo is live.
+- **README images** (2026-10-15): `docs/banner.png` (1280 × 640, also the GitHub social preview) is drawn by `docs/make_banner.py` with the Plex TTFs and the screen colours: the readout panel and lamp row. `docs/screenshot.png` (desktop, dark) and `docs/screenshot-phone.png` (phone, light) are captures of the live site.
 
 ## 7. Voice
 

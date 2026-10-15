@@ -1,74 +1,97 @@
-"""Render docs/banner.png (README top + GitHub social preview, 1280x640).
+"""Render docs/banner.png (README top + GitHub social preview, 1280x640) in the Apollo console look.
 
     .venv/Scripts/python.exe docs/make_banner.py
+
+Colours and fonts follow DESIGN.md: the black screen, warm-white digits on one readout panel,
+a row of milestone lamps (the next one lit amber), IBM Plex Sans Condensed + Plex Mono.
 """
 
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "site" / "fonts"
 W, H = 1280, 640
-BG, INK, MUTED, RED, GREEN = "#0f1115", "#f3f4f6", "#9a9fab", "#ff6369", "#4ade80"
-TILE_BG, TILE_LINE = "#171a20", "#262a33"
+
+SCREEN, PANEL, LINE = "#0b0f12", "#121a1f", "#24313a"
+FG, MUTED, CLOCK, LAMP = "#eef2f3", "#97a3a9", "#f4f1e6", "#ffb000"
+RED = "#ff6b5c"
+MILESTONES = [("SUBMIT", RED), ("REVIEWS", LAMP), ("DECISION", "#5aa7ff"), ("CAMERA", "#45d17f"), ("CONF", "#e6ecee")]
 
 
 def font(name, size):
-    return ImageFont.truetype(str(FONTS / f"Inter-{name}.ttf"), size)
+    return ImageFont.truetype(str(FONTS / name), size)
+
+
+SANS_B = lambda s: font("IBMPlexSansCondensed-Bold.ttf", s)
+SANS_SB = lambda s: font("IBMPlexSansCondensed-SemiBold.ttf", s)
+MONO = lambda s: font("IBMPlexMono-SemiBold.ttf", s)
+
+
+def spaced(d, xy, text, f, fill, track, anchor="ls"):
+    """Draw capitals with letter spacing (PIL has none), left-aligned at xy."""
+    x, y = xy
+    if anchor == "ms":
+        x -= (sum(d.textlength(c, font=f) for c in text) + track * (len(text) - 1)) / 2
+    for c in text:
+        d.text((x, y), c, font=f, fill=fill, anchor="ls")
+        x += d.textlength(c, font=f) + track
 
 
 def main():
-    img = Image.new("RGB", (W, H), BG)
-    # Soft red glow, top right.
-    glow = Image.new("RGB", (W, H), BG)
-    ImageDraw.Draw(glow).ellipse((W - 420, -260, W + 220, 300), fill="#2a1518")
-    img = Image.blend(img, glow.filter(ImageFilter.GaussianBlur(120)), 1.0)
+    img = Image.new("RGB", (W, H), SCREEN)
     d = ImageDraw.Draw(img)
 
-    # Clock mark + domain.
-    cx, cy, r = 122, 148, 30
-    d.ellipse((cx - r, cy - r, cx + r, cy + r), outline=RED, width=6)
-    d.line((cx, cy - 16, cx, cy), fill=RED, width=6)
-    d.line((cx, cy, cx + 12, cy + 10), fill=RED, width=6)
-    d.text((174, 148), "ai-deadlines.ruzcko.com", font=font("Medium", 26), fill=MUTED, anchor="lm")
+    # Brand: the lamp mark and the domain.
+    cx, cy = 104, 112
+    d.ellipse((cx - 20, cy - 20, cx + 20, cy + 20), outline=MUTED, width=4)
+    d.ellipse((cx - 12, cy - 12, cx + 12, cy + 12), fill=RED)
+    d.text((140, cy), "ai-deadlines.ruzcko.com", font=SANS_SB(28), fill=MUTED, anchor="lm")
 
-    # Title.
-    big = font("ExtraBold", 104)
-    d.text((88, 292), "AI Conference", font=big, fill=INK, anchor="ls")
-    d.text((88, 394), "Deadlines", font=big, fill=RED, anchor="ls")
+    # Title and tagline.
+    d.text((84, 252), "AI Conference", font=SANS_B(80), fill=FG, anchor="ls")
+    d.text((84, 334), "Deadlines", font=SANS_B(80), fill=FG, anchor="ls")
+    tag = SANS_SB(28)
+    d.text((84, 404), "Live countdowns from submission to", font=tag, fill=MUTED, anchor="ls")
+    d.text((84, 442), "camera-ready, a map and calendar feeds.", font=tag, fill=MUTED, anchor="ls")
 
-    # Tagline.
-    tag = font("Medium", 30)
-    d.text((88, 450), "Live countdowns from submission to camera-ready, a map of where", font=tag, fill=MUTED, anchor="lm")
-    d.text((88, 490), "each conference is, and calendar feeds for every milestone type.", font=tag, fill=MUTED, anchor="lm")
+    # The readout panel: four units, thin rules between them.
+    px0, py0, px1, py1 = 680, 176, 1196, 356
+    d.rounded_rectangle((px0, py0, px1, py1), radius=4, fill=PANEL, outline=LINE, width=2)
+    units = [("26", "DAYS"), ("23", "HOURS"), ("41", "MIN"), ("07", "SEC")]
+    cw = (px1 - px0) / 4
+    for i, (n, label) in enumerate(units):
+        x = px0 + cw * i + cw / 2
+        if i:
+            d.line((px0 + cw * i, py0 + 24, px0 + cw * i, py1 - 24), fill=LINE, width=2)
+        d.text((x, py0 + 112), n, font=MONO(76), fill=CLOCK, anchor="ms")
+        spaced(d, (x, py0 + 152), label, SANS_SB(17), MUTED, 2.5, anchor="ms")
 
-    # Tiles: each sized to its text, so nothing clips.
-    num_f, unit_f, lab_f = font("ExtraBold", 34), font("Medium", 20), font("Medium", 20)
-    tiles = [
-        ("31", "days", "CVPR 2027 · Paper", RED),
-        ("57", "days", "NeurIPS 2026 · Conference", RED),
-        ("2", "sources", "cross-checked", GREEN),
-    ]
-    x, y, h, pad, gap = 88, 548, 60, 18, 14
-    for num, unit, label, color in tiles:
-        wn = d.textlength(num, font=num_f)
-        wu = d.textlength(unit, font=unit_f)
-        wl = d.textlength(label, font=lab_f)
-        w = pad + wn + 6 + wu + 16 + wl + pad
-        d.rounded_rectangle((x, y, x + w, y + h), radius=12, fill=TILE_BG, outline=TILE_LINE, width=2)
-        cx = x + pad
-        d.text((cx, y + h / 2 + 1), num, font=num_f, fill=color, anchor="lm")
-        cx += wn + 6
-        d.text((cx, y + h / 2 + 4), unit, font=unit_f, fill=color, anchor="lm")
-        cx += wu + 16
-        d.text((cx, y + h / 2 + 1), label, font=lab_f, fill=INK, anchor="lm")
-        x += w + gap
-    assert x - gap <= W - 88, f"tiles overflow: {x}"
+    # The lamp row: the next milestone lit amber, the rest unlit rings.
+    lw = (px1 - px0) / 5
+    for i, (label, colour) in enumerate(MILESTONES):
+        x = px0 + lw * i + lw / 2
+        y = 404
+        if i == 0:
+            d.ellipse((x - 17, y - 17, x + 17, y + 17), fill="#3d2f10")  # the lit lamp's halo
+            d.ellipse((x - 11, y - 11, x + 11, y + 11), fill=LAMP)
+        else:
+            d.ellipse((x - 10, y - 10, x + 10, y + 10), outline=MUTED, width=3)
+        spaced(d, (x, y + 44), label, SANS_SB(17), LAMP if i == 0 else MUTED, 2, anchor="ms")
+
+    # Footer line: what the lamps mean, in the milestone colours.
+    x = 84
+    y = 560
+    for label, colour in [("Submission", RED), ("Reviews", LAMP), ("Decision", "#5aa7ff"), ("Camera-ready", "#45d17f"), ("Conference", "#e6ecee")]:
+        d.ellipse((x, y - 16, x + 14, y - 2), fill=colour)
+        d.text((x + 24, y), label, font=SANS_SB(24), fill=MUTED, anchor="ls")
+        x += 24 + d.textlength(label, font=SANS_SB(24)) + 40
+    assert x - 40 <= W - 84, f"footer overflows: {x}"
 
     out = ROOT / "docs" / "banner.png"
     img.save(out, optimize=True)
-    print(out, img.size, "tiles end at", round(x - gap))
+    print(out, img.size)
 
 
 if __name__ == "__main__":
