@@ -1,0 +1,90 @@
+{
+ "key": "emnlp-industry-track",
+ "title": "EMNLP (Industry Track)",
+ "fetched_at": "2026-10-17T12:41:54Z",
+ "urls": [
+  "https://2026.emnlp.org/"
+ ],
+ "errors": [],
+ "content_hash": "826f46e48ffc4cac",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1055,
+  "output": 724
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Budapest",
+ "country": "Hungary",
+ "venue": null,
+ "conference_start": "2026-10-24",
+ "conference_end": "2026-10-29",
+ "milestones": [
+  {
+   "label": "ARR submission deadline (long & short papers)",
+   "type": "paper",
+   "date": "2026-05-25",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviewer registration deadline for ALL authors",
+   "type": "other",
+   "date": "2026-05-27",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author response and author-reviewer discussion (start)",
+   "type": "rebuttal_start",
+   "date": "2026-07-07",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author response and author-reviewer discussion (end)",
+   "type": "rebuttal_end",
+   "date": "2026-07-13",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Meta review released",
+   "type": "review_release",
+   "date": "2026-07-30",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "EMNLP commitment deadline",
+   "type": "paper",
+   "date": "2026-08-02",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance (long & short papers)",
+   "type": "notification",
+   "date": "2026-08-20",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready papers due (long & short)",
+   "type": "camera_ready",
+   "date": "2026-08-30",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates listed are for the main research track via ARR; specific Industry Track dates are not detailed on this page.",
+ "follow_url": null
+}

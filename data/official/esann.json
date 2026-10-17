@@ -1,0 +1,42 @@
+{
+ "key": "esann",
+ "title": "ESANN",
+ "fetched_at": "2026-10-17T12:42:23Z",
+ "urls": [
+  "https://www.esann.org/"
+ ],
+ "errors": [],
+ "content_hash": "c168ac49595296d6",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1006,
+  "output": 234
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Bruges",
+ "country": "Belgium",
+ "venue": null,
+ "conference_start": "2027-04-21",
+ "conference_end": "2027-04-23",
+ "milestones": [
+  {
+   "label": "Submission deadline",
+   "type": "paper",
+   "date": "2026-11-18",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Decisions",
+   "type": "notification",
+   "date": "2027-01-22",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

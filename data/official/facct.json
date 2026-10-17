@@ -1,0 +1,58 @@
+{
+ "key": "facct",
+ "title": "FAccT",
+ "fetched_at": "2026-10-17T12:43:15Z",
+ "urls": [
+  "https://facctconference.org/2026/index.html"
+ ],
+ "errors": [],
+ "content_hash": "a4ef8a1678b8a079",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1460,
+  "output": 373
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Montréal",
+ "country": "Canada",
+ "venue": "Le Centre Sheraton Montréal",
+ "conference_start": "2026-06-25",
+ "conference_end": "2026-06-28",
+ "milestones": [
+  {
+   "label": "Abstract deadline",
+   "type": "abstract",
+   "date": "2026-01-08",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Paper submission deadline",
+   "type": "paper",
+   "date": "2026-01-13",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Notification of accept/revise /reject",
+   "type": "notification",
+   "date": "2026-03-02",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Final Notification for Revise & Resubmit Papers",
+   "type": "notification",
+   "date": "2026-04-15",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

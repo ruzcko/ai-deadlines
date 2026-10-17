@@ -1,0 +1,50 @@
+{
+ "key": "cpal",
+ "title": "CPAL",
+ "fetched_at": "2026-10-17T12:40:23Z",
+ "urls": [
+  "https://cpal.cc/"
+ ],
+ "errors": [],
+ "content_hash": "961c66c0a9f35339",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 899,
+  "output": 335
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Tokyo",
+ "country": "Japan",
+ "venue": "Hitotsubashi Hall",
+ "conference_start": "2027-03-23",
+ "conference_end": "2027-03-26",
+ "milestones": [
+  {
+   "label": "Abstract registration",
+   "type": "abstract",
+   "date": "2026-11-13",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Proceedings paper deadline",
+   "type": "paper",
+   "date": "2026-11-25",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Recent Spotlight submission deadline",
+   "type": "paper",
+   "date": "2027-01-18",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Includes deadlines for both the Proceedings Track and the Recent Spotlight Track.",
+ "follow_url": null
+}

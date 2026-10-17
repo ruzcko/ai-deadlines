@@ -1,0 +1,130 @@
+{
+ "key": "fg",
+ "title": "FG",
+ "fetched_at": "2026-10-17T12:43:27Z",
+ "urls": [
+  "https://fg2026.ieee-biometrics.org/"
+ ],
+ "errors": [],
+ "content_hash": "0231e058641eed74",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 2127,
+  "output": 1002
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": null,
+ "country": null,
+ "venue": null,
+ "conference_start": "2026-05-25",
+ "conference_end": "2026-05-29",
+ "milestones": [
+  {
+   "label": "Round 1 Abstract submission",
+   "type": "abstract",
+   "date": "2025-09-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Paper submission",
+   "type": "paper",
+   "date": "2025-10-02",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Paper submission Extended",
+   "type": "paper",
+   "date": "2025-10-06",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Notifications to authors",
+   "type": "notification",
+   "date": "2025-12-11",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Revisions",
+   "type": "rebuttal_end",
+   "date": "2026-01-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 2 Abstract submission (only for round 2 new submissions)",
+   "type": "abstract",
+   "date": "2026-01-09",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 2 Paper submission",
+   "type": "paper",
+   "date": "2026-01-15",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 2 Extended submission (abstract and paper)",
+   "type": "paper",
+   "date": "2026-01-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 2 Notifications to authors",
+   "type": "notification",
+   "date": "2026-04-02",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera Ready (for all)",
+   "type": "camera_ready",
+   "date": "2026-04-21",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshops Proposal deadline",
+   "type": "workshop",
+   "date": "2025-11-13",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshops Proposal deadline (extended)",
+   "type": "workshop",
+   "date": "2025-11-20",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Tutorials Proposal deadline",
+   "type": "tutorial",
+   "date": "2026-01-13",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "The main track features two submission rounds: Round 1 and Round 2.",
+ "follow_url": null
+}

@@ -1,0 +1,50 @@
+{
+ "key": "eccv",
+ "title": "ECCV",
+ "fetched_at": "2026-10-17T12:41:09Z",
+ "urls": [
+  "https://eccv.ecva.net/Conferences/2026"
+ ],
+ "errors": [],
+ "content_hash": "cd1e3989e0980c86",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1599,
+  "output": 313
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Malmö",
+ "country": "Sweden",
+ "venue": "Malmö Arena and Malmömässan",
+ "conference_start": "2026-09-08",
+ "conference_end": "2026-09-12",
+ "milestones": [
+  {
+   "label": "Tutorial proposal submission deadline",
+   "type": "tutorial",
+   "date": "2026-02-15",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop proposal submission deadline",
+   "type": "workshop",
+   "date": "2026-02-27",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Registration Opens",
+   "type": "registration",
+   "date": "2026-06-17",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

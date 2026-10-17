@@ -1,0 +1,25 @@
+{
+ "key": "ecml-pkdd",
+ "title": "ECML PKDD",
+ "fetched_at": "2026-10-17T12:41:30Z",
+ "urls": [
+  "https://ecmlpkdd.org/2026/"
+ ],
+ "errors": [],
+ "content_hash": "9a9c3fe141cf0bde",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 734,
+  "output": 109
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Naples",
+ "country": "Italy",
+ "venue": null,
+ "conference_start": "2026-09-07",
+ "conference_end": "2026-09-11",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}
