@@ -1,0 +1,26 @@
+{
+ "key": "interspeech",
+ "title": "Interspeech",
+ "fetched_at": "2026-10-18T12:59:41Z",
+ "urls": [
+  "https://interspeech2026.org/en-AU",
+  "https://interspeech2026.org"
+ ],
+ "errors": [],
+ "content_hash": "98842a0e2ba84f0a",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 349,
+  "output": 86
+ },
+ "found_dates": false,
+ "year": 2026,
+ "city": null,
+ "country": null,
+ "venue": null,
+ "conference_start": null,
+ "conference_end": null,
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

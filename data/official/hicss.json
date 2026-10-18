@@ -1,0 +1,74 @@
+{
+ "key": "hicss",
+ "title": "HICSS",
+ "fetched_at": "2026-10-18T12:57:37Z",
+ "urls": [
+  "https://hicss.hawaii.edu/"
+ ],
+ "errors": [],
+ "content_hash": "596b5f12ebec929b",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 829,
+  "output": 529
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Big Island",
+ "country": "United States",
+ "venue": "Hilton Waikoloa Village",
+ "conference_start": "2027-01-05",
+ "conference_end": "2027-01-08",
+ "milestones": [
+  {
+   "label": "Paper submission deadline",
+   "type": "paper",
+   "date": "2026-06-15",
+   "time": "23:59",
+   "timezone": "HST",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance/rejection",
+   "type": "notification",
+   "date": "2026-08-17",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "[Conditionally Accepted] Submission deadline for revised manuscript",
+   "type": "paper",
+   "date": "2026-09-04",
+   "time": "23:59",
+   "timezone": "HST",
+   "tentative": false
+  },
+  {
+   "label": "[Conditionally Accepted] Notification of acceptance/rejection",
+   "type": "notification",
+   "date": "2026-09-11",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for final manuscript submissions",
+   "type": "camera_ready",
+   "date": "2026-09-22",
+   "time": "23:59",
+   "timezone": "HST",
+   "tentative": false
+  },
+  {
+   "label": "Author registration deadline",
+   "type": "registration",
+   "date": "2026-10-01",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

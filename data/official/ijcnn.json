@@ -1,0 +1,25 @@
+{
+ "key": "ijcnn",
+ "title": "IJCNN",
+ "fetched_at": "2026-10-18T12:59:18Z",
+ "urls": [
+  "https://attend.ieee.org/wcci-2026/"
+ ],
+ "errors": [],
+ "content_hash": "7c5b1a02cf2bdf14",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1014,
+  "output": 108
+ },
+ "found_dates": false,
+ "year": 2026,
+ "city": "Maastricht",
+ "country": null,
+ "venue": null,
+ "conference_start": "2026-06-21",
+ "conference_end": "2026-06-26",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

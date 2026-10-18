@@ -1,0 +1,90 @@
+{
+ "key": "ksem",
+ "title": "KSEM",
+ "fetched_at": "2026-10-18T13:01:31Z",
+ "urls": [
+  "https://ksem2025.scimeeting.cn/"
+ ],
+ "errors": [],
+ "content_hash": "937e27288b6e6d60",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1229,
+  "output": 636
+ },
+ "found_dates": true,
+ "year": 2025,
+ "city": "Macao",
+ "country": "China",
+ "venue": "Wynn Palace",
+ "conference_start": "2025-08-04",
+ "conference_end": "2025-08-07",
+ "milestones": [
+  {
+   "label": "Paper Submission Due",
+   "type": "paper",
+   "date": "2025-03-20",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance",
+   "type": "notification",
+   "date": "2025-05-30",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author registration open",
+   "type": "registration",
+   "date": "2025-06-05",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready copy",
+   "type": "camera_ready",
+   "date": "2025-06-15",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Travel Grant Application",
+   "type": "other",
+   "date": "2025-06-20",
+   "time": "12:00",
+   "timezone": "GMT+8",
+   "tentative": false
+  },
+  {
+   "label": "Author Registration / Early Registration Due",
+   "type": "registration",
+   "date": "2025-06-22",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Poster Printing Service Due",
+   "type": "other",
+   "date": "2025-07-25",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "On-site registration date",
+   "type": "registration",
+   "date": "2025-08-04",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

@@ -1,0 +1,58 @@
+{
+ "key": "icml",
+ "title": "ICML",
+ "fetched_at": "2026-10-18T12:58:28Z",
+ "urls": [
+  "https://icml.cc/Conferences/2026/CallForPapers"
+ ],
+ "errors": [],
+ "content_hash": "889210ec1599f1ee",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 3497,
+  "output": 368
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Seoul",
+ "country": "South Korea",
+ "venue": null,
+ "conference_start": "2026-07-06",
+ "conference_end": "2026-07-11",
+ "milestones": [
+  {
+   "label": "Submission site opens",
+   "type": "other",
+   "date": "2026-01-08",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Suggested OpenReview account creation deadline",
+   "type": "other",
+   "date": "2026-01-08",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Abstract submission deadline",
+   "type": "abstract",
+   "date": "2026-01-23",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Full paper submission deadline",
+   "type": "paper",
+   "date": "2026-01-28",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

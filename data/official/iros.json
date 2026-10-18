@@ -1,0 +1,149 @@
+{
+ "key": "iros",
+ "title": "IROS",
+ "fetched_at": "2026-10-18T12:59:58Z",
+ "urls": [
+  "https://2026.ieee-iros.org/contribute/call-for-papers/",
+  "https://2026.ieee-iros.org/"
+ ],
+ "errors": [
+  "https://iros-pittsburgh.org/: HTTPSConnectionPool(host='iros-pittsburgh.org', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'iros-pittsburgh.org'. (_ssl.c:1010)\")))"
+ ],
+ "content_hash": "078981b30f4e07c2",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 4037,
+  "output": 1099
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Pittsburgh",
+ "country": "USA",
+ "venue": "David Lawrence Convention Center",
+ "conference_start": "2026-09-27",
+ "conference_end": "2026-10-01",
+ "milestones": [
+  {
+   "label": "Deadline for Special Session submissions",
+   "type": "other",
+   "date": "2026-01-31",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Notification of Special Session acceptance",
+   "type": "other",
+   "date": "2026-02-09",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Paper submissions",
+   "type": "paper",
+   "date": "2026-03-02",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Paper Video submissions",
+   "type": "supplementary",
+   "date": "2026-03-07",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Special Session, Competition, and Forum proposals",
+   "type": "other",
+   "date": "2026-03-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Workshop/Tutorial proposals",
+   "type": "workshop",
+   "date": "2026-03-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Notification of Special Session, Competition, and Forum proposal acceptance",
+   "type": "other",
+   "date": "2026-04-13",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Notification of Workshop/Tutorial proposal acceptance",
+   "type": "other",
+   "date": "2026-06-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Notification of Paper acceptance",
+   "type": "notification",
+   "date": "2026-06-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Indicate preference of oral session format",
+   "type": "other",
+   "date": "2026-06-30",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Final Paper submissions",
+   "type": "camera_ready",
+   "date": "2026-07-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Award Nominations submissions",
+   "type": "other",
+   "date": "2026-07-30",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Late Breaking Results",
+   "type": "paper",
+   "date": "2026-08-10",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance of Late Breaking Results",
+   "type": "notification",
+   "date": "2026-08-20",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Deadline for Final Late Breaking Results submissions",
+   "type": "camera_ready",
+   "date": "2026-08-21",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

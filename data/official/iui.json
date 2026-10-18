@@ -1,0 +1,75 @@
+{
+ "key": "iui",
+ "title": "IUI",
+ "fetched_at": "2026-10-18T13:00:13Z",
+ "urls": [
+  "https://iui.acm.org/2026/",
+  "https://iui.acm.org/2027"
+ ],
+ "errors": [],
+ "content_hash": "dcef284ef05d6baa",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1983,
+  "output": 506
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Helsinki",
+ "country": "Finland",
+ "venue": "Helsinki Congress Paasitorni",
+ "conference_start": "2027-02-08",
+ "conference_end": "2027-02-11",
+ "milestones": [
+  {
+   "label": "Workshop Proposals",
+   "type": "workshop",
+   "date": "2026-07-06",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Papers (Abstract)",
+   "type": "abstract",
+   "date": "2026-08-13",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Papers (Full Document)",
+   "type": "paper",
+   "date": "2026-08-20",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Tutorial Proposals",
+   "type": "tutorial",
+   "date": "2026-08-20",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Doctoral Consortium",
+   "type": "other",
+   "date": "2026-10-19",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Posters & Demos",
+   "type": "other",
+   "date": "2026-11-10",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

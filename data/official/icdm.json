@@ -1,0 +1,58 @@
+{
+ "key": "icdm",
+ "title": "ICDM",
+ "fetched_at": "2026-10-18T12:58:09Z",
+ "urls": [
+  "http://icdm2026.neu.edu.cn/"
+ ],
+ "errors": [],
+ "content_hash": "0e2e6e404ddcb638",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 3193,
+  "output": 361
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Shenyang",
+ "country": "China",
+ "venue": null,
+ "conference_start": "2026-11-12",
+ "conference_end": "2026-11-15",
+ "milestones": [
+  {
+   "label": "Workshop proposals",
+   "type": "workshop",
+   "date": "2026-03-14",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Tutorial proposals",
+   "type": "tutorial",
+   "date": "2026-06-06",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Main Conference Full Paper Submission",
+   "type": "paper",
+   "date": "2026-06-06",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Main Conference Author Notification",
+   "type": "notification",
+   "date": "2026-08-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}
