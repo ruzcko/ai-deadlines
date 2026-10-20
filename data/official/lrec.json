@@ -1,0 +1,25 @@
+{
+ "key": "lrec",
+ "title": "LREC",
+ "fetched_at": "2026-10-20T14:05:02Z",
+ "urls": [
+  "https://lrec2026.info/"
+ ],
+ "errors": [],
+ "content_hash": "40797d9151a71623",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1051,
+  "output": 118
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Palma, Mallorca",
+ "country": "Spain",
+ "venue": "Palau de Congressos de Palma",
+ "conference_start": "2026-05-11",
+ "conference_end": "2026-05-16",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

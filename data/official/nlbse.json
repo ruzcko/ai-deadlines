@@ -1,0 +1,50 @@
+{
+ "key": "nlbse",
+ "title": "NLBSE",
+ "fetched_at": "2026-10-20T14:18:14Z",
+ "urls": [
+  "https://nlbse2026.github.io/"
+ ],
+ "errors": [],
+ "content_hash": "3c71541b79acef04",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1438,
+  "output": 305
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Rio de Janeiro",
+ "country": "Brazil",
+ "venue": null,
+ "conference_start": "2026-04-12",
+ "conference_end": "2026-04-12",
+ "milestones": [
+  {
+   "label": "Paper Submission",
+   "type": "paper",
+   "date": "2025-11-03",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author Notification",
+   "type": "notification",
+   "date": "2025-12-01",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera Ready Due",
+   "type": "camera_ready",
+   "date": "2026-01-26",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

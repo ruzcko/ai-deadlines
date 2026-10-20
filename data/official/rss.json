@@ -1,0 +1,90 @@
+{
+ "key": "rss",
+ "title": "RSS",
+ "fetched_at": "2026-10-20T14:22:37Z",
+ "urls": [
+  "https://roboticsconference.org"
+ ],
+ "errors": [],
+ "content_hash": "49c42a5a295c3140",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 778,
+  "output": 698
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Athens",
+ "country": "Greece",
+ "venue": null,
+ "conference_start": "2027-07-06",
+ "conference_end": "2027-07-11",
+ "milestones": [
+  {
+   "label": "Extended Abstract submission deadline",
+   "type": "abstract",
+   "date": "2026-12-04",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Decision Stage 1 (Reject or Invitation to Rebuttal)",
+   "type": "review_release",
+   "date": "2027-02-05",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Rebuttal submission deadline",
+   "type": "rebuttal_end",
+   "date": "2027-02-12",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Decision Stage 2 (Reject or Invitation to execute an Extension Charter)",
+   "type": "other",
+   "date": "2027-02-26",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Final paper submission deadline",
+   "type": "paper",
+   "date": "2027-04-16",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Supplementary material submission deadline",
+   "type": "supplementary",
+   "date": "2027-04-19",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Paper acceptance notification",
+   "type": "notification",
+   "date": "2027-04-30",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready paper submission",
+   "type": "camera_ready",
+   "date": "2027-05-14",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}
