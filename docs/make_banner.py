@@ -1,9 +1,9 @@
-"""Render docs/banner.png (README top + GitHub social preview, 1280x640) in the Apollo console look.
+"""Render docs/banner.png (README top + GitHub social preview, 1280x640) in the site's night look (Teal instrument).
 
     .venv/Scripts/python.exe docs/make_banner.py
 
-Colours and fonts follow DESIGN.md: the black screen, warm-white digits on one readout panel,
-a row of milestone lamps (the next one lit amber), IBM Plex Sans Condensed + Plex Mono.
+Colours and fonts follow DESIGN.md: the slate panel, one readout panel, a row of milestone lamps
+(the next one lit teal), IBM Plex Sans Condensed + Plex Mono.
 """
 
 from pathlib import Path
@@ -14,10 +14,10 @@ ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "site" / "fonts"
 W, H = 1280, 640
 
-SCREEN, PANEL, LINE = "#0b0f12", "#121a1f", "#24313a"
-FG, MUTED, CLOCK, LAMP = "#eef2f3", "#97a3a9", "#f4f1e6", "#ffb000"
-RED = "#ff6b5c"
-MILESTONES = [("SUBMIT", RED), ("REVIEWS", LAMP), ("DECISION", "#5aa7ff"), ("CAMERA", "#45d17f"), ("CONF", "#e6ecee")]
+SCREEN, PANEL, LINE = "#0e1316", "#1f2930", "#2a353d"
+FG, MUTED, CLOCK, LAMP = "#eef2f3", "#9aa8b0", "#eef2f3", "#3cc9b0"
+TEAL, AMBER = "#3cc9b0", "#ffb000"
+MILESTONES = [("SUBMIT", TEAL), ("REVIEWS", AMBER), ("DECISION", "#5aa7ff"), ("CAMERA", "#8d9aa2"), ("CONF", "#eef2f3")]
 
 
 def font(name, size):
@@ -46,7 +46,7 @@ def main():
     # Brand: the lamp mark and the domain.
     cx, cy = 104, 112
     d.ellipse((cx - 20, cy - 20, cx + 20, cy + 20), outline=MUTED, width=4)
-    d.ellipse((cx - 12, cy - 12, cx + 12, cy + 12), fill=RED)
+    d.ellipse((cx - 12, cy - 12, cx + 12, cy + 12), fill=TEAL)
     d.text((140, cy), "ai-deadlines.ruzcko.com", font=SANS_SB(28), fill=MUTED, anchor="lm")
 
     # Title and tagline.
@@ -74,7 +74,7 @@ def main():
         x = px0 + lw * i + lw / 2
         y = 404
         if i == 0:
-            d.ellipse((x - 17, y - 17, x + 17, y + 17), fill="#3d2f10")  # the lit lamp's halo
+            d.ellipse((x - 17, y - 17, x + 17, y + 17), fill="#1d4a44")  # the lit lamp's halo
             d.ellipse((x - 11, y - 11, x + 11, y + 11), fill=LAMP)
         else:
             d.ellipse((x - 10, y - 10, x + 10, y + 10), outline=MUTED, width=3)
@@ -83,7 +83,7 @@ def main():
     # Footer line: what the lamps mean, in the milestone colours.
     x = 84
     y = 560
-    for label, colour in [("Submission", RED), ("Reviews", LAMP), ("Decision", "#5aa7ff"), ("Camera-ready", "#45d17f"), ("Conference", "#e6ecee")]:
+    for label, colour in [("Submission", TEAL), ("Reviews", AMBER), ("Decision", "#5aa7ff"), ("Camera-ready", "#8d9aa2"), ("Conference", "#eef2f3")]:
         d.ellipse((x, y - 16, x + 14, y - 2), fill=colour)
         d.text((x + 24, y), label, font=SANS_SB(24), fill=MUTED, anchor="ls")
         x += 24 + d.textlength(label, font=SANS_SB(24)) + 40

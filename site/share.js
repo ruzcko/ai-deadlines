@@ -12,15 +12,15 @@ const CARD_FORMATS = {
 // Text colours are 4.5:1 and milestone colours 3:1 against bg1, bg2 and the midpoint between them (checked 2026-10-14).
 // Milestone colors are tuned per theme so they stay readable on its background.
 const CARD_THEMES = {
-  // The site's own look: the black screen with warm-white digits. A saved "signal" or "midnight" falls back to it.
+  // The site's own look at night: the slate panel. A saved "signal" or "midnight" falls back to it.
   console: {
-    name: "Console", bg1: "#0b0f12", bg2: "#000000", glow: 0x00, glowColor: "#0b0f12", text: "#eef2f3", muted: "#97a3a9", faint: "#8a979e", line: "#24313a",
-    accent: "#ff6b5c", num: "#f4f1e6", submission: "#ff6b5c", reviews: "#ffb000", decision: "#5aa7ff", camera: "#45d17f", conference: "#e6ecee", other: "#7f8a90",
+    name: "Slate", bg1: "#182026", bg2: "#0e1316", glow: 0x00, glowColor: "#182026", text: "#eef2f3", muted: "#9aa8b0", faint: "#8d9aa2", line: "#2a353d",
+    accent: "#3cc9b0", num: "#eef2f3", submission: "#3cc9b0", reviews: "#ffb000", decision: "#5aa7ff", camera: "#8d9aa2", conference: "#eef2f3", other: "#b08d68",
   },
-  // The console panel in daylight. A saved "paper" falls back to it.
+  // The white instrument panel. A saved "paper" falls back to it.
   daylight: {
-    name: "Daylight", bg1: "#f4f6f6", bg2: "#d8dde0", glow: 0x00, glowColor: "#f4f6f6", text: "#12171a", muted: "#455055", faint: "#4f5a60", line: "#bcc5ca",
-    accent: "#c62a20", num: "#12171a", submission: "#c62a20", reviews: "#9a6500", decision: "#1f62b8", camera: "#1d7f45", conference: "#12171a", other: "#687176",
+    name: "Daylight", bg1: "#ffffff", bg2: "#e4e8ea", glow: 0x00, glowColor: "#ffffff", text: "#12181c", muted: "#4a565d", faint: "#56626a", line: "#c5cdd2",
+    accent: "#08695c", num: "#12181c", submission: "#0b7a6b", reviews: "#9a6500", decision: "#1f62b8", camera: "#6b767d", conference: "#12181c", other: "#8a6a4a",
   },
   aurora: {
     name: "Aurora", bg1: "#0f2d4f", bg2: "#03101d", glow: 0x66, glowColor: "#38e6c5", text: "#eef7ff", muted: "#a7bdd3", faint: "#8097ae", line: "#1f3d5c",

@@ -5,63 +5,62 @@
 @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("fonts/PlexMono-500-latin.woff2") format("woff2"); }
 @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/PlexMono-600-latin.woff2") format("woff2"); }
 
-/* Apollo console (chosen 2026-10-15): grey consoles, a black screen with warm-white digits, and indicator
-   lamps as the only colour. Milestone colours follow lamp meanings (IEC 60073): red = act now, amber =
-   attention, blue = action needed, green = done, white = neutral. See DESIGN.md. */
+/* Teal instrument (chosen 2026-10-21): an instrument panel. White panels in daylight, soft slate at
+   night, a teal indicator for "now". Milestone colours follow indicator-lamp meanings: teal = act now,
+   amber = attention, blue = decision, grey = done (camera-ready), ink/white = the conference itself.
+   See DESIGN.md. */
 :root {
-  --bg: #d8dde0; /* console grey */
-  --surface: #f4f6f6;
-  --surface-2: #e6eaeb;
-  --text: #12171a;
-  --muted: #455055;
-  --faint: #4f5a60; /* quiet text and icons; still 4.5:1 */
-  --line: #bcc5ca;
-  --focus: #c62a20; /* keyboard focus ring: 3:1 on every background, the hero included */
-  --key: #12171a; /* the primary button: a dark console key */
-  --on-key: #f4f6f6;
-  --accent: #c62a20; /* the red lamp: logo, urgent dots */
-  --accent-ink: #b3261e; /* red text, and red fills that carry text */
+  --bg: #e4e8ea; /* cool grey page */
+  --surface: #ffffff;
+  --surface-2: #eef2f3;
+  --text: #12181c;
+  --muted: #4a565d;
+  --faint: #56626a; /* quiet text and icons; still 4.5:1 */
+  --line: #c5cdd2;
+  --focus: #0b7a6b; /* keyboard focus ring: 3:1 on every background */
+  --key: #0b7a6b; /* the primary button */
+  --on-key: #ffffff;
+  --accent: #0b7a6b; /* teal: logo, dots, fills */
+  --accent-ink: #08695c; /* teal text, and teal fills that carry small text */
   --on-accent: #ffffff;
-  --lamp: #ffb000; /* a lit lamp on the screen */
+  --lamp: #0b7a6b; /* the lit lamp: the next milestone */
   --warn: #7a5000;
-  --ok: #1a6b3c;
+  --ok: #08695c;
   --star: #ffb000; /* fills only */
   --star-ink: #7a5400; /* the star as an icon or glyph */
   --on-star: #1b1300; /* text on a --star fill */
-  --g-submission: #c62a20;
+  --g-submission: #0b7a6b;
   --g-reviews: #9a6500;
   --g-decision: #1f62b8;
-  --g-camera: #1d7f45;
-  --g-conference: #5d676d;
-  --g-other: #687176;
-  --map-sea: #c9d0d4;
-  --map-land: #f4f6f6;
-  --map-border: #aab4ba;
-  --hero-bg: #0b0f12; /* the screen, dark in both themes */
-  --hero-fg: #eef2f3;
-  --hero-muted: #97a3a9;
-  --hero-line: #24313a;
-  --hero-chip: #121a1f;
-  --clock: #f4f1e6; /* readout digits: warm white */
-  --clock-hot: #ff6b5c; /* readout digits in the last week */
-  --clock-tile: #121a1f; /* the readout panel */
+  --g-camera: #6b767d;
+  --g-conference: #12181c;
+  --g-other: #8a6a4a;
+  --map-sea: #d5dcdf;
+  --map-land: #ffffff;
+  --map-border: #b8c2c8;
+  --hero-bg: #ffffff; /* the instrument panel */
+  --hero-fg: #12181c;
+  --hero-muted: #4a565d;
+  --hero-line: #c5cdd2;
+  --hero-chip: #eef2f3;
+  --clock: #12181c; /* readout digits */
+  --clock-hot: #7a5000; /* readout digits in the last week: amber */
+  --clock-tile: #eef2f3; /* the readout panel */
   --scrim: rgb(0 0 0 / .5); /* the shade behind dialogs */
   --tint: rgb(0 0 0 / .12); /* a slight darkening, e.g. the count on a pressed Starred */
   --sans: "IBM Plex Sans Condensed", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
   --radius: 4px;
-  --shadow: none; /* panels are separated by borders, like console panels */
+  --shadow: none; /* panels are separated by borders */
   --pop-shadow: 0 16px 48px rgb(16 18 24 / .18);
   --chev-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 6l6 6l-6 6'/%3E%3C/svg%3E"); /* design-lint: ok mask shape, its colour comes from background */
   --chev-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9l6 6l6-6'/%3E%3C/svg%3E"); /* design-lint: ok mask shape */
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --bg: #070a0c; --surface: #10161a; --surface-2: #172026; --text: #e6ecee; --muted: #95a3aa; --faint: #83919a; --line: #23303a; --focus: #ff6b5c; --key: #e6ecee; --on-key: #070a0c; --accent: #ff6b5c; --accent-ink: #ff6b5c; --on-accent: #070a0c; --lamp: #ffb000; --warn: #ffb000; --ok: #45d17f; --star: #ffb000; --star-ink: #ffb000; --on-star: #1b1300; --g-submission: #ff6b5c; --g-reviews: #ffb000; --g-decision: #5aa7ff; --g-camera: #45d17f; --g-conference: #e6ecee; --g-other: #7f8a90; --map-sea: #05080a; --map-land: #172026; --map-border: #2a3740; --hero-bg: #000000; --hero-line: #1f2a31; --hero-chip: #0d1317; --clock-tile: #0d1317; --pop-shadow: 0 16px 48px rgb(0 0 0 / .5); color-scheme: dark; }
+  :root:not([data-theme="light"]) { --bg: #0e1316; --surface: #141b20; --surface-2: #1b242a; --text: #eef2f3; --muted: #9aa8b0; --faint: #85939b; --line: #2a353d; --focus: #3cc9b0; --key: #3cc9b0; --on-key: #0e1316; --accent: #3cc9b0; --accent-ink: #3cc9b0; --on-accent: #0e1316; --lamp: #3cc9b0; --warn: #ffb000; --ok: #3cc9b0; --star: #ffb000; --star-ink: #ffb000; --on-star: #1b1300; --g-submission: #3cc9b0; --g-reviews: #ffb000; --g-decision: #5aa7ff; --g-camera: #8d9aa2; --g-conference: #eef2f3; --g-other: #b08d68; --map-sea: #0b1013; --map-land: #1b242a; --map-border: #2f3b44; --hero-bg: #182026; --hero-fg: #eef2f3; --hero-muted: #9aa8b0; --hero-line: #2a353d; --hero-chip: #1f2930; --clock: #eef2f3; --clock-hot: #ffb000; --clock-tile: #1f2930; --pop-shadow: 0 16px 48px rgb(0 0 0 / .5); color-scheme: dark; }
 }
-:root[data-theme="dark"] { --bg: #070a0c; --surface: #10161a; --surface-2: #172026; --text: #e6ecee; --muted: #95a3aa; --faint: #83919a; --line: #23303a; --focus: #ff6b5c; --key: #e6ecee; --on-key: #070a0c; --accent: #ff6b5c; --accent-ink: #ff6b5c; --on-accent: #070a0c; --lamp: #ffb000; --warn: #ffb000; --ok: #45d17f; --star: #ffb000; --star-ink: #ffb000; --on-star: #1b1300; --g-submission: #ff6b5c; --g-reviews: #ffb000; --g-decision: #5aa7ff; --g-camera: #45d17f; --g-conference: #e6ecee; --g-other: #7f8a90; --map-sea: #05080a; --map-land: #172026; --map-border: #2a3740; --hero-bg: #000000; --hero-line: #1f2a31; --hero-chip: #0d1317; --clock-tile: #0d1317; --pop-shadow: 0 16px 48px rgb(0 0 0 / .5); color-scheme: dark; }
-/* The screen is black in both themes, so it always uses the night milestone colours. */
-.hero { --g-submission: #ff6b5c; --g-reviews: #ffb000; --g-decision: #5aa7ff; --g-camera: #45d17f; --g-conference: #e6ecee; --g-other: #7f8a90; }
+:root[data-theme="dark"] { --bg: #0e1316; --surface: #141b20; --surface-2: #1b242a; --text: #eef2f3; --muted: #9aa8b0; --faint: #85939b; --line: #2a353d; --focus: #3cc9b0; --key: #3cc9b0; --on-key: #0e1316; --accent: #3cc9b0; --accent-ink: #3cc9b0; --on-accent: #0e1316; --lamp: #3cc9b0; --warn: #ffb000; --ok: #3cc9b0; --star: #ffb000; --star-ink: #ffb000; --on-star: #1b1300; --g-submission: #3cc9b0; --g-reviews: #ffb000; --g-decision: #5aa7ff; --g-camera: #8d9aa2; --g-conference: #eef2f3; --g-other: #b08d68; --map-sea: #0b1013; --map-land: #1b242a; --map-border: #2f3b44; --hero-bg: #182026; --hero-fg: #eef2f3; --hero-muted: #9aa8b0; --hero-line: #2a353d; --hero-chip: #1f2930; --clock: #eef2f3; --clock-hot: #ffb000; --clock-tile: #1f2930; --pop-shadow: 0 16px 48px rgb(0 0 0 / .5); color-scheme: dark; }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 170px; }
@@ -118,7 +117,7 @@ button { font: inherit; color: inherit; }
 .hero-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .hero .eyebrow { font-size: 12px; color: var(--hero-muted); text-transform: uppercase; letter-spacing: .07em; font-weight: 600; display: flex; align-items: center; gap: 8px; min-width: 0; }
 .hero .eb-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-.hero .eb-star { color: var(--star); margin-right: 6px; display: none; vertical-align: -2px; }
+.hero .eb-star { color: var(--star-ink); margin-right: 6px; display: none; vertical-align: -2px; }
 .hero-share { flex: none; }
 .hero-share .hs-icon { display: none; line-height: 0; }
 .hero-share .hs-icon svg { width: 17px; height: 17px; }
@@ -175,7 +174,7 @@ button { font: inherit; color: inherit; }
   content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
 }
 /* "Copy link" is 19.5px tall, so its centre sits on a half pixel; 2px of slack keeps it at 44 after rounding. */
-.linkbtn::after { height: 46px; }
+.linkbtn::after, .hero .when a::after { height: 46px; }
 
 /* ---------- Deadline gaps ---------- */
 .gaps { margin: -6px 0 20px; padding: 4px 18px 16px; border-radius: 4px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
@@ -229,7 +228,8 @@ button { font: inherit; color: inherit; }
 .seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 3px; min-width: 0; }
 .seg button { border: 0; background: none; padding: 6px 12px; min-height: 38px; min-width: 44px; justify-content: center; border-radius: 3px; cursor: pointer; color: var(--muted); font-weight: 600; font-size: 13px; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; }
 .seg button:hover { color: var(--text); }
-.seg button[aria-checked="true"], .seg button[aria-selected="true"] { background: var(--text); color: var(--bg); }
+.seg button[aria-checked="true"], .seg button[aria-selected="true"] { background: var(--key); color: var(--on-key); } /* a lit key */
+.seg button[aria-checked="true"] .sw { box-shadow: 0 0 0 1.5px var(--on-key); } /* the teal submission dot stays visible on a teal key */
 .seg .sw { width: 7px; height: 7px; }
 .seg svg { width: 16px; height: 16px; }
 .seg.small button { padding: 4px 10px; font-size: 13px; }
@@ -255,7 +255,7 @@ button { font: inherit; color: inherit; }
 .pills::-webkit-scrollbar { display: none; }
 .pill { border: 1px solid var(--line); background: var(--surface); border-radius: 3px; padding: 5px 12px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; }
 .pill:hover { color: var(--text); border-color: var(--faint); }
-.pill[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
+.pill[aria-pressed="true"] { background: var(--key); border-color: var(--key); color: var(--on-key); }
 .star-pill .sp-n { font-size: 11px; background: color-mix(in srgb, var(--star) 25%, transparent); color: var(--text); border-radius: 3px; padding: 0 6px; }
 .star-pill[aria-pressed="true"] { background: var(--star); border-color: var(--star); color: var(--on-star); }
 .star-pill[aria-pressed="true"] .sp-n { background: var(--tint); color: inherit; }
@@ -296,7 +296,7 @@ button { font: inherit; color: inherit; }
 .row:hover { border-color: color-mix(in srgb, var(--faint) 60%, var(--line)); }
 .row.open { border-color: var(--faint); }
 .row-main { display: grid; grid-template-columns: 78px minmax(0, 1fr) auto; grid-template-areas: "cd info star" "cd track track"; gap: 2px 14px; padding: 12px 12px 12px 12px; align-items: center; cursor: pointer; }
-.cdbox { grid-area: cd; align-self: stretch; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-radius: 2px; background: var(--hero-bg); color: var(--clock); padding: 8px 4px; min-height: 64px; }
+.cdbox { grid-area: cd; align-self: stretch; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-radius: 2px; background: var(--clock-tile); color: var(--clock); padding: 8px 4px; min-height: 64px; }
 .cdbox .big { font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -.02em; }
 .cdbox .small { font-size: 11px; color: var(--hero-muted); font-weight: 600; margin-top: 4px; white-space: nowrap; }
 /* Number, its unit under it, then the next smaller unit below a thin rule: 5 / days / 7h. */
@@ -305,7 +305,7 @@ button { font: inherit; color: inherit; }
 .u-hot .cdbox .rem { color: var(--clock-hot); }
 .u-hot .cdbox { color: var(--clock-hot); }
 .u-hot .cdbox .small { color: var(--clock-hot); }
-.u-warm .cdbox { color: var(--lamp); }
+.u-warm .cdbox { color: var(--accent-ink); }
 .est-row .cdbox { background: transparent; border: 1.5px dashed var(--line); color: var(--muted); }
 .est-row .cdbox .small, .est-row .cdbox .rem { color: var(--muted); }
 .est-row .cdbox .big { font-size: 20px; font-weight: 700; }
