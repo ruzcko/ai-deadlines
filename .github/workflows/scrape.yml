@@ -31,8 +31,12 @@ jobs:
       - name: Extract dates from official pages
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Inputs go through env, not ${{ }} in the script, so they can't inject shell.
+          VENUES: ${{ inputs.venues }}
+          FORCE: ${{ inputs.force && '--force' || '' }}
         run: |
-          python pipeline/scrape_official.py ${{ inputs.venues }} ${{ inputs.force && '--force' || '' }}
+          # $VENUES is unquoted on purpose: one argument per venue key.
+          python pipeline/scrape_official.py $VENUES $FORCE
       - name: Commit what changed
         if: always()
         run: |

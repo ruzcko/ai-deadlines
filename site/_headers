@@ -1,3 +1,11 @@
+# Same set as lib/security.js (which covers the HTML that Functions build); keep the two in sync.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'sha256-Nwa/zPZ+Kbj4m2NybTcolWA7jGlvCxeeC41iL77dMyo=' 'sha256-h+KO9wvJ892kZxPvCNNCGdtsWg18lwGQhL+rTKm/thI='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
 /cal/*
   Content-Type: text/calendar; charset=utf-8
   Cache-Control: public, max-age=3600

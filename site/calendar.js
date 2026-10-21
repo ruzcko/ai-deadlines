@@ -102,12 +102,12 @@ function renderCalendar() {
   const pastBtn = pastDays.length ? `<button class="pill ag-past" type="button" data-agpast>${cal.showPast ? "Hide earlier days" : `Show ${pastDays.length} earlier day${pastDays.length === 1 ? "" : "s"}`}</button>` : "";
   const agenda = visible.map(([k, list]) => `
     <div class="ag-day${k < today ? " past" : ""}" id="ag-${k}"><div class="ag-date">${esc(fmtDate.format(new Date(k + "T12:00:00")))}</div>
-    ${list.map((it) => `<a class="ag-item" href="#${esc(it.s.key)}"><span class="sw" style="background:var(--g-${it.m.group})"></span><b>${esc(it.s.title)} ${it.e.year}</b> <span>${esc(it.m.label)}${it.until ? ` – until ${esc(fmtDate.format(new Date(it.until + "T12:00:00")))}` : ""}</span>${it.m.day ? "" : `<span class="muted">${esc(fmtIn("t").format(it.t) + tzTag())}</span>`}</a>`).join("")}</div>`).join("");
+    ${list.map((it) => `<a class="ag-item" href="#${esc(it.s.key)}"><span class="sw" style="background:var(--g-${it.m.group})"></span><b>${esc(it.s.title)} ${esc(it.e.year)}</b> <span>${esc(it.m.label)}${it.until ? ` – until ${esc(fmtDate.format(new Date(it.until + "T12:00:00")))}` : ""}</span>${it.m.day ? "" : `<span class="muted">${esc(fmtIn("t").format(it.t) + tzTag())}</span>`}</a>`).join("")}</div>`).join("");
   $("calagenda").innerHTML = pastBtn + (agenda || (pastDays.length ? `<p class="muted">Nothing left this month.</p>` : `<p class="muted">Nothing this month for these filters.</p>`));
 
   $("calexpected").innerHTML = expected.length ? `<h3>Expected this month <span class="badge est">Not announced</span></h3>
     <p class="muted">Projected from last year, so no exact day yet.</p>
-    <div class="exp-list">${expected.map((it) => `<a class="exp" href="#${esc(it.s.key)}"><span class="sw" style="background:var(--g-${it.m.group})"></span>${esc(it.s.title)} ${it.e.year} · ${esc(shortLabel(it.m))}</a>`).join("")}</div>` : "";
+    <div class="exp-list">${expected.map((it) => `<a class="exp" href="#${esc(it.s.key)}"><span class="sw" style="background:var(--g-${it.m.group})"></span>${esc(it.s.title)} ${esc(it.e.year)} · ${esc(shortLabel(it.m))}</a>`).join("")}</div>` : "";
 }
 
 function bindCalendar() {

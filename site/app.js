@@ -86,6 +86,8 @@ function save() {
 }
 
 // ---- formatting ----
+// Only plain web links from data reach an href, so a javascript: URL upstream can never run.
+const safeUrl = (u) => /^https?:\/\//i.test(String(u || "")) ? u : null;
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fmtDate = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" });
 const fmtMonth = new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" });
@@ -417,12 +419,12 @@ function renderHero() {
       <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span><span class="eb-text">${mine.length ? `<span class="eb-star" aria-hidden="true">${ICON.starIc}</span>` : ""}<span class="eb-pre">${mine.length ? "Your next deadline" : "Next up"} · </span>${esc(m.label)}</span></div>
       <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}"><span class="hs-icon">${SHARE_ICON}</span><span class="hs-text">Share card</span></button>
     </div>
-    <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${e.year}</button></h1>
+    <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${esc(e.year)}</button></h1>
     <p class="what">${esc(s.full_name || "")}</p>
     ${place ? `<p class="place">${ICON.pin}${esc(place)}</p>` : ""}
     <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "d")}${unit(p.h, "h")}${unit(p.m, "m")}${unit(p.s, "s")}</div>
     ${lamps(e, m, now)}
-    <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${e.link ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ${ICON.ext}</a>` : ""}</div>
+    <div class="when"><span>${esc(whenText(pick.next))}</span>${alt ? `<span class="muted">${esc(alt)}</span>` : ""}${safeUrl(e.link) ? `<a href="${esc(e.link)}" target="_blank" rel="noopener">Official site ${ICON.ext}</a>` : ""}</div>
     ${runway ? `<div class="runway"><span class="run-label">Next</span>${runway}</div>` : ""}`;
 }
 
@@ -458,7 +460,7 @@ function details(s, next, now) {
     return `<tr class="${past ? "past" : ""}${m === next.m ? " is-next" : ""}"><td><span class="sw" style="background:var(--g-${m.group})"></span><span class="m-label">${esc(m.label)}</span>${src}</td><td class="when"><span class="w-full">${esc(when)}</span><span class="w-short">${esc(whenShort({ m, t }))}</span>${tz}</td><td class="left">${esc(left)}</td></tr>`;
   }).join("");
   const estNote = e.estimated
-    ? `<p class="est-note">Not all dates are announced yet. Dates marked ~ are projected from ${esc(s.title)} ${e.estimated_from}, so treat them as a rough plan, not a deadline.${e.last_place ? ` Location not announced; last held in ${esc(e.last_place)}.` : ""}</p>` : "";
+    ? `<p class="est-note">Not all dates are announced yet. Dates marked ~ are projected from ${esc(s.title)} ${esc(e.estimated_from)}, so treat them as a rough plan, not a deadline.${e.last_place ? ` Location not announced; last held in ${esc(e.last_place)}.` : ""}</p>` : "";
   const tent = e.tentative ? `<p class="est-note">The organizers marked these dates as tentative.</p>` : "";
   const place = [e.city, e.country].filter(Boolean).join(", ");
   const seen = new Set();
@@ -466,12 +468,12 @@ function details(s, next, now) {
     e.link && { label: "Official site", url: e.link },
     e.note_link && { label: "Call for papers", url: e.note_link },
     ...(e.links || []),
-  ].filter((l) => l && !seen.has(l.url) && seen.add(l.url))
+  ].filter((l) => l && safeUrl(l.url) && !seen.has(l.url) && seen.add(l.url))
     .map((l) => `<a class="ql" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ${ICON.ext}</a>`).join("");
   // One row: copy link, and a small menu with each source's data file and report link.
   const srcs = e.sources || ["hf"];
   const menu = srcs.map((src) => {
-    const view = src === "of" ? (s.official && s.official.url) : s.source;
+    const view = safeUrl(src === "of" ? (s.official && s.official.url) : s.source);
     const report = reportUrl(s, e, src);
     return `<div class="src-row"><b>${esc(SRC_NAME[src])}</b>
       ${view ? `<a href="${esc(view)}" target="_blank" rel="noopener">${src === "of" ? "Official page" : "Data file"} ${ICON.ext}</a>` : ""}
@@ -511,7 +513,7 @@ function rowHtml({ s, next }, now) {
     <div class="row-main" role="button" tabindex="0" aria-expanded="${open}">
       <div class="cdbox" data-at="${esc(next.m.at)}" data-est="${next.m.est ? 1 : ""}">${cdBoxHtml(ms, next.m.est)}</div>
       <div class="info">
-        <div class="t"><span class="name">${esc(s.title)} ${e.year}</span>${rank}${flags}</div>
+        <div class="t"><span class="name">${esc(s.title)} ${esc(e.year)}</span>${rank}${flags}</div>
         <div class="what"><span class="sw" style="background:var(--g-${next.m.group})"></span><b class="lab-full" title="${esc(next.m.label)}">${esc(next.m.label)}</b><b class="lab-short" title="${esc(next.m.label)}">${esc(shortLabel(next.m))}</b><span class="dot">·</span><span class="when">${esc(whenShort(next))}</span></div>
         <div class="sub">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</div>
       </div>
@@ -557,7 +559,7 @@ function estSection(rows, now) {
   const month = new Intl.DateTimeFormat(undefined, { month: "short", year: "numeric" });
   return (full.length ? `<ol class="list">${full.map((r) => rowHtml(r, now)).join("")}</ol>` : "") +
     (shown.length ? `<div class="est-grid">${shown.map(({ s, next }) => `<button class="est-tile" type="button" data-open="${esc(s.key)}" style="--c:var(--g-${next.m.group})">
-        <b>${esc(s.title)} ${next.edition.year}</b><span><i class="sw"></i>${esc(shortLabel(next.m))} · ~${esc(month.format(next.t))}</span></button>`).join("")}</div>` : "") +
+        <b>${esc(s.title)} ${esc(next.edition.year)}</b><span><i class="sw"></i>${esc(shortLabel(next.m))} · ~${esc(month.format(next.t))}</span></button>`).join("")}</div>` : "") +
     (tiles.length > EST_TILES ? `<button class="pill est-more" type="button" data-allest>${state.allEst ? "Show fewer" : `Show all ${tiles.length}`}</button>` : "");
 }
 
@@ -793,11 +795,11 @@ async function renderMap() {
   $("mapcount").textContent = `${placed.length} on the map` +
     (unplaced.length ? ` · ${unplaced.length} with location not announced` : "");
   $("onmap").innerHTML = placed.length ? `<h3>Where they are</h3><ul>${placed.map(({ s, e, assumed }) => `
-    <li><button class="linklike" data-fly="${esc(s.key)}">${esc(s.title)} ${e.year}</button>
+    <li><button class="linklike" data-fly="${esc(s.key)}">${esc(s.title)} ${esc(e.year)}</button>
       <span>${esc(fmtRange(e))}${assumed ? ` <span class="badge est">Dates assumed</span>` : ""}</span>
       <span class="muted">${esc([e.city, e.country].filter(Boolean).join(", "))}</span></li>`).join("")}</ul>` : "";
   $("tba").innerHTML = unplaced.length ? `<h3>Location not announced yet</h3><ul>${unplaced.map(({ s, e, assumed }) => `
-    <li><a href="#${esc(s.key)}">${esc(s.title)} ${e.year}</a>
+    <li><a href="#${esc(s.key)}">${esc(s.title)} ${esc(e.year)}</a>
       <span>${esc(fmtRange(e))}${assumed ? ` <span class="badge est">Assumed</span>` : ""}</span>
       ${e.last_place ? `<span class="muted">last held in ${esc(e.last_place)}</span>` : ""}</li>`).join("")}</ul>` : "";
 
@@ -845,7 +847,7 @@ async function renderMap() {
       permanent: true, direction: "right", offset: [8, 0], className: "map-label",
     });
     const popup = `<div class="pop"><div class="pop-place">${esc(place)}</div>${items.map(({ s, e: ed, assumed }) => `
-      <div class="pop-item"><a href="#${esc(s.key)}"><b>${esc(s.title)} ${ed.year}</b></a>
+      <div class="pop-item"><a href="#${esc(s.key)}"><b>${esc(s.title)} ${esc(ed.year)}</b></a>
       <div>${esc(fmtRange(ed))}${assumed ? ` <span class="badge est">Dates assumed</span>` : ""}</div>
       ${(ed.checks || []).some((c) => !c.agree && c.what === "Conference starts") ? `<div class="warn-text">${WARN_ICON} Sources differ on the dates</div>` : ""}
       <div class="muted">${nextDeadlineText(s)}</div></div>`).join("")}</div>`;

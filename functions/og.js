@@ -127,15 +127,20 @@ function emptySvg() {
 }
 
 export async function onRequestGet({ request, env, waitUntil }) {
-  const cache = caches.default;
-  const hit = await cache.match(request);
-  if (hit) return hit;
   const url = new URL(request.url);
-  const [[medium, bold, mono], data] = await Promise.all([setup(env, url.origin), loadData(env, url.origin)]);
   const now = Date.now();
-  let svg;
   const v = cleanKey(url.searchParams.get("v"));
   const watch = (url.searchParams.get("watch") || "").split(",").map(cleanKey).filter(Boolean).slice(0, 30);
+  // Cache on what the image is drawn from (the cleaned venue or list, and today's UTC date), not the raw URL,
+  // so junk or changed params (a different d=) can't force a fresh render.
+  const day = new Date(now).toISOString().slice(0, 10);
+  const query = v ? `v=${v}` : watch.length ? `watch=${[...new Set(watch)].sort().join(",")}` : "";
+  const key = new Request(`${url.origin}/og?${query ? query + "&" : ""}d=${day}`);
+  const cache = caches.default;
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  const [[medium, bold, mono], data] = await Promise.all([setup(env, url.origin), loadData(env, url.origin)]);
+  let svg;
   if (v) {
     const s = data.series.find((x) => x.key === v);
     const n = s && nextFor(s, now);
@@ -152,6 +157,6 @@ export async function onRequestGet({ request, env, waitUntil }) {
     fitTo: { mode: "width", value: W },
   }).render().asPng();
   const res = new Response(png, { headers: { "content-type": "image/png", "cache-control": "public, max-age=86400" } });
-  waitUntil(cache.put(request, res.clone()));
+  waitUntil(cache.put(key, res.clone()));
   return res;
 }

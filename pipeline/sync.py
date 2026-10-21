@@ -142,6 +142,14 @@ def group_of(kind, label):
     return group
 
 
+SAFE_URL = re.compile(r"^https?://[^\s\"'<>]+$", re.I)
+
+
+def safe_url(url):
+    """Keep only plain http(s) links, so a javascript: or newline-laden URL never reaches the site or feeds."""
+    return url if isinstance(url, str) and SAFE_URL.match(url) else None
+
+
 def clean_note(note):
     if not note:
         return None, None
@@ -149,7 +157,7 @@ def clean_note(note):
     text = html.unescape(re.sub(r"<[^>]+>", "", note))
     text = re.sub(r"\s*More info\s*(can be found\s*)?here\.?", "", text, flags=re.I)
     text = re.sub(r"\s*All (important dates|info) can be found here\.?", "", text, flags=re.I)
-    return (text.strip() or None), (link.group(1) if link else None)
+    return (text.strip() or None), (safe_url(link.group(1)) if link else None)
 
 
 def core_rank(entry):
@@ -210,7 +218,7 @@ def edition(entry):
         "city": entry.get("city"),
         "country": entry.get("country"),
         "venue": entry.get("venue"),
-        "link": entry.get("link"),
+        "link": safe_url(entry.get("link")),
         "note": note,
         "note_link": note_link,
         "tentative": bool(entry.get("note") and TENTATIVE.search(entry["note"])),
@@ -427,7 +435,8 @@ def build(now):
 # --- iCalendar -------------------------------------------------------------
 
 def ics_escape(text):
-    return (text or "").replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
+    text = (text or "").replace("\r\n", "\n").replace("\r", "\n")
+    return text.replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\n", "\\n")
 
 
 def fold(line):
@@ -455,13 +464,15 @@ def ics(series, groups, name, stamp):
             for m in e["milestones"]:
                 if m.get("est") or m["group"] not in groups or m["type"] == "end":
                     continue
-                uid = f"{e['id']}-{m['type']}-{m['at'][:10]}@ai-deadlines.ruzcko.com"
+                # The id comes from upstream: keep only safe characters, so a newline can't start a new property.
+                uid = f"{re.sub(r'[^A-Za-z0-9._-]', '', str(e['id']))}-{m['type']}-{m['at'][:10]}@ai-deadlines.ruzcko.com"
                 desc = f"{s['full_name'] or title}\n{m['label']}"
                 if m.get("tz"):
                     desc += f" ({m['tz']})"
                 if m.get("src") == "of":
                     desc += "\nSource: the official site, read by our weekly check"
-                desc += f"\nAlways confirm on the official site: {e['link'] or ''}"
+                link = safe_url(e.get("link"))
+                desc += f"\nAlways confirm on the official site: {link or ''}"
                 ev = ["BEGIN:VEVENT", f"UID:{uid}", f"DTSTAMP:{stamp}"]
                 if m["type"] == "start":
                     end = next((x for x in e["milestones"] if x["type"] == "end"), m)
@@ -478,8 +489,8 @@ def ics(series, groups, name, stamp):
                            f"DTEND:{at.strftime('%Y%m%dT%H%M%SZ')}",
                            f"SUMMARY:{ics_escape(f'{title} · {m['label']}')}"]
                 ev += [f"DESCRIPTION:{ics_escape(desc)}"]
-                if e.get("link"):
-                    ev.append(f"URL:{e['link']}")
+                if link:
+                    ev.append(f"URL:{link}")
                 ev.append("END:VEVENT")
                 lines += ev
     lines.append("END:VCALENDAR")

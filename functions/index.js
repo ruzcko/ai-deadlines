@@ -3,6 +3,7 @@
 // image set for them. Every visit gets a preview image dated today, since the countdown in it changes daily.
 // Any error falls back to the untouched page.
 import { cleanKey, esc, humanCount, loadData, nextFor, nextOverall, officialWhen } from "../lib/deadline.js";
+import { secure } from "../lib/security.js";
 
 class SetContent {
   constructor(value) { this.value = value; }
@@ -54,11 +55,11 @@ export async function onRequestGet({ request, env }) {
         .on('meta[property="og:description"]', new SetContent(desc))
         .on('meta[name="twitter:description"]', new SetContent(desc));
     }
-    return rw.transform(new Response(page.body, {
+    return secure(rw.transform(new Response(page.body, {
       status: page.status,
       headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=0, must-revalidate" },
-    }));
+    })));
   } catch (_) {
-    return page;
+    return secure(page);
   }
 }
