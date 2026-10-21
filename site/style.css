@@ -24,13 +24,13 @@
   --accent-ink: #08695c; /* teal text, and teal fills that carry small text */
   --on-accent: #ffffff;
   --lamp: #0b7a6b; /* the lit lamp: the next milestone */
-  --warn: #7a5000;
+  --warn: #a8460a; /* orange: estimates, tentative, sources differ */
   --ok: #08695c;
-  --star: #ffb000; /* fills only */
-  --star-ink: #7a5400; /* the star as an icon or glyph */
+  --star: #f39a52; /* fills only */
+  --star-ink: #c95a0c; /* the star as an icon */
   --on-star: #1b1300; /* text on a --star fill */
   --g-submission: #0b7a6b;
-  --g-reviews: #9a6500;
+  --g-reviews: #c95a0c;
   --g-decision: #1f62b8;
   --g-camera: #6b767d;
   --g-conference: #12181c;
@@ -44,7 +44,7 @@
   --hero-line: #c5cdd2;
   --hero-chip: #eef2f3;
   --clock: #12181c; /* readout digits */
-  --clock-hot: #7a5000; /* readout digits in the last week: amber */
+  --clock-hot: #a8460a; /* readout digits in the last week: orange (amber at night) */
   --clock-tile: #eef2f3; /* the readout panel */
   --scrim: rgb(0 0 0 / .5); /* the shade behind dialogs */
   --tint: rgb(0 0 0 / .12); /* a slight darkening, e.g. the count on a pressed Starred */
@@ -167,9 +167,9 @@ button { font: inherit; color: inherit; }
    Keep at least 44px between the centres of neighbouring controls so the areas don't overlap.
    A row that scrolls sideways clips these areas, so its controls must be 44px tall themselves (see .seg). */
 .brand, .icon-btn, .gh-btn, .pill, .run, .star, .share-btn, .seg button, .sd-x, .hero h1 .linklike, .hero .when a, .gh-link, .foot a, .about-links a,
-.details .quick .ql, .linkbtn, .srcmenu summary, .src-row a { position: relative; }
+.details .quick .ql, .linkbtn, .srcmenu summary, .src-row a, a.name { position: relative; }
 .brand::after, .icon-btn::after, .gh-btn::after, .pill::after, .run::after, .star::after, .share-btn::after, .seg button::after, .sd-x::after,
-.hero h1 .linklike::after, .hero .when a::after, .gh-link::after, .foot a::after, .about-links a::after, .details .quick .ql::after, .linkbtn::after, .exp::after, .src-row a::after,
+.hero h1 .linklike::after, .hero .when a::after, .gh-link::after, .foot a::after, .about-links a::after, .details .quick .ql::after, .linkbtn::after, .exp::after, .src-row a::after, a.name::after,
 .srcmenu summary::before /* its ::after is the ▾ arrow */ {
   content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%);
 }
@@ -201,8 +201,9 @@ button { font: inherit; color: inherit; }
 .gp:hover span { text-decoration: underline; }
 .gchain { display: flex; align-items: center; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 8px 24px 2px 2px; mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); }
 .gchain::-webkit-scrollbar { display: none; }
-.gcard { flex: none; display: grid; gap: 1px; text-align: left; border: 1px solid var(--line); border-left: 3px solid var(--c); background: var(--surface-2); border-radius: 3px; padding: 6px 10px; cursor: pointer; }
-.gcard.est { border-style: dashed; border-left-style: solid; background: transparent; }
+.gcard { flex: none; display: grid; gap: 1px; text-align: left; border: 1px solid var(--line); background: var(--surface-2); border-radius: 3px; padding: 6px 10px; cursor: pointer; }
+.gcard.est { border-style: dashed; background: transparent; }
+.gcard b::before, .cchip b::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 6px; vertical-align: 1px; }
 .gcard b { font-size: 13px; font-weight: 700; white-space: nowrap; }
 .gcard span { font-size: 12px; color: var(--muted); white-space: nowrap; }
 .garrow { flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
@@ -279,7 +280,7 @@ button { font: inherit; color: inherit; }
 .popover .btn { margin-top: 14px; width: 100%; }
 
 /* ---------- List ---------- */
-.listbar { display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 14px; border-radius: 3px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--star); /* an amber lamp edge, not a tint */ font-size: 14px; }
+.listbar { display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 14px; border-radius: 3px; background: var(--surface); border: 1px solid var(--line); font-size: 14px; }
 .listbar[hidden] { display: none; }
 .lb-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .count { color: var(--muted); font-size: 13px; margin: 8px 0; }
@@ -313,6 +314,8 @@ button { font: inherit; color: inherit; }
 .info { grid-area: info; min-width: 0; }
 .info .t { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .info .name { font-weight: 700; font-size: 17px; letter-spacing: -.015em; }
+a.name, .hero h1 a.linklike { text-decoration: underline; text-decoration-color: var(--line); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+a.name:hover, .hero h1 a.linklike:hover { text-decoration-color: currentColor; }
 .rank { font-size: 11px; font-weight: 700; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 0 6px; line-height: 18px; }
 /* One line: the milestone name gives way first, the date stays whole. */
 .info .what { font-size: 14px; margin-top: 2px; min-width: 0; display: flex; align-items: center; white-space: nowrap; }
@@ -453,10 +456,10 @@ body[data-view="map"] #focus { visibility: hidden; }
 .cal-cell.blank { background: color-mix(in srgb, var(--surface-2) 60%, var(--surface)); }
 /* Past days are quieter by colour, not opacity: the text stays --muted (4.5:1 or better). */
 .cal-cell.past .cchip, .cal-cell.past .cchip b { color: var(--muted); }
-.cal-cell.past .cchip { background: color-mix(in srgb, var(--c) 8%, transparent); border-left-color: color-mix(in srgb, var(--c) 55%, var(--surface)); }
+.cal-cell.past .cchip { background: color-mix(in srgb, var(--c) 6%, transparent); }
 .cal-n { font-size: 12px; color: var(--muted); font-weight: 600; width: 24px; height: 24px; display: inline-grid; place-items: center; }
 .cal-cell.today .cal-n { background: var(--accent-ink); color: var(--on-accent); border-radius: 3px; }
-.cchip { display: block; font-size: 12px; line-height: 1.4; padding: 2px 6px; border-radius: 3px; background: color-mix(in srgb, var(--c) 14%, transparent); border-left: 3px solid var(--c); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cchip { display: block; font-size: 12px; line-height: 1.4; padding: 2px 6px; border-radius: 3px; background: color-mix(in srgb, var(--c) 12%, transparent); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cchip:hover { background: color-mix(in srgb, var(--c) 24%, transparent); }
 .cchip b { font-weight: 700; }
 .cmore { border: 0; background: none; color: var(--muted); font-size: 12px; text-align: left; padding: 0 6px; cursor: pointer; }

@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://ai-deadlines.ruzcko.com"><img src="https://img.shields.io/badge/live-ai--deadlines.ruzcko.com-c62a20?logo=cloudflare&logoColor=white" alt="Live site"></a>
+  <a href="https://ai-deadlines.ruzcko.com"><img src="https://img.shields.io/badge/live-ai--deadlines.ruzcko.com-0b7a6b?logo=cloudflare&logoColor=white" alt="Live site"></a>
   <a href="https://github.com/ruzcko/ai-deadlines/actions/workflows/refresh.yml"><img src="https://github.com/ruzcko/ai-deadlines/actions/workflows/refresh.yml/badge.svg" alt="Refresh data"></a>
   <a href="https://github.com/ruzcko/ai-deadlines/actions/workflows/scrape.yml"><img src="https://github.com/ruzcko/ai-deadlines/actions/workflows/scrape.yml/badge.svg" alt="Read official sites"></a>
   <a href="https://github.com/huggingface/ai-deadlines"><img src="https://img.shields.io/badge/data-huggingface%2Fai--deadlines-ffd21e?logo=huggingface&logoColor=black" alt="Data: huggingface/ai-deadlines"></a>

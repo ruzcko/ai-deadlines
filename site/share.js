@@ -20,7 +20,7 @@ const CARD_THEMES = {
   // The white instrument panel. A saved "paper" falls back to it.
   daylight: {
     name: "Daylight", bg1: "#ffffff", bg2: "#e4e8ea", glow: 0x00, glowColor: "#ffffff", text: "#12181c", muted: "#4a565d", faint: "#56626a", line: "#c5cdd2",
-    accent: "#08695c", num: "#12181c", submission: "#0b7a6b", reviews: "#9a6500", decision: "#1f62b8", camera: "#6b767d", conference: "#12181c", other: "#8a6a4a",
+    accent: "#08695c", num: "#12181c", submission: "#0b7a6b", reviews: "#c95a0c", decision: "#1f62b8", camera: "#6b767d", conference: "#12181c", other: "#8a6a4a",
   },
   aurora: {
     name: "Aurora", bg1: "#0f2d4f", bg2: "#03101d", glow: 0x66, glowColor: "#38e6c5", text: "#eef7ff", muted: "#a7bdd3", faint: "#8097ae", line: "#1f3d5c",

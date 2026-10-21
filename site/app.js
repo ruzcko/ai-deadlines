@@ -416,7 +416,9 @@ function renderHero() {
       <div class="eyebrow"><span class="sw" style="background:var(--g-${m.group})"></span><span class="eb-text">${mine.length ? `<span class="eb-star" aria-hidden="true">${ICON.starIc}</span>` : ""}<span class="eb-pre">${mine.length ? "Your next deadline" : "Next up"} · </span>${esc(m.label)}</span></div>
       <button class="pill hero-share" type="button" data-sharecard="${esc(s.key)}" aria-label="Share card for ${esc(s.title)}"><span class="hs-icon">${SHARE_ICON}</span><span class="hs-text">Share card</span></button>
     </div>
-    <h1><button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${esc(e.year)}</button></h1>
+    <h1>${safeUrl(e.link)
+      ? `<a class="linklike" href="${esc(e.link)}" target="_blank" rel="noopener" title="Official site">${esc(s.title)} ${esc(e.year)}</a>`
+      : `<button class="linklike" type="button" data-open="${esc(s.key)}">${esc(s.title)} ${esc(e.year)}</button>`}</h1>
     <p class="what">${esc(s.full_name || "")}</p>
     ${place ? `<p class="place">${ICON.pin}${esc(place)}</p>` : ""}
     <div class="clock" role="timer" aria-label="Time left">${unit(p.d, "d")}${unit(p.h, "h")}${unit(p.m, "m")}${unit(p.s, "s")}</div>
@@ -510,7 +512,7 @@ function rowHtml({ s, next }, now) {
     <div class="row-main" role="button" tabindex="0" aria-expanded="${open}">
       <div class="cdbox" data-at="${esc(next.m.at)}" data-est="${next.m.est ? 1 : ""}">${cdBoxHtml(ms, next.m.est)}</div>
       <div class="info">
-        <div class="t"><span class="name">${esc(s.title)} ${esc(e.year)}</span>${rank}${flags}</div>
+        <div class="t">${safeUrl(e.link) ? `<a class="name" href="${esc(e.link)}" target="_blank" rel="noopener" title="Official site">${esc(s.title)} ${esc(e.year)}</a>` : `<span class="name">${esc(s.title)} ${esc(e.year)}</span>`}${rank}${flags}</div>
         <div class="what"><span class="sw" style="background:var(--g-${next.m.group})"></span><b class="lab-full" title="${esc(next.m.label)}">${esc(next.m.label)}</b><b class="lab-short" title="${esc(next.m.label)}">${esc(shortLabel(next.m))}</b><span class="dot">·</span><span class="when">${esc(whenShort(next))}</span></div>
         <div class="sub">${esc(s.full_name || "")}${place ? ` · ${esc(place)}` : ""}</div>
       </div>

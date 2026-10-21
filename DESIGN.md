@@ -11,8 +11,8 @@ The rules for how the site looks and sounds. Read this before you change `site/s
 **An instrument panel** (chosen 2026-10-21). A clean white panel in daylight and soft slate at night, a countdown readout in the middle of it, and a row of indicator lamps for the milestones. One teal indicator means "now": the next milestone, the primary button, the selected tab. It should feel calm, precise and easy to read outdoors on a phone. It should **not** feel like a hacker terminal (no green-on-black), a sci-fi film (no glows), an AI-built dashboard (no purple, no gradients, no cream page) or a black slab: there is no pure black in either theme.
 
 - **Signature detail:** the row of milestone lamps under the hero readout; the next one is lit teal.
-- **Colour is rationed.** Panels are white and grey (slate at night). Colour appears only as a lamp, a milestone dot, a status word, the teal keys and the amber last-week readout. No red anywhere.
-- **Colour always means something:** teal = act now (submission, "now"), amber = attention (reviews, the last week, estimates), blue = decision, grey = done (camera-ready), ink/white = the conference itself. Never add colour for decoration.
+- **Colour is rationed.** Panels are white and grey (slate at night). Colour appears only as a lamp, a milestone dot, a status word, the teal keys and the last-week readout. No red anywhere, and no coloured accent stripes down the left edge of cards: a small dot carries the colour instead.
+- **Colour always means something:** teal = act now (submission, "now"), amber at night / orange by day = attention (reviews, the last week, estimates), blue = decision, grey = done (camera-ready), ink/white = the conference itself. Never add colour for decoration.
 - **Deliberate exceptions to Claude's defaults:** ALL-CAPS for small labels, eyebrows and buttons, like the engraved labels on an instrument. **Venue names are never uppercased**: "NeurIPS" and "ICLR" keep their own casing.
 - How we got here: `design/directions.html` (round one: Badge, Mission control, Signal) and `design/directions-2.html` (round two: Amber board, Apollo console, Phosphor). Apollo console was live from 2026-10-15; on 2026-10-21 its coral red and black screens were replaced by this teal palette with light panels.
 
@@ -49,10 +49,10 @@ Design tokens are the CSS variables in `:root`. Always use a token, never a raw 
 | `--key` | `#0b7a6b` | `#3cc9b0` | Lit keys: the primary button, the selected tab or chip, a pressed toggle |
 | `--on-key` | `#ffffff` | `#0e1316` | Text on `--key` (5.2:1 light, 9.1:1 dark) |
 | `--lamp` | `#0b7a6b` | `#3cc9b0` | The lit lamp and its label (the next milestone) |
-| `--warn` | `#7a5000` | `#ffb000` | Estimated, Tentative, "sources differ", closing soon |
+| `--warn` | `#a8460a` | `#ffb000` | Estimated, Tentative, "sources differ", closing soon. Orange by day: amber dark enough for white turns brown |
 | `--ok` | `#08695c` | `#3cc9b0` | Confirmed by two sources |
-| `--star` | `#ffb000` | `#ffb000` | Starred venues, as a **fill** only (the pressed Starred button) |
-| `--star-ink` | `#7a5400` | `#ffb000` | The ★ as an icon: on rows and in the hero's label (5.5:1 or better) |
+| `--star` | `#f39a52` | `#ffb000` | Starred venues, as a **fill** only (the pressed Starred button) |
+| `--star-ink` | `#c95a0c` | `#ffb000` | The star icon: on rows and in the hero's label (3.4:1 or better) |
 | `--on-star` | `#1b1300` | `#1b1300` | Text on a `--star` fill (10:1) |
 
 ### The panel (hero)
@@ -67,7 +67,7 @@ The hero follows the theme: a white panel in light mode, slate at night. It has 
 | `--hero-line` | `#c5cdd2` | `#2a353d` | Borders and dividers on the panel |
 | `--hero-chip` | `#eef2f3` | `#1f2930` | The "Next" chips |
 | `--clock` | `#12181c` | `#eef2f3` | Readout digits |
-| `--clock-hot` | `#7a5000` | `#ffb000` | Readout digits in the last week (`.hero.urgent`): amber, not red |
+| `--clock-hot` | `#a8460a` | `#ffb000` | Readout digits in the last week (`.hero.urgent`): orange by day, amber at night, never red |
 | `--clock-tile` | `#eef2f3` | `#1f2930` | The readout panel, and the countdown box on each row |
 
 No glow and no gradient.
@@ -79,7 +79,7 @@ Each milestone group has one colour everywhere: row dots, lamps, the calendar, t
 | Group | Lamp | Token | Light | Dark |
 |---|---|---|---|---|
 | Submission | teal, act now | `--g-submission` | `#0b7a6b` | `#3cc9b0` |
-| Reviews / rebuttal | amber, attention | `--g-reviews` | `#9a6500` | `#ffb000` |
+| Reviews / rebuttal | orange / amber, attention | `--g-reviews` | `#c95a0c` | `#ffb000` |
 | Decision | blue | `--g-decision` | `#1f62b8` | `#5aa7ff` |
 | Camera-ready | grey, done | `--g-camera` | `#6b767d` | `#8d9aa2` |
 | Conference | ink / white, the event | `--g-conference` | `#12181c` | `#eef2f3` |
@@ -164,16 +164,17 @@ One unit leads at each stage, and the next smaller unit joins only when it matte
 ## 5. Components
 
 - **Hero (the panel):** eyebrow (milestone, ALL CAPS), venue name (own casing), place, the readout panel, the lamp row (Submit · Reviews · Decision · Camera · Conf; the next one lit in `--lamp`, done ones in their milestone colour, future ones as unlit rings), the exact time in your zone and in AoE, then the "Next" runway of the following three.
-- **Deadline gaps:** a strip that shows how close your starred deadlines are to each other.
-- **Shared or starred list bar:** a plain panel with a 4 px `--star` edge on the left (an amber lamp edge, not a tint).
+- **Deadline gaps:** a strip that shows how close your starred deadlines are to each other. Each card starts with a milestone dot.
+- **Shared or starred list bar:** a plain panel; the star icon in its label marks it.
 - **Header:** the brand, the GitHub star button, a light/dark toggle (the icon shows the mode it switches to; until it's used, the page follows the device setting) and About.
 - **Toolbar:** milestone focus (segmented), List / Map / Calendar, search, Starred, Areas, Filters.
 - **Venue list:** the main venues by default, then a line "N more venues outside the main list · Show all". Filters has the same switch (Show all venues).
-- **Row:** a readout tile (`--clock-tile`) on the left with the countdown in `--clock` (teal under 30 days, amber in the last week), venue and next milestone, badges, star and share. Tap to open the timeline, quick links and sources.
+- **Venue names link to the official site** when one is known (hero and rows), underlined in `--line` and opening in a new tab; without a site, the hero name opens the venue's row. Tapping anywhere else on a row opens its details.
+- **Row:** a readout tile (`--clock-tile`) on the left with the countdown in `--clock` (teal under 30 days, orange by day / amber at night in the last week), venue and next milestone, badges, star and share. Tap to open the timeline, quick links and sources.
 - **Buttons:** primary = `--key` fill with `--on-key` text, ALL CAPS, one per view. Secondary = `--surface` with a `--line` border. Corners 3 px.
 - **Chips and segmented controls:** 3 px corners, the selected one is a lit key: `--key` fill with `--on-key` text.
 - **Badges:** `est` (dashed, Estimated or Assumed), `tent` (Tentative), `ok` (two sources agree), `warn` (sources differ, with the Tabler alert-triangle).
-- **Calendar:** a month grid with chips for mouse users, an agenda list on phones and touch tablets.
+- **Calendar:** a month grid with chips for mouse users (a milestone dot and a light tint of its colour), an agenda list on phones and touch tablets.
 - **Map:** Leaflet with a Natural Earth basemap in the panel greys, plus a "To be announced" list.
 - **Dialogs:** Filters, Areas, About, Credits and Share. Bottom sheet on phones, 4 px corners on desktop.
 - **Icons:** **Tabler Icons** (MIT, via Iconify), 2 px stroke, round caps, inline SVG with `stroke="currentColor"`, kept in the `ICON` object at the top of `app.js` (and inline in `index.html`). Disclosure chevrons are Tabler paths used as CSS masks (`--chev-right`, `--chev-down`). Outlook has no Tabler mark, so its calendar button uses `mail`. New icons come from Tabler only; never hand-drawn.
@@ -255,8 +256,11 @@ Use the design-brief skill's scripts (`~/.claude/skills/design-brief/references/
 
 **2026-10-21, Teal instrument:** both themes, at 375 px (touch) and 1100 px (mouse), eight states each (as above). At 375 px: 1,777 text elements and 218 controls per theme. At 1100 px: 1,894 text elements and 378 controls per theme (fewer than before because the list now starts with the main venues). First run: 1 contrast failure (the hero's star icon in `--star` on the white panel, 1.8:1, fixed with `--star-ink`) and 1 control at 43 px ("Official site" on a half pixel, now a 46 px hit area). Final: 0 contrast failures, 0 controls under 44 px, 0 overlaps. Design lint: 0 errors, 0 warnings. Share-card themes Slate and Daylight checked by maths along their gradients: worst pairs 5.4:1 (Slate `other`) and 3.8:1 (Daylight `camera`, a 3:1 dot colour).
 
+**2026-10-22, orange by day, no stripes, venue links:** both themes, at 375 px and 1100 px, the same eight states. 0 contrast failures, 0 controls under 44 px, 0 overlaps; design lint 0 errors, 0 warnings. The venue-name links have 44 px hit areas.
+
 ## History
 
 - **2026-10-14: Signal**, "a departures board for papers": an off-white page, a black hero with amber digits on split-flap tiles, Chivo + Chivo Mono. Comparisons: `design/palettes.html`, `design/font-options.html`; `design/palettes.css` keeps the candidates.
 - **2026-10-15: Apollo console** replaces it, after a full design brief (researchers on phones; the countdown first; concepts considered: a conference badge, mission control, the departures board). Signal's off-white page and orange-red accent were close to Claude's own look, and green-on-black (Phosphor) is the terminal cliché, so both were set aside.
 - **2026-10-21: Teal instrument** replaces Apollo's colours (same fonts, layout and lamps). The coral red read as a default, and the black screens felt heavy, especially in light mode: the hero is now a white panel in light mode and slate at night, teal replaces red as the "now" colour, amber marks the last week, and camera-ready becomes grey. Compared against a sage LCD and a forest-green console.
+- **2026-10-22:** by day the warm colour is orange instead of dark gold (amber dark enough for white turns brown); accent stripes on cards removed in favour of milestone dots; venue names link to their official sites.
