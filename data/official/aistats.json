@@ -1,18 +1,18 @@
 {
  "key": "aistats",
  "title": "AISTATS",
- "fetched_at": "2026-10-12T18:45:37Z",
+ "fetched_at": "2026-10-21T14:29:33Z",
  "urls": [
   "https://virtual.aistats.org/Conferences/2027/CallForPapers",
   "https://virtual.aistats.org/Conferences/2027/Dates",
   "https://virtual.aistats.org/Conferences/2027"
  ],
  "errors": [],
- "content_hash": "42686d8ed420bf25",
+ "content_hash": "142c9483711a8e90",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 6737,
-  "output": 528
+  "input": 6814,
+  "output": 596
  },
  "found_dates": true,
  "year": 2027,
@@ -48,18 +48,26 @@
   },
   {
    "label": "Reviews and AI review released to authors; author rebuttal period begins",
-   "type": "review_release",
+   "type": "rebuttal_start",
    "date": "2026-11-16",
    "time": null,
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "Author–reviewer discussion period ends",
+   "label": "Author–reviewer discussion period end",
    "type": "rebuttal_end",
    "date": "2026-12-03",
    "time": null,
    "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Journal To Conference Submission Deadline",
+   "type": "paper",
+   "date": "2027-01-18",
+   "time": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {

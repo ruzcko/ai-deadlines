@@ -1,0 +1,25 @@
+{
+ "key": "uai",
+ "title": "UAI",
+ "fetched_at": "2026-10-21T14:21:53Z",
+ "urls": [
+  "https://www.auai.org/uai2026/"
+ ],
+ "errors": [],
+ "content_hash": "10a7ca9089d7bd48",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 776,
+  "output": 111
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Amsterdam",
+ "country": "the Netherlands",
+ "venue": "KIT Events",
+ "conference_start": "2026-08-17",
+ "conference_end": "2026-08-21",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}
