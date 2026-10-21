@@ -168,7 +168,9 @@ One unit leads at each stage, and the next smaller unit joins only when it matte
 - **Hero (the screen):** eyebrow (milestone, ALL CAPS), venue name (own casing), place, the readout panel, the lamp row (Submit · Reviews · Decision · Camera · Conf; the next one lit in `--lamp`, done ones in their milestone colour, future ones as unlit rings), the exact time in your zone and in AoE, then the "Next" runway of the following three.
 - **Deadline gaps:** a strip that shows how close your starred deadlines are to each other.
 - **Shared or starred list bar:** a plain panel with a 4 px `--star` edge on the left (an amber lamp edge, not a tint).
+- **Header:** the brand, the GitHub star button, a light/dark toggle (the icon shows the mode it switches to; until it's used, the page follows the device setting) and About.
 - **Toolbar:** milestone focus (segmented), List / Map / Calendar, search, Starred, Areas, Filters.
+- **Venue list:** the main venues by default, then a line "N more venues outside the main list · Show all". Filters has the same switch (Show all venues).
 - **Row:** a small black screen on the left with the countdown in `--clock` (red in the last week), venue and next milestone, badges, star and share. Tap to open the timeline, quick links and sources.
 - **Buttons:** primary = `--key` fill with `--on-key` text, ALL CAPS, one per view. Secondary = `--surface` with a `--line` border. Corners 3 px.
 - **Chips and segmented controls:** 3 px corners, the selected one is `--text` fill with `--bg` text (a pressed key).

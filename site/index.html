@@ -43,7 +43,7 @@
       <div class="top-right">
         <span class="synced" id="synced"></span>
         <a class="gh-btn" id="ghBtn" href="https://github.com/ruzcko/ai-deadlines" target="_blank" rel="noopener" aria-label="Source code on GitHub"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2c2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2a4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6c-.6.6-.6 1.2-.5 2V21"/></svg><span>Star</span><b id="ghStars" hidden></b></a>
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="Theme"></button>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch theme"></button>
         <button class="icon-btn" id="aboutBtn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="About this site"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"/><path d="M11 12h1v4h1"/></g></svg></button>
       </div>
     </div>
@@ -162,12 +162,11 @@
 
   <dialog id="filterdlg" class="popover" aria-label="Filters">
     <div class="sd-head"><h2>Filters</h2><button class="sd-x" type="button" data-close aria-label="Close"><svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg></button></div>
-    <label class="opt"><input type="checkbox" id="top"><span><b>Top tier only</b><small>CORE or ERA rank A* and A</small></span></label>
+    <label class="opt"><input type="checkbox" id="all"><span><b>Show all venues</b><small>Off: the main venues, plus any you star or search for</small></span></label>
     <label class="opt"><input type="checkbox" id="hideEst"><span><b>Hide estimates</b><small>Only dates the organizers announced</small></span></label>
     <label class="opt"><input type="checkbox" id="side"><span><b>Show side events</b><small>Workshops, tutorials, registration</small></span></label>
     <div class="opt-row"><span><b>Times in</b></span><div class="seg small" id="tzSeg" role="radiogroup" aria-label="Times in"><button type="button" data-tz="local">Your time</button><button type="button" data-tz="aoe">AoE</button></div></div>
     <div class="opt-row"><span><b>Clock</b></span><div class="seg small" id="clockSeg" role="radiogroup" aria-label="Clock"><button type="button" data-clock="12">12-hour</button><button type="button" data-clock="24">24-hour</button></div></div>
-    <div class="opt-row"><span><b>Theme</b></span><div class="seg small" id="themeSeg" role="radiogroup" aria-label="Theme"><button type="button" data-theme-set="auto">Auto</button><button type="button" data-theme-set="light">Light</button><button type="button" data-theme-set="dark">Dark</button></div></div>
     <button class="btn" type="button" id="resetFilters">Reset filters</button>
   </dialog>
 

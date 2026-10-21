@@ -38,7 +38,10 @@ Fix wrong Hugging Face dates upstream; report wrong official-page reads here.
   venues whose dates aren't announced yet, and writes:
   - `site/data/conferences.json` for the page
   - `site/cal/{all,submission,reviews,decision,camera,conference}.ics` feeds
-    (estimated dates are never put in the feeds)
+    (main venues only; estimated dates are never put in the feeds)
+- The **main venues** (`MAIN` in `sync.py`) are shown by default; the others appear
+  with "Show all venues", or when starred, searched for or linked to. Tracks that
+  upstream lists as separate series (`FOLD`) become side dates of their venue.
 - `pipeline/scrape_official.py` (daily, GitHub Actions, needs `GEMINI_API_KEY` from
   Google AI Studio's free tier, which allows ~20 calls a day) fetches the pages in
   `data/official_sources.json`, has Gemini (`gemini-3.8-flash`, JSON-schema output)

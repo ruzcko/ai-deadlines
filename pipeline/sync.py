@@ -81,6 +81,24 @@ SOURCES = {"official": None}
 TENTATIVE = re.compile(r"proposed|tentative|subject to change|to be announced|\bTBA\b|\bTBD\b", re.I)
 
 
+
+# The main venues: shown by default, and the only ones in the calendar feeds. The rest appear when
+# "Show all venues" is on, or when someone stars, searches for or links to them.
+MAIN = {
+    "neurips", "icml", "iclr", "aistats", "uai", "colt", "aaai", "ijcai",  # ML
+    "cvpr", "iccv", "eccv", "wacv", "3dv",  # vision
+    "acl", "emnlp", "naacl", "colm", "coling",  # NLP
+    "kdd", "www", "sigir", "wsdm",  # data and IR
+    "corl", "icra", "iros", "rss",  # robotics
+    "interspeech", "icassp",  # speech
+    "chi", "siggraph", "miccai", "facct",
+}
+# Series that are tracks of another venue: key -> (host key, label prefix for their dates).
+FOLD = {
+    "emnlp-industry-track": ("emnlp", "Industry track"),
+    "emnlp-system-demonstrations-track": ("emnlp", "Demo track"),
+}
+
 def run(*args, cwd=None):
     return subprocess.run(args, cwd=cwd, check=True, capture_output=True, text=True).stdout
 
@@ -408,8 +426,25 @@ def build(now):
     for f in filled:
         print("  filled from official site:", f)
 
+    # Tracks of a venue that upstream lists as their own series become side dates of the main venue.
+    by_key = {s["key"]: (title, s) for title, s in series.items()}
+    for key, (host, label) in FOLD.items():
+        if key not in by_key or host not in by_key:
+            continue
+        title, track = by_key[key]
+        host_s = by_key[host][1]
+        for e in track["editions"]:
+            he = next((x for x in host_s["editions"] if x["year"] == e["year"]), None)
+            if not he:
+                continue
+            he["milestones"] = sorted(he["milestones"] + [
+                {**m, "group": "other", "label": f"{label}: {m['label']}"}
+                for m in e["milestones"] if m["group"] != "conference"], key=lambda m: m["at"])
+        del series[title]
+
     out = []
     for s in series.values():
+        s["main"] = s["key"] in MAIN
         s["editions"].sort(key=lambda e: e["year"])
         has_future_submission = any(
             m["type"] in MAIN_SUBMISSION and m["group"] == "submission" and m["at"] > iso(now)
@@ -539,7 +574,7 @@ def main():
     feeds["all"] = [g for g in GROUPS if g != "other"]
     for name, groups in feeds.items():
         label = "AI deadlines" if name == "all" else f"AI deadlines · {GROUP_NAMES[name]}"
-        (cal / f"{name}.ics").write_text(ics(series, groups, label, stamp), encoding="utf-8",
+        (cal / f"{name}.ics").write_text(ics([s for s in series if s["main"]], groups, label, stamp), encoding="utf-8",
                                          newline="")
 
     n_ed = sum(len(s["editions"]) for s in series)

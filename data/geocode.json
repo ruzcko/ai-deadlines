@@ -7,6 +7,10 @@
   24.4538,
   54.3774
  ],
+ "Abu Dhabi, United Arab Emirates": [
+  24.4538,
+  54.3774
+ ],
  "Albuquerque, New Mexico": [
   35.0841,
   -106.651
@@ -122,6 +126,14 @@
  "Hanoi, Vietnam": [
   21.0283,
   105.854
+ ],
+ "Helsinki, Finland": [
+  60.1666,
+  24.9435
+ ],
+ "Hong Kong": [
+  22.2818,
+  114.1583
  ],
  "Hong Kong, China": [
   22.2818,
@@ -350,6 +362,10 @@
  "Thessaloniki, Greece": [
   40.6403,
   22.9353
+ ],
+ "Tokyo, Japan": [
+  35.6769,
+  139.7639
  ],
  "Toronto, Canada": [
   43.6535,

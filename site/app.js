@@ -15,7 +15,6 @@ const ICON = {
   star: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/></svg>',
   starFill: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"/></svg>',
   starIc: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"/></svg>',
-  contrast: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M12 17a5 5 0 0 0 0-10z"/></g></svg>',
   sun: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0m-5 0h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7l-.7.7m0 11.4l.7.7m-12.1-.7l-.7.7"/></svg>',
   moon: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z"/></svg>',
   shareApple: '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1m-4 5V3M9 6l3-3l3 3"/></svg>',
@@ -34,11 +33,11 @@ const state = {
   areas: new Set(),
   starred: new Set(),
   starredOnly: false,
-  top: false,
+  all: false, // every venue, not just the main ones
   hideEst: false,
   tz: "local", // or "aoe"
   clock: null, // "12" or "24"; null follows the device
-  theme: "auto",
+  theme: "auto", // "auto" follows the device until the visitor picks light or dark
   open: new Set(),
   view: "list",
   feed: "all", // which calendar feed the subscribe box shows
@@ -63,7 +62,7 @@ function load() {
     if (Array.isArray(s.areas)) state.areas = new Set(s.areas);
     if (Array.isArray(s.starred)) state.starred = new Set(s.starred);
     state.starredOnly = !!s.starredOnly;
-    state.top = !!s.top;
+    state.all = !!s.all;
     state.hideEst = !!s.hideEst;
     state.side = !!s.side;
     if (s.tz === "aoe") state.tz = "aoe";
@@ -79,7 +78,7 @@ function save() {
   try {
     localStorage.setItem(STORE, JSON.stringify({
       focus: state.focus, side: state.side, areas: [...state.areas], starred: [...state.starred],
-      starredOnly: state.starredOnly, top: state.top, hideEst: state.hideEst, tz: state.tz, clock: state.clock, theme: state.theme,
+      starredOnly: state.starredOnly, all: state.all, hideEst: state.hideEst, tz: state.tz, clock: state.clock, theme: state.theme,
       view: state.view, span: state.span, feed: state.feed,
     }));
   } catch (_) { /* storage unavailable */ }
@@ -294,7 +293,7 @@ function nextFor(series, now) {
 function matches(s) {
   if (state.watch) return state.watch.has(s.key) && matchesQuery(s);
   if (state.starredOnly && !state.starred.has(s.key)) return false;
-  if (state.top && !(s.rank && TOP_RANKS.has(s.rank.value))) return false;
+  if (!state.all && !s.main && !state.starred.has(s.key) && !state.open.has(s.key) && !state.q) return false;
   if (state.areas.size && !s.areas.some((a) => state.areas.has(a))) return false;
   return matchesQuery(s);
 }
@@ -349,28 +348,26 @@ function renderToolbar() {
     const count = DATA.series.filter((s) => s.areas.includes(a)).length;
     return `<label class="opt"><input type="checkbox" data-area="${a}" ${state.areas.has(a) ? "checked" : ""}><span><b>${esc(name)}</b><small>${count} venue${count === 1 ? "" : "s"}</small></span></label>`;
   }).join("");
-  $("top").checked = state.top;
+  $("all").checked = state.all;
   $("hideEst").checked = state.hideEst;
   $("side").checked = state.side;
-  const active = [state.top, state.hideEst, state.side].filter(Boolean).length;
+  const active = [state.all, state.hideEst, state.side].filter(Boolean).length;
   $("filterCount").hidden = !active;
   $("filterCount").textContent = active;
   for (const b of document.querySelectorAll("[data-tz]")) b.setAttribute("aria-checked", b.dataset.tz === state.tz);
   for (const b of document.querySelectorAll("[data-clock]")) b.setAttribute("aria-checked", b.dataset.clock === (use24() ? "24" : "12"));
-  for (const b of document.querySelectorAll("[data-theme-set]")) b.setAttribute("aria-checked", b.dataset.themeSet === state.theme);
   renderThemeBtn();
 }
 
-const THEME_ICON = {
-  auto: ICON.contrast,
-  light: ICON.sun,
-  dark: ICON.moon,
-};
+// Light or dark: the device's setting until the visitor flips the toggle.
+const DARK_MQ = matchMedia("(prefers-color-scheme: dark)");
+const shownTheme = () => (state.theme === "auto" ? (DARK_MQ.matches ? "dark" : "light") : state.theme);
 function renderThemeBtn() {
   const b = $("themeBtn");
-  b.innerHTML = THEME_ICON[state.theme];
-  b.setAttribute("aria-label", `Theme: ${state.theme}. Click to change.`);
-  b.title = `Theme: ${state.theme}`;
+  const next = shownTheme() === "dark" ? "light" : "dark";
+  b.innerHTML = next === "dark" ? ICON.moon : ICON.sun;
+  b.setAttribute("aria-label", `Switch to ${next} mode`);
+  b.title = `Switch to ${next} mode`;
 }
 function applyTheme() {
   if (state.theme === "auto") delete document.documentElement.dataset.theme;
@@ -544,7 +541,16 @@ function renderRows() {
       <h3>${esc(title)} <span class="n">${groups.get(k).length}</span>${note ? `<span class="note">${esc(note)}</span>` : ""}</h3>
       ${k === "est" ? estSection(groups.get(k), now) : `<ol class="list">${groups.get(k).map((r) => rowHtml(r, now)).join("")}</ol>`}
     </section>`).join("") +
-    (nothing ? `<p class="count">${nothing} more venue${nothing === 1 ? " has" : "s have"} nothing upcoming for this view.</p>` : "");
+    (nothing ? `<p class="count">${nothing} more venue${nothing === 1 ? " has" : "s have"} nothing upcoming for this view.</p>` : "") +
+    moreVenues();
+}
+
+// Venues outside the main list that the current view would otherwise show.
+function moreVenues() {
+  if (state.all || state.watch || state.starredOnly || state.q) return "";
+  const n = DATA.series.filter((s) => !s.main && !matches(s) &&
+    (!state.areas.size || s.areas.some((a) => state.areas.has(a)))).length;
+  return n ? `<p class="count">${n} more venue${n === 1 ? "" : "s"} outside the main list · <button class="linkbtn" type="button" data-showall>Show all</button></p>` : "";
 }
 
 // Estimated venues are guesses, so they get small tiles instead of full rows. A tile opens into a row;
@@ -949,7 +955,7 @@ async function copyText(text, btn, done = "Copied") {
 }
 
 function resetFilters() {
-  Object.assign(state, { q: "", focus: "submission", side: false, starredOnly: false, top: false, hideEst: false });
+  Object.assign(state, { q: "", focus: "submission", side: false, starredOnly: false, all: false, hideEst: false });
   state.areas.clear();
   $("q").value = "";
   syncGroups();
@@ -982,7 +988,7 @@ function bind() {
   $("areadlg").addEventListener("click", (ev) => {
     if (ev.target.closest("[data-close]") || ev.target === $("areadlg")) closePops();
   });
-  for (const [id, key] of [["top", "top"], ["hideEst", "hideEst"], ["side", "side"]]) {
+  for (const [id, key] of [["all", "all"], ["hideEst", "hideEst"], ["side", "side"]]) {
     $(id).addEventListener("change", (ev) => {
       state[key] = ev.target.checked;
       syncGroups(); save(); render();
@@ -1001,11 +1007,8 @@ function bind() {
     save(); render();
   });
   const setTheme = (t) => { state.theme = t; applyTheme(); save(); render(); };
-  $("themeSeg").addEventListener("click", (ev) => {
-    const b = ev.target.closest("[data-theme-set]");
-    if (b) setTheme(b.dataset.themeSet);
-  });
-  $("themeBtn").addEventListener("click", () => setTheme({ auto: "light", light: "dark", dark: "auto" }[state.theme]));
+  $("themeBtn").addEventListener("click", () => setTheme(shownTheme() === "dark" ? "light" : "dark"));
+  DARK_MQ.addEventListener("change", () => { if (state.theme === "auto") { applyTheme(); render(); } });
   $("filterBtn").addEventListener("click", openFilters);
   $("filterdlg").addEventListener("click", (ev) => {
     if (ev.target.closest("[data-close]") || ev.target === $("filterdlg")) closeFilters();
@@ -1028,6 +1031,7 @@ function bind() {
     const open = ev.target.closest("[data-open]");
     if (open) { openVenue(open.dataset.open); return; }
     if (ev.target.closest("[data-allest]")) { state.allEst = !state.allEst; renderRows(); return; }
+    if (ev.target.closest("[data-showall]")) { state.all = true; save(); render(); return; }
     const reset = ev.target.closest("[data-reset]");
     if (reset) { resetFilters(); return; }
     const cl = ev.target.closest("[data-copylink]");
@@ -1142,7 +1146,7 @@ function openVenue(k) {
   if (!nextFor(s, new Date()) || !matches(s)) {
     if (state.watch && !state.watch.has(k)) state.watch = null;
     state.q = ""; $("q").value = "";
-    state.starredOnly = false; state.top = false; state.areas.clear();
+    state.starredOnly = false; state.areas.clear();
     if (!nextFor(s, new Date())) { state.focus = "all"; state.hideEst = false; }
     syncGroups();
     render();
