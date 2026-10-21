@@ -1,0 +1,26 @@
+{
+ "key": "iccv",
+ "title": "ICCV",
+ "fetched_at": "2026-10-18T12:57:46Z",
+ "urls": [
+  "https://www.thecvf.com/?p=137",
+  "https://iccv.thecvf.com/Conferences/2027"
+ ],
+ "errors": [],
+ "content_hash": "c5076a1221df2d47",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 684,
+  "output": 114
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Hong Kong",
+ "country": null,
+ "venue": "Hong Kong Convention and Expo Center",
+ "conference_start": "2027-10-02",
+ "conference_end": "2027-10-08",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

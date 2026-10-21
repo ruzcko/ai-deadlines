@@ -1,0 +1,34 @@
+{
+ "key": "ijcai",
+ "title": "IJCAI",
+ "fetched_at": "2026-10-18T12:58:53Z",
+ "urls": [
+  "https://2026.ijcai.org/"
+ ],
+ "errors": [],
+ "content_hash": "ee055909e1b5e4b5",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 744,
+  "output": 189
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Bremen",
+ "country": "Germany",
+ "venue": null,
+ "conference_start": "2026-08-15",
+ "conference_end": "2026-08-21",
+ "milestones": [
+  {
+   "label": "Paper Submission Deadline (Main Track & Special Tracks)",
+   "type": "paper",
+   "date": "2026-01-19",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates apply to the Main Track and Special Tracks.",
+ "follow_url": null
+}

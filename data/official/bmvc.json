@@ -1,0 +1,108 @@
+{
+ "key": "bmvc",
+ "title": "BMVC",
+ "fetched_at": "2026-10-15T13:54:22Z",
+ "urls": [
+  "https://bmvc2026.bmva.org/calls/call-for-papers/",
+  "https://bmvc2026.bmva.org/dates/",
+  "https://bmvc2026.bmva.org/"
+ ],
+ "errors": [],
+ "content_hash": "4d72181fd432c4e3",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 4453,
+  "output": 828
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Lancaster",
+ "country": "UK",
+ "venue": "Lancaster Town Hall",
+ "conference_start": "2026-11-23",
+ "conference_end": "2026-11-26",
+ "milestones": [
+  {
+   "label": "Abstract Submission Deadline",
+   "type": "abstract",
+   "date": "2026-05-22",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Paper Submission Deadline",
+   "type": "paper",
+   "date": "2026-05-29",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Supplementary Material Submission Deadline",
+   "type": "supplementary",
+   "date": "2026-05-29",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop Proposal Submission Deadline",
+   "type": "workshop",
+   "date": "2026-06-05",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviews Submitted",
+   "type": "other",
+   "date": "2026-06-26",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Release of Reviews; Start of Rebuttal",
+   "type": "rebuttal_start",
+   "date": "2026-07-03",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "End of Rebuttal",
+   "type": "rebuttal_end",
+   "date": "2026-07-10",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author Notifications",
+   "type": "notification",
+   "date": "2026-08-07",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera Ready Deadline for Papers",
+   "type": "camera_ready",
+   "date": "2026-08-28",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author Registration Deadline",
+   "type": "registration",
+   "date": "2026-08-28",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

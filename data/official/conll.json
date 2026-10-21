@@ -1,0 +1,25 @@
+{
+ "key": "conll",
+ "title": "CoNLL",
+ "fetched_at": "2026-10-15T14:05:12Z",
+ "urls": [
+  "https://conll.org/"
+ ],
+ "errors": [],
+ "content_hash": "caf6a31fc6b62dd8",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 2959,
+  "output": 110
+ },
+ "found_dates": false,
+ "year": 2026,
+ "city": "San Diego",
+ "country": "United States",
+ "venue": null,
+ "conference_start": "2026-07-03",
+ "conference_end": "2026-07-04",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

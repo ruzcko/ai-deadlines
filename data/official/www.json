@@ -1,0 +1,74 @@
+{
+ "key": "www",
+ "title": "WWW",
+ "fetched_at": "2026-10-21T14:26:01Z",
+ "urls": [
+  "https://www2027.thewebconf.org/"
+ ],
+ "errors": [],
+ "content_hash": "f2169e04aa30eeda",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1004,
+  "output": 515
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Dublin",
+ "country": "Ireland",
+ "venue": "Dublin Royal Convention Centre",
+ "conference_start": "2027-05-10",
+ "conference_end": "2027-05-14",
+ "milestones": [
+  {
+   "label": "Tutorial proposal submission deadline",
+   "type": "tutorial",
+   "date": "2026-10-19",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Call for Workshop proposal submission deadline",
+   "type": "workshop",
+   "date": "2026-09-28",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Full paper submissions Abstract deadline",
+   "type": "abstract",
+   "date": "2026-10-18",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Full paper submissions submission deadline",
+   "type": "paper",
+   "date": "2026-10-25",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Short paper submissions Abstract deadline",
+   "type": "abstract",
+   "date": "2026-11-09",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Short paper submissions submission deadline",
+   "type": "paper",
+   "date": "2026-11-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates are provided for full papers, short papers, workshop proposals, and tutorial proposals.",
+ "follow_url": null
+}

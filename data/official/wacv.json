@@ -1,0 +1,140 @@
+{
+ "key": "wacv",
+ "title": "WACV",
+ "fetched_at": "2026-10-21T14:23:39Z",
+ "urls": [
+  "https://wacv.thecvf.com/Conferences/2027/CallForPapers",
+  "https://wacv.thecvf.com/Conferences/2027/Dates",
+  "https://wacv.thecvf.com/"
+ ],
+ "errors": [],
+ "content_hash": "6094a5befcfe9857",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 2452,
+  "output": 1089
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Buena Vista",
+ "country": "United States",
+ "venue": "Disney Springs",
+ "conference_start": "2027-01-04",
+ "conference_end": "2027-01-08",
+ "milestones": [
+  {
+   "label": "Round 1 Paper Registration Deadline",
+   "type": "abstract",
+   "date": "2026-06-19",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Paper Submission Deadline",
+   "type": "paper",
+   "date": "2026-06-26",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Supplementary Material",
+   "type": "supplementary",
+   "date": "2026-06-28",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop Proposal Deadline",
+   "type": "workshop",
+   "date": "2026-08-08",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Reviews and Decisions To Authors",
+   "type": "notification",
+   "date": "2026-08-09",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop Acceptance Notification",
+   "type": "workshop",
+   "date": "2026-08-16",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Round 2 New Paper Registration",
+   "type": "abstract",
+   "date": "2026-08-21",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Rebuttal and Revision Submission",
+   "type": "rebuttal_end",
+   "date": "2026-08-28",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 2 Paper Submissions",
+   "type": "paper",
+   "date": "2026-08-28",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 2 Supplemental Material",
+   "type": "supplementary",
+   "date": "2026-08-30",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 2 Reviews and Final Decisions to Authors",
+   "type": "notification",
+   "date": "2026-10-14",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Round 1 Final Decisions Released to Authors",
+   "type": "notification",
+   "date": "2026-10-14",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera Ready Both Rounds",
+   "type": "camera_ready",
+   "date": "2026-11-02",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Early Registration Deadline",
+   "type": "registration",
+   "date": "2026-11-03",
+   "time": "04:59",
+   "timezone": "UTC",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Submissions are accepted in two cycles (Round 1 and Round 2) across the Applications, Algorithms, and Evaluations & Datasets tracks.",
+ "follow_url": null
+}

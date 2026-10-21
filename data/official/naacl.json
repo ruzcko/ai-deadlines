@@ -1,0 +1,114 @@
+{
+ "key": "naacl",
+ "title": "NAACL",
+ "fetched_at": "2026-10-20T14:14:08Z",
+ "urls": [
+  "https://2027.naacl.org/"
+ ],
+ "errors": [],
+ "content_hash": "79a66454fc78c610",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 883,
+  "output": 918
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "San Francisco",
+ "country": "United States",
+ "venue": null,
+ "conference_start": "2027-06-01",
+ "conference_end": "2027-06-05",
+ "milestones": [
+  {
+   "label": "Workshop proposal deadline",
+   "type": "workshop",
+   "date": "2026-09-04",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Tutorial proposal deadline",
+   "type": "tutorial",
+   "date": "2026-10-02",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Main submission deadline (ARR)",
+   "type": "paper",
+   "date": "2026-10-12",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Industry track submission deadline",
+   "type": "paper",
+   "date": "2026-10-31",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "System demo submission deadline",
+   "type": "paper",
+   "date": "2026-12-04",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "NAACL commitment deadline",
+   "type": "other",
+   "date": "2026-12-23",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance (main)",
+   "type": "notification",
+   "date": "2027-02-10",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance (system demos)",
+   "type": "notification",
+   "date": "2027-02-10",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance (industry track)",
+   "type": "notification",
+   "date": "2027-02-24",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready papers due (main)",
+   "type": "camera_ready",
+   "date": "2027-03-03",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready papers due (system demos)",
+   "type": "camera_ready",
+   "date": "2027-03-03",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Includes dates for the main track (ARR), industry track, system demonstrations, and workshop/tutorial proposals.",
+ "follow_url": null
+}

@@ -1,0 +1,25 @@
+{
+ "key": "icip",
+ "title": "ICIP",
+ "fetched_at": "2026-10-18T12:58:19Z",
+ "urls": [
+  "https://2027.ieeeicip.org/"
+ ],
+ "errors": [],
+ "content_hash": "2487e525b150ec10",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 623,
+  "output": 108
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Singapore",
+ "country": "Singapore",
+ "venue": null,
+ "conference_start": "2027-11-29",
+ "conference_end": "2027-12-03",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

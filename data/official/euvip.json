@@ -1,0 +1,66 @@
+{
+ "key": "euvip",
+ "title": "EUVIP",
+ "fetched_at": "2026-10-17T12:43:06Z",
+ "urls": [
+  "https://euvip2026.github.io/"
+ ],
+ "errors": [],
+ "content_hash": "c7b38e1efe87897f",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 2485,
+  "output": 481
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Luxembourg",
+ "country": "Luxembourg",
+ "venue": "Parc Alvisse Hotel Conference and Spa",
+ "conference_start": "2026-09-28",
+ "conference_end": "2026-10-01",
+ "milestones": [
+  {
+   "label": "Paper submission deadline extended",
+   "type": "paper",
+   "date": "2026-06-15",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Tutorial submission deadline extended",
+   "type": "tutorial",
+   "date": "2026-06-09",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "All special sessions and the student session submission deadlines extended",
+   "type": "paper",
+   "date": "2026-07-07",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Regular paper and demo acceptance notifications rescheduled",
+   "type": "notification",
+   "date": "2026-07-23",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Travel support application deadline",
+   "type": "other",
+   "date": "2026-08-05",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

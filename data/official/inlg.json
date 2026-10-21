@@ -1,0 +1,90 @@
+{
+ "key": "inlg",
+ "title": "INLG",
+ "fetched_at": "2026-10-18T12:59:31Z",
+ "urls": [
+  "https://2026.inlgmeeting.org/"
+ ],
+ "errors": [],
+ "content_hash": "70f69b631db89687",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 885,
+  "output": 645
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Utrecht",
+ "country": "Netherlands",
+ "venue": null,
+ "conference_start": "2026-10-17",
+ "conference_end": "2026-10-21",
+ "milestones": [
+  {
+   "label": "Regular paper submission deadline",
+   "type": "paper",
+   "date": "2026-07-18",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "System demo paper submission deadline",
+   "type": "paper",
+   "date": "2026-07-18",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "ARR commitment to INLG deadline",
+   "type": "paper",
+   "date": "2026-08-05",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification",
+   "type": "notification",
+   "date": "2026-08-15",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Non-archival submission deadline",
+   "type": "paper",
+   "date": "2026-08-22",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera ready",
+   "type": "camera_ready",
+   "date": "2026-09-07",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Registration open",
+   "type": "registration",
+   "date": "2026-08-06",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Registration closed",
+   "type": "registration",
+   "date": "2026-10-05",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates cover direct regular/system demo paper submissions, ARR commitments, and non-archival submissions.",
+ "follow_url": null
+}

@@ -1,0 +1,25 @@
+{
+ "key": "icomp",
+ "title": "ICOMP",
+ "fetched_at": "2026-10-18T12:58:36Z",
+ "urls": [
+  "https://icomp.cc/"
+ ],
+ "errors": [],
+ "content_hash": "f57416f3f9d3b12d",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 288,
+  "output": 82
+ },
+ "found_dates": false,
+ "year": null,
+ "city": null,
+ "country": null,
+ "venue": null,
+ "conference_start": null,
+ "conference_end": null,
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

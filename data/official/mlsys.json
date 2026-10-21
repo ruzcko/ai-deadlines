@@ -1,0 +1,68 @@
+{
+ "key": "mlsys",
+ "title": "MLSys",
+ "fetched_at": "2026-10-20T14:13:37Z",
+ "urls": [
+  "https://mlsys.org/Conferences/2027/CallForResearchPapers",
+  "https://mlsys.org/Conferences/2027/Dates",
+  "https://mlsys.org/Conferences/2027"
+ ],
+ "errors": [],
+ "content_hash": "7a6cd14526957e86",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 4638,
+  "output": 465
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Bellevue",
+ "country": "United States",
+ "venue": null,
+ "conference_start": "2027-06-21",
+ "conference_end": "2027-06-25",
+ "milestones": [
+  {
+   "label": "Paper Submissions Open",
+   "type": "other",
+   "date": "2026-10-19",
+   "time": "12:00",
+   "timezone": "PDT",
+   "tentative": false
+  },
+  {
+   "label": "Paper Submission Deadline",
+   "type": "paper",
+   "date": "2026-10-30",
+   "time": "12:00",
+   "timezone": "PDT",
+   "tentative": false
+  },
+  {
+   "label": "Author Reviews Available",
+   "type": "review_release",
+   "date": "2027-01-18",
+   "time": "12:00",
+   "timezone": "PST",
+   "tentative": false
+  },
+  {
+   "label": "Author Responses Due",
+   "type": "rebuttal_end",
+   "date": "2027-01-21",
+   "time": "12:00",
+   "timezone": "PST",
+   "tentative": false
+  },
+  {
+   "label": "Author Notifications",
+   "type": "notification",
+   "date": "2027-02-28",
+   "time": "13:00",
+   "timezone": "PST",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

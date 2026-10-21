@@ -1,0 +1,106 @@
+{
+ "key": "ijcnlp-aacl",
+ "title": "IJCNLP & AACL",
+ "fetched_at": "2026-10-18T12:59:04Z",
+ "urls": [
+  "https://2025.aaclnet.org/"
+ ],
+ "errors": [],
+ "content_hash": "109bf30dcda75fb0",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 856,
+  "output": 848
+ },
+ "found_dates": true,
+ "year": 2025,
+ "city": "Mumbai",
+ "country": "India",
+ "venue": null,
+ "conference_start": "2025-12-20",
+ "conference_end": "2025-12-24",
+ "milestones": [
+  {
+   "label": "ARR submission deadline (long & short papers)",
+   "type": "paper",
+   "date": "2025-07-28",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviewer registration deadline for ALL authors",
+   "type": "other",
+   "date": "2025-07-30",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Review submission deadline",
+   "type": "other",
+   "date": "2025-09-01",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author response and author-reviewer discussion (start)",
+   "type": "rebuttal_start",
+   "date": "2025-09-09",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author response and author-reviewer discussion (end)",
+   "type": "rebuttal_end",
+   "date": "2025-09-15",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Meta-review deadline",
+   "type": "other",
+   "date": "2025-09-25",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Meta-review release",
+   "type": "review_release",
+   "date": "2025-10-02",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Commitment deadline",
+   "type": "paper",
+   "date": "2025-10-10",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance (long & short papers)",
+   "type": "notification",
+   "date": "2025-10-25",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready papers due (long & short)",
+   "type": "camera_ready",
+   "date": "2025-11-10",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

@@ -1,0 +1,67 @@
+{
+ "key": "kdd",
+ "title": "KDD",
+ "fetched_at": "2026-10-18T13:00:44Z",
+ "urls": [
+  "https://kdd2027.kdd.org/ai4sciences-track-call-for-papers",
+  "https://kdd2027.kdd.org"
+ ],
+ "errors": [],
+ "content_hash": "befa4f5963be99e4",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 4709,
+  "output": 464
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "San Jose",
+ "country": "United States",
+ "venue": "San Jose McEnery Convention Center",
+ "conference_start": "2027-08-01",
+ "conference_end": "2027-08-05",
+ "milestones": [
+  {
+   "label": "Abstract Deadline",
+   "type": "abstract",
+   "date": "2026-07-19",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Paper Deadline",
+   "type": "paper",
+   "date": "2026-07-26",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author Rebuttal Period (start)",
+   "type": "rebuttal_start",
+   "date": "2026-09-29",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author Rebuttal Period (end)",
+   "type": "rebuttal_end",
+   "date": "2026-10-13",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification",
+   "type": "notification",
+   "date": "2026-11-14",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates correspond to Cycle 1 for the AI for Sciences Track.",
+ "follow_url": null
+}

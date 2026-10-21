@@ -1,17 +1,17 @@
 {
  "key": "acm-mm",
  "title": "ACM MM",
- "fetched_at": "2026-10-12T18:43:18Z",
+ "fetched_at": "2026-10-21T14:29:18Z",
  "urls": [
   "https://2026.acmmm.org/site/important-dates.html",
   "https://2026.acmmm.org/"
  ],
  "errors": [],
- "content_hash": "bcfc1cdca32e0320",
+ "content_hash": "d805c5cf256db0c1",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1627,
-  "output": 688
+  "input": 1660,
+  "output": 828
  },
  "found_dates": true,
  "year": 2026,
@@ -22,7 +22,7 @@
  "conference_end": "2026-11-14",
  "milestones": [
   {
-   "label": "Contribution Registration",
+   "label": "Main Track Contribution Registration",
    "type": "abstract",
    "date": "2026-03-25",
    "time": null,
@@ -30,7 +30,7 @@
    "tentative": false
   },
   {
-   "label": "Contribution Submission",
+   "label": "Main Track Contribution Submission",
    "type": "paper",
    "date": "2026-04-01",
    "time": null,
@@ -38,7 +38,7 @@
    "tentative": false
   },
   {
-   "label": "Supplementary Submission",
+   "label": "Main Track Supplementary Submission",
    "type": "supplementary",
    "date": "2026-04-08",
    "time": null,
@@ -46,7 +46,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal",
+   "label": "Main Track Rebuttal",
    "type": "rebuttal_end",
    "date": "2026-06-04",
    "time": null,
@@ -54,7 +54,7 @@
    "tentative": false
   },
   {
-   "label": "Author Notification",
+   "label": "Main Track Author Notification",
    "type": "notification",
    "date": "2026-07-09",
    "time": null,
@@ -62,7 +62,7 @@
    "tentative": false
   },
   {
-   "label": "Camera-Ready",
+   "label": "Main Track Camera-Ready",
    "type": "camera_ready",
    "date": "2026-08-06",
    "time": null,
@@ -70,7 +70,7 @@
    "tentative": false
   },
   {
-   "label": "Author Registration",
+   "label": "Main Track Author Registration",
    "type": "registration",
    "date": "2026-08-31",
    "time": null,
@@ -92,8 +92,24 @@
    "time": null,
    "timezone": null,
    "tentative": false
+  },
+  {
+   "label": "Tutorials Contribution Submission",
+   "type": "tutorial",
+   "date": "2026-04-23",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Tutorials Decision",
+   "type": "tutorial",
+   "date": "2026-06-04",
+   "time": null,
+   "timezone": null,
+   "tentative": false
   }
  ],
- "tracks_note": "Dates reported correspond to the Main Track, with workshop proposal deadlines included.",
+ "tracks_note": "Dates listed include Main Track deadlines as well as workshop and tutorial proposal deadlines.",
  "follow_url": null
 }

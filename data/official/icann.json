@@ -1,0 +1,43 @@
+{
+ "key": "icann",
+ "title": "ICANN",
+ "fetched_at": "2026-10-17T12:44:00Z",
+ "urls": [
+  "https://e-nns.org/icann2026/call-for-papers-2/",
+  "https://e-nns.org/icann2026/"
+ ],
+ "errors": [],
+ "content_hash": "4fc1b9890636fb4e",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1275,
+  "output": 253
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Padua",
+ "country": "Italy",
+ "venue": "Conference center of the School of Psychology, University of Padua",
+ "conference_start": "2026-09-14",
+ "conference_end": "2026-09-17",
+ "milestones": [
+  {
+   "label": "Deadline for full paper submission",
+   "type": "paper",
+   "date": "2026-03-30",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Final notification of Acceptance or Rejection",
+   "type": "notification",
+   "date": "2026-05-29",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

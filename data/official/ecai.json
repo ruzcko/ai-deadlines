@@ -1,0 +1,83 @@
+{
+ "key": "ecai",
+ "title": "ECAI",
+ "fetched_at": "2026-10-17T12:40:45Z",
+ "urls": [
+  "https://2026.ijcai.org/important-dates/",
+  "https://2026.ijcai.org/"
+ ],
+ "errors": [],
+ "content_hash": "769e871c29afbd2e",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 983,
+  "output": 636
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Bremen",
+ "country": "Germany",
+ "venue": null,
+ "conference_start": "2026-08-15",
+ "conference_end": "2026-08-21",
+ "milestones": [
+  {
+   "label": "Abstract submission deadline",
+   "type": "abstract",
+   "date": "2026-01-12",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Full paper submission deadline",
+   "type": "paper",
+   "date": "2026-01-19",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Phase I notification",
+   "type": "notification",
+   "date": "2026-03-04",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author’s response start",
+   "type": "rebuttal_start",
+   "date": "2026-04-07",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author’s response end",
+   "type": "rebuttal_end",
+   "date": "2026-04-10",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Paper Notification",
+   "type": "notification",
+   "date": "2026-04-29",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera Ready Copy",
+   "type": "camera_ready",
+   "date": "2026-05-20",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": "Dates are for IJCAI-ECAI 2026 Main Track (with Special Tracks and Survey Track sharing the same January 19 paper deadline).",
+ "follow_url": null
+}

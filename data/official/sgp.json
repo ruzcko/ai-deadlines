@@ -1,0 +1,42 @@
+{
+ "key": "sgp",
+ "title": "SGP",
+ "fetched_at": "2026-10-20T14:24:47Z",
+ "urls": [
+  "https://sgp26.org/"
+ ],
+ "errors": [],
+ "content_hash": "3d825220ced8c262",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 665,
+  "output": 238
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Bern",
+ "country": "Switzerland",
+ "venue": "University of Bern",
+ "conference_start": "2026-07-01",
+ "conference_end": "2026-07-03",
+ "milestones": [
+  {
+   "label": "Graduate School start",
+   "type": "other",
+   "date": "2026-06-29",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Graduate School end",
+   "type": "other",
+   "date": "2026-06-30",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

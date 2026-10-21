@@ -1,0 +1,25 @@
+{
+ "key": "miccai",
+ "title": "MICCAI",
+ "fetched_at": "2026-10-20T14:12:08Z",
+ "urls": [
+  "https://conferences.miccai.org/2026/"
+ ],
+ "errors": [],
+ "content_hash": "63e963d7a534c353",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 1296,
+  "output": 115
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Strasbourg",
+ "country": "France",
+ "venue": "Strasbourg Convention Center",
+ "conference_start": "2026-09-27",
+ "conference_end": "2026-10-01",
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

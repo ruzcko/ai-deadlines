@@ -1,0 +1,107 @@
+{
+ "key": "eacl",
+ "title": "EACL",
+ "fetched_at": "2026-10-17T12:40:34Z",
+ "urls": [
+  "https://2027.eacl.org/calls/papers/",
+  "https://2027.eacl.org"
+ ],
+ "errors": [],
+ "content_hash": "1466b273962485ec",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 3782,
+  "output": 840
+ },
+ "found_dates": true,
+ "year": 2027,
+ "city": "Athens",
+ "country": "Greece",
+ "venue": null,
+ "conference_start": "2027-03-09",
+ "conference_end": "2027-03-14",
+ "milestones": [
+  {
+   "label": "ARR submission deadline (long & short papers)",
+   "type": "paper",
+   "date": "2026-08-03",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviewer registration deadline for ALL authors",
+   "type": "other",
+   "date": "2026-08-05",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Author response period start",
+   "type": "rebuttal_start",
+   "date": "2026-09-14",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author response period end",
+   "type": "rebuttal_end",
+   "date": "2026-09-19",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Reviewer engagement and Author-reviewer discussion start",
+   "type": "other",
+   "date": "2026-09-20",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Reviewer engagement and Author-reviewer discussion end",
+   "type": "other",
+   "date": "2026-09-24",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Meta review released",
+   "type": "review_release",
+   "date": "2026-10-08",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "EACL 2027 commitment deadline",
+   "type": "paper",
+   "date": "2026-10-11",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance (long & short papers)",
+   "type": "notification",
+   "date": "2026-11-12",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Camera-ready papers due (long & short)",
+   "type": "camera_ready",
+   "date": "2026-11-26",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

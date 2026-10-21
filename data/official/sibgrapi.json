@@ -1,0 +1,25 @@
+{
+ "key": "sibgrapi",
+ "title": "SIBGRAPI",
+ "fetched_at": "2026-10-20T14:25:34Z",
+ "urls": [
+  "https://sibgrapi.sbc.org.br/2026/"
+ ],
+ "errors": [],
+ "content_hash": "bed5dd41979e9d69",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 306,
+  "output": 86
+ },
+ "found_dates": false,
+ "year": 2026,
+ "city": null,
+ "country": null,
+ "venue": null,
+ "conference_start": null,
+ "conference_end": null,
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

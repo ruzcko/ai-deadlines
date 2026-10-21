@@ -1,0 +1,25 @@
+{
+ "key": "sigir",
+ "title": "SIGIR",
+ "fetched_at": "2026-10-20T14:31:32Z",
+ "urls": [
+  "https://sigir2026.org/en-AU"
+ ],
+ "errors": [],
+ "content_hash": "e77ceeb9a81233b0",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 316,
+  "output": 86
+ },
+ "found_dates": false,
+ "year": 2026,
+ "city": null,
+ "country": null,
+ "venue": null,
+ "conference_start": null,
+ "conference_end": null,
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

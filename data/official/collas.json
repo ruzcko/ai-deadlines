@@ -1,0 +1,25 @@
+{
+ "key": "collas",
+ "title": "CoLLAs",
+ "fetched_at": "2026-10-15T13:57:05Z",
+ "urls": [
+  "https://lifelong-ml.cc"
+ ],
+ "errors": [],
+ "content_hash": "89838876df00fd66",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 290,
+  "output": 82
+ },
+ "found_dates": false,
+ "year": null,
+ "city": null,
+ "country": null,
+ "venue": null,
+ "conference_start": null,
+ "conference_end": null,
+ "milestones": [],
+ "tracks_note": null,
+ "follow_url": null
+}

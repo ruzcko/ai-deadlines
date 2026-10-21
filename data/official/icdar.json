@@ -1,0 +1,50 @@
+{
+ "key": "icdar",
+ "title": "ICDAR",
+ "fetched_at": "2026-10-18T12:57:58Z",
+ "urls": [
+  "https://icdar2026.org/"
+ ],
+ "errors": [],
+ "content_hash": "541a889f60ea6b83",
+ "model": "gemini-3.8-flash",
+ "usage": {
+  "input": 709,
+  "output": 294
+ },
+ "found_dates": true,
+ "year": 2026,
+ "city": "Vienna",
+ "country": "Austria",
+ "venue": null,
+ "conference_start": "2026-08-30",
+ "conference_end": "2026-09-04",
+ "milestones": [
+  {
+   "label": "Tutorials",
+   "type": "tutorial",
+   "date": "2026-08-30",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Main Conference",
+   "type": "other",
+   "date": "2026-08-31",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Workshops",
+   "type": "workshop",
+   "date": "2026-09-03",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  }
+ ],
+ "tracks_note": null,
+ "follow_url": null
+}

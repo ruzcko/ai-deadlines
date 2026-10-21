@@ -1,18 +1,18 @@
 {
  "key": "cvpr",
  "title": "CVPR",
- "fetched_at": "2026-10-11T02:25:52Z",
+ "fetched_at": "2026-10-21T14:26:35Z",
  "urls": [
   "https://cvpr.thecvf.com/Conferences/2027/CallForPapers",
   "https://cvpr.thecvf.com/Conferences/2027/Dates",
   "https://cvpr.thecvf.com/"
  ],
  "errors": [],
- "content_hash": "4c1e876b3a62a66e",
+ "content_hash": "7b54fc9ae5f399e3",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 2133,
-  "output": 704
+  "input": 2167,
+  "output": 712
  },
  "found_dates": true,
  "year": 2027,
@@ -31,10 +31,10 @@
    "tentative": false
   },
   {
-   "label": "Paper Registration Deadline",
+   "label": "Paper Enrollment Deadline",
    "type": "abstract",
    "date": "2026-11-10",
-   "time": null,
+   "time": "23:59",
    "timezone": "AoE",
    "tentative": false
   },
@@ -42,7 +42,7 @@
    "label": "Submission Deadline",
    "type": "paper",
    "date": "2026-11-16",
-   "time": null,
+   "time": "23:59",
    "timezone": "AoE",
    "tentative": false
   },
@@ -71,7 +71,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal Period start",
+   "label": "Rebuttal Period",
    "type": "rebuttal_start",
    "date": "2027-01-25",
    "time": null,
@@ -79,7 +79,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal Period end",
+   "label": "Rebuttal Period",
    "type": "rebuttal_end",
    "date": "2027-02-01",
    "time": null,
