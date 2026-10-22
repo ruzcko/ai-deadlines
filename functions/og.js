@@ -1,11 +1,11 @@
-// GET /og                 → preview image for the home page (the next paper deadline overall)
+// GET /og                 → preview image for the home page (a neutral brand card: no venue, no date)
 // GET /og?v=neurips       → one venue's next date
 // GET /og?watch=iclr,cvpr → a shared list
 // A 1200 x 630 PNG drawn as SVG and rendered with resvg (lib/og, MPL-2.0) in IBM Plex Sans Condensed and IBM Plex Mono (OFL).
 // The countdown changes daily, so the page links to it with &d=<date> and the edge caches each day's image.
 import { initWasm, Resvg } from "../lib/og/resvg.mjs";
 import wasm from "../lib/og/resvg.wasm";
-import { COLORS as C, SITE, cleanKey, countdown, esc, loadData, nextFor, nextOverall, officialWhen, shortCount } from "../lib/deadline.js";
+import { COLORS as C, SITE, cleanKey, countdown, esc, loadData, nextFor, officialWhen, shortCount } from "../lib/deadline.js";
 
 const W = 1200, H = 630, X = 72;
 let ready = null, fonts = null;
@@ -41,16 +41,18 @@ function wrap(text, maxW, size, lines) {
 const txt = (x, y, size, weight, fill, s, extra = "") =>
   `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${fill}"${weight < 700 && !extra.includes("font-family") ? ' font-family="IBM Plex Sans Condensed SemiBold, IBM Plex Sans Condensed"' : ""} ${extra}>${esc(s)}</text>`;
 
-function frame(color, body) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="IBM Plex Sans Condensed">
+const page = (body) => `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="IBM Plex Sans Condensed">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.bg1}"/><stop offset="1" stop-color="${C.bg2}"/></linearGradient>
   </defs>
   <rect width="${W}" height="${H}" fill="url(#bg)"/>
-  <circle cx="${X + 10}" cy="82" r="9" fill="${C.accent}"/>
-  ${txt(X + 30, 91, 26, 700, C.muted, "AI Conference Deadlines")}
   ${body}
 </svg>`;
+
+function frame(color, body) {
+  return page(`<circle cx="${X + 10}" cy="82" r="9" fill="${C.accent}"/>
+  ${txt(X + 30, 91, 26, 700, C.muted, "AI Conference Deadlines")}
+  ${body}`);
 }
 
 function timeline(e, next, now, y) {
@@ -73,13 +75,13 @@ function asOf(now) {
   return "as of " + new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(now));
 }
 
-function venueSvg({ s, e, m, t }, now, eyebrowPrefix = "") {
+function venueSvg({ s, e, m, t }, now) {
   const color = C[m.group] || C.accent;
   const [num, unit] = countdown(t - now, m.est);
   const title = `${s.title} ${e.year}`;
   const leftW = 640;
   const ts = fit(title, leftW, 92, true, 48);
-  const eyebrow = (eyebrowPrefix + m.label).toUpperCase();
+  const eyebrow = m.label.toUpperCase();
   const es = fit(eyebrow, leftW, 24, true, 16);
   const names = wrap(s.full_name || "", leftW, 26, 2);
   const place = [e.city, e.country].filter(Boolean).join(", ");
@@ -119,11 +121,36 @@ function listSvg(rows, now) {
   return frame(C.num, body);
 }
 
-function emptySvg() {
-  return frame(C.num, txt(X, 300, 84, 700, C.text, "Every AI deadline,", 'letter-spacing="-2"') +
-    txt(X, 400, 84, 700, C.num, "counting down.", 'letter-spacing="-2"') +
-    txt(X, 470, 30, 600, C.muted, "Submission to camera-ready · map · calendar feeds") +
-    txt(X, 588, 22, 600, C.faint, SITE));
+// The home card (and the fallback): no venue and no date, because link previews stay cached for weeks.
+// Mirrors docs/banner.png. The readout digits are a sample.
+function brandSvg() {
+  const PANEL = "#1f2930", HALO = "#1d4a44";
+  let body = `<circle cx="${X + 22}" cy="110" r="20" fill="none" stroke="${C.muted}" stroke-width="4"/>`;
+  body += `<circle cx="${X + 22}" cy="110" r="12" fill="${C.accent}"/>`;
+  body += txt(X, 250, 80, 700, C.text, "AI Conference");
+  body += txt(X, 332, 80, 700, C.text, "Deadlines");
+  body += txt(X, 400, 28, 600, C.muted, "Live countdowns from submission to");
+  body += txt(X, 438, 28, 600, C.muted, "camera-ready, a map and calendar feeds.");
+  const px0 = 680, py0 = 176, px1 = W - X, py1 = 356, cw = (px1 - px0) / 4;
+  body += `<rect x="${px0}" y="${py0}" width="${px1 - px0}" height="${py1 - py0}" rx="4" fill="${PANEL}" stroke="${C.line}" stroke-width="2"/>`;
+  [["26", "DAYS"], ["23", "HOURS"], ["41", "MIN"], ["07", "SEC"]].forEach(([n, label], i) => {
+    const x = px0 + cw * i + cw / 2;
+    if (i) body += `<line x1="${px0 + cw * i}" y1="${py0 + 24}" x2="${px0 + cw * i}" y2="${py1 - 24}" stroke="${C.line}" stroke-width="2"/>`;
+    body += txt(x, py0 + 110, 72, 600, C.num, n, `text-anchor="middle" ${MONO}`);
+    body += txt(x, py0 + 150, 17, 600, C.muted, label, 'text-anchor="middle" letter-spacing="2.5"');
+  });
+  // The milestones as a track with stops: one line behind the dots, the next one lit.
+  const lw = (px1 - px0) / 5;
+  body += `<line x1="${px0 + lw / 2}" y1="404" x2="${px1 - lw / 2}" y2="404" stroke="${C.line}" stroke-width="4"/>`;
+  ["SUBMIT", "REVIEWS", "DECISION", "CAMERA", "CONF"].forEach((label, i) => {
+    const x = (px0 + lw * i + lw / 2).toFixed(1), y = 404;
+    body += i ? `<circle cx="${x}" cy="${y}" r="10" fill="${C.bg2}" stroke="${C.muted}" stroke-width="3"/>`
+      : `<circle cx="${x}" cy="${y}" r="17" fill="${HALO}"/><circle cx="${x}" cy="${y}" r="11" fill="${C.accent}"/>`;
+    body += txt(x, y + 44, 15, 600, i ? C.muted : C.accent, label, 'text-anchor="middle" letter-spacing="1.5"');
+  });
+  body += txt(X, 538, 22, 600, C.muted, SITE);
+  body += txt(X, 570, 22, 600, C.muted, "github.com/ruzcko/ai-deadlines");
+  return page(body);
 }
 
 export async function onRequestGet({ request, env, waitUntil }) {
@@ -139,18 +166,15 @@ export async function onRequestGet({ request, env, waitUntil }) {
   const cache = caches.default;
   const hit = await cache.match(key);
   if (hit) return hit;
-  const [[medium, bold, mono], data] = await Promise.all([setup(env, url.origin), loadData(env, url.origin)]);
-  let svg;
+  const [[medium, bold, mono], data] = await Promise.all([setup(env, url.origin), query ? loadData(env, url.origin) : null]);
+  let svg = brandSvg();
   if (v) {
     const s = data.series.find((x) => x.key === v);
     const n = s && nextFor(s, now);
-    svg = n ? venueSvg(n, now) : emptySvg();
+    if (n) svg = venueSvg(n, now);
   } else if (watch.length) {
     const rows = data.series.filter((x) => watch.includes(x.key)).map((x) => nextFor(x, now)).filter(Boolean).sort((a, b) => a.t - b.t);
-    svg = rows.length ? listSvg(rows, now) : emptySvg();
-  } else {
-    const n = nextOverall(data, now);
-    svg = n ? venueSvg(n, now, "Next deadline · ") : emptySvg();
+    if (rows.length) svg = listSvg(rows, now);
   }
   const png = new Resvg(svg, {
     font: { fontBuffers: [medium, bold, mono], defaultFontFamily: "IBM Plex Sans Condensed", loadSystemFonts: false },

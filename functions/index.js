@@ -2,7 +2,7 @@
 // links carry the venue or list in the query. We serve the normal page with its title, description and preview
 // image set for them. Every visit gets a preview image dated today, since the countdown in it changes daily.
 // Any error falls back to the untouched page.
-import { cleanKey, esc, humanCount, loadData, nextFor, nextOverall, officialWhen } from "../lib/deadline.js";
+import { cleanKey, esc, humanCount, loadData, nextFor, officialWhen } from "../lib/deadline.js";
 import { secure } from "../lib/security.js";
 
 class SetContent {
@@ -36,8 +36,7 @@ export async function onRequestGet({ request, env }) {
         desc = rows.slice(0, 3).map((r) => `${r.s.title} ${r.e.year} ${r.m.label.toLowerCase()} in ${humanCount(r.t - now, r.m.est)}`).join(" · ") + ".";
       }
     } else {
-      const n = nextOverall(data, now);
-      if (n) desc = `Next up: ${n.s.title} ${n.e.year} ${n.m.label.toLowerCase()} in ${humanCount(n.t - now, false)}. Live countdowns for 70+ AI/ML venues, a map, a calendar and subscribable feeds.`;
+      desc = "Live countdowns to AI and ML conference deadlines (NeurIPS, ICML, ICLR, CVPR, ACL and more), from submission to camera-ready, with a map, a calendar and subscribable feeds.";
     }
 
     const image = `${url.origin}/og?${query ? query + "&" : ""}d=${day}`;

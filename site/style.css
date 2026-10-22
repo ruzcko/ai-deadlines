@@ -487,7 +487,7 @@ body[data-view="map"] #focus { visibility: hidden; }
 .sd-x svg { width: 20px; height: 20px; }
 .sd-controls { display: grid; gap: 8px; margin-bottom: 14px; }
 .sd-controls .seg { justify-self: center; }
-.sd-themes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.sd-themes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .sd-themes button { border: 1px solid var(--line); background: var(--surface); border-radius: 3px; padding: 6px 4px 7px; cursor: pointer; display: grid; justify-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--muted); }
 .sd-themes button[aria-checked="true"] { border-color: var(--text); color: var(--text); box-shadow: 0 0 0 1px var(--text); }
 .sd-themes .swatch { width: 100%; height: 30px; border-radius: 3px; position: relative; box-shadow: inset 0 0 0 1px var(--line); }

@@ -183,11 +183,20 @@ One unit leads at each stage, and the next smaller unit joins only when it matte
 
 ## 6. Share cards and link previews
 
-- **Share cards** (`CARD_THEMES` in `share.js`): **Slate** (key `console`) is the default: the night panel, white digits, lamp-cap milestone colours, no glow. **Daylight** is the white panel and replaces Paper (cream). Aurora and Sunset stay as extra options (decided 2026-10-15; dropping one is a one-line change). A saved `signal` or `midnight` choice falls back to Slate, and `paper` to Daylight.
-- Formats: Story (9:16), Square and Wide. Story cards keep content out of the top 14% and bottom 20%, where Stories put their buttons.
-- Every theme's text colours are 4.5:1 and milestone colours 3:1 against both ends and the middle of its background (the lint and browser checks don't see canvas colours, so check these by hand).
-- **Link previews** (`/og`, 1200 × 630): the Slate colours, from `COLORS` in `lib/deadline.js`, Plex TTFs in `functions/og.js`, no glow.
-- **README images**: `docs/banner.png` (1280 × 640, also the GitHub social preview) is drawn by `docs/make_banner.py` with the Plex TTFs and the Slate colours: the readout panel and lamp row (re-drawn 2026-10-21). `docs/screenshot.png` (desktop, dark) and `docs/screenshot-phone.png` (phone, light) are captures of the live site.
+- **Share cards** (`CARD_THEMES` in `share.js`), in picker order:
+  - **Slate** (key `console`, the default): the night panel, white digits, lamp-cap milestone colours, no glow.
+  - **Daylight**: the white panel.
+  - **Boarding** (key `pass`): a boarding pass. FROM NOW to a three-letter city code, the gate is the milestone, "boards in" is the countdown, and a torn stub carries a barcode derived from the venue key. The list card is an itinerary.
+  - **Nixie** (key `nixie`): glowing orange digits in glass tubes on near-black `#141008`, one tube per character. Estimates are dimmer and have no glow.
+  - **Receipt** (key `receipt`): a till receipt in IBM Plex Mono on `#fbfbf8` paper with a torn edge. The list card lists venues with a TOTAL line; the venue card lists that edition's milestones, and a second milestone with the same short label reads "… ENDS".
+  - **Graph** (key `graph`): "Fig. 1 · time to deadline", a falling teal line on a very faint grid. The list card is "Fig. 2", a bar chart of days left, with estimates as dashed outlines.
+- Each object theme has its own draw functions (`OBJECT_DRAWERS`); Slate and Daylight use `drawVenue` and `drawList`. The picker swatch comes from each theme's `swatch` field. Objects instead of recolours give each theme its own reason to be picked.
+- Saved choices from retired themes fall back: `signal`, `midnight`, `aurora` and `sunset` to Slate, `paper` to Daylight.
+- Every card ends with the venue or site URL, `github.com/ruzcko/ai-deadlines` and the "as of" date.
+- Formats: Story (9:16), Square and Wide. Story cards keep content between 14% and 80% of the height, where Stories put no buttons, and nothing right of 79% of the width in the lower half.
+- Every theme's text colours are 4.5:1 and its marks 3:1 against its background, checked by maths (the lint and browser checks don't see canvas colours). The nixie and itinerary divider lines are decorative.
+- **Link previews** (`/og`, 1200 × 630, Plex TTFs in `functions/og.js`): the plain home URL gets a neutral brand card with no venue and no date: the lamp mark, the title and tagline, a readout panel with sample digits, the milestone timeline, and the site and GitHub addresses on two lines. Chat apps cache previews for days, so a dated home card would go stale; the home page description (`functions/index.js`) is date-free for the same reason. Venue (`?v=`) and list (`?watch=`) previews keep their live countdown and "as of" date, in the Slate colours (`COLORS` in `lib/deadline.js`).
+- **README images**: `docs/banner.png` (1280 × 640, also the GitHub social preview) is drawn by `docs/make_banner.py` with the Plex TTFs and the Slate colours, and mirrors the neutral home link preview. `docs/screenshot.png` (desktop, dark) and `docs/screenshot-phone.png` (phone, light) are captures of the live site.
 
 ## 7. Voice
 
@@ -236,7 +245,7 @@ These were fixed on the Signal palette. The **tokens** they created (`--accent-i
 | Side-events dot `--g-other` (2.7:1 light, 3.0:1 dark) | Darker / lighter `--g-other` (3.3:1 or better) |
 | Past days in the phone agenda at 55% opacity (2.45–4.3:1) and past calendar chips at 70% | No opacity: `--muted` text, `--faint` dates, a dashed border and an 8% tint |
 | Past dots on the row's lifecycle track at 40% opacity | A 45% mix of the milestone colour into `--surface` |
-| Share cards: Paper, Aurora and Sunset small text under 4.5:1 | Darker/lighter text colours; Sunset's bottom end darkened to `#9c2e14` |
+| Share cards: small text under 4.5:1 on three themes | Darker/lighter text colours |
 | "Your deadline gaps" toggle about 20 px tall | `min-height: 44px` on the summary |
 | Map zoom buttons 30 px, popup close 24 px, markers 12–24 px | 44 px controls; an invisible 44 px circle under each marker |
 | Gap-timeline dots 14 px; month-grid chips shown to touch tablets | 44 px wide dot buttons; `pointer: coarse` screens get the phone layouts |
@@ -258,9 +267,12 @@ Use the design-brief skill's scripts (`~/.claude/skills/design-brief/references/
 
 **2026-10-22, orange by day, no stripes, venue links:** both themes, at 375 px and 1100 px, the same eight states. 0 contrast failures, 0 controls under 44 px, 0 overlaps; design lint 0 errors, 0 warnings. The venue-name links have 44 px hit areas.
 
+**2026-10-22, object share themes:** 147 renders (6 themes × 3 formats × venue, estimate, no city, long name, ICLR, and lists of 1, 4, 10 and 14), safe-box pixel check 0 problems; design lint 0 errors, 0 warnings; no console errors in the share dialog.
+
 ## History
 
 - **2026-10-14: Signal**, "a departures board for papers": an off-white page, a black hero with amber digits on split-flap tiles, Chivo + Chivo Mono. Comparisons: `design/palettes.html`, `design/font-options.html`; `design/palettes.css` keeps the candidates.
 - **2026-10-15: Apollo console** replaces it, after a full design brief (researchers on phones; the countdown first; concepts considered: a conference badge, mission control, the departures board). Signal's off-white page and orange-red accent were close to Claude's own look, and green-on-black (Phosphor) is the terminal cliché, so both were set aside.
 - **2026-10-21: Teal instrument** replaces Apollo's colours (same fonts, layout and lamps). The coral red read as a default, and the black screens felt heavy, especially in light mode: the hero is now a white panel in light mode and slate at night, teal replaces red as the "now" colour, amber marks the last week, and camera-ready becomes grey. Compared against a sage LCD and a forest-green console.
 - **2026-10-22:** by day the warm colour is orange instead of dark gold (amber dark enough for white turns brown); accent stripes on cards removed in favour of milestone dots; venue names link to their official sites.
+- **2026-10-22:** share themes became objects (boarding pass, nixie tubes, receipt, graph paper) instead of recolours; Aurora and Sunset retired; the home link preview became a neutral brand card.

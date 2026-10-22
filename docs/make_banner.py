@@ -16,8 +16,8 @@ W, H = 1280, 640
 
 SCREEN, PANEL, LINE = "#0e1316", "#1f2930", "#2a353d"
 FG, MUTED, CLOCK, LAMP = "#eef2f3", "#9aa8b0", "#eef2f3", "#3cc9b0"
-TEAL, AMBER = "#3cc9b0", "#ffb000"
-MILESTONES = [("SUBMIT", TEAL), ("REVIEWS", AMBER), ("DECISION", "#5aa7ff"), ("CAMERA", "#8d9aa2"), ("CONF", "#eef2f3")]
+TEAL = "#3cc9b0"
+MILESTONES = ["SUBMIT", "REVIEWS", "DECISION", "CAMERA", "CONF"]
 
 
 def font(name, size):
@@ -43,11 +43,10 @@ def main():
     img = Image.new("RGB", (W, H), SCREEN)
     d = ImageDraw.Draw(img)
 
-    # Brand: the lamp mark and the domain.
-    cx, cy = 104, 112
-    d.ellipse((cx - 20, cy - 20, cx + 20, cy + 20), outline=MUTED, width=4)
+    # Brand: the lamp mark, on the title's left edge.
+    cx, cy = 106, 112
+    d.ellipse((cx - 22, cy - 22, cx + 22, cy + 22), outline=MUTED, width=4)
     d.ellipse((cx - 12, cy - 12, cx + 12, cy + 12), fill=TEAL)
-    d.text((140, cy), "ai-deadlines.ruzcko.com", font=SANS_SB(28), fill=MUTED, anchor="lm")
 
     # Title and tagline.
     d.text((84, 252), "AI Conference", font=SANS_B(80), fill=FG, anchor="ls")
@@ -68,26 +67,22 @@ def main():
         d.text((x, py0 + 112), n, font=MONO(76), fill=CLOCK, anchor="ms")
         spaced(d, (x, py0 + 152), label, SANS_SB(17), MUTED, 2.5, anchor="ms")
 
-    # The lamp row: the next milestone lit amber, the rest unlit rings.
+    # The milestones as a track with stops: one line behind the dots, the next one lit teal.
     lw = (px1 - px0) / 5
-    for i, (label, colour) in enumerate(MILESTONES):
+    y = 404
+    d.line((px0 + lw / 2, y, px1 - lw / 2, y), fill=LINE, width=4)
+    for i, label in enumerate(MILESTONES):
         x = px0 + lw * i + lw / 2
-        y = 404
         if i == 0:
             d.ellipse((x - 17, y - 17, x + 17, y + 17), fill="#1d4a44")  # the lit lamp's halo
             d.ellipse((x - 11, y - 11, x + 11, y + 11), fill=LAMP)
         else:
-            d.ellipse((x - 10, y - 10, x + 10, y + 10), outline=MUTED, width=3)
+            d.ellipse((x - 10, y - 10, x + 10, y + 10), fill=SCREEN, outline=MUTED, width=3)
         spaced(d, (x, y + 44), label, SANS_SB(17), LAMP if i == 0 else MUTED, 2, anchor="ms")
 
-    # Footer line: what the lamps mean, in the milestone colours.
-    x = 84
-    y = 560
-    for label, colour in [("Submission", TEAL), ("Reviews", AMBER), ("Decision", "#5aa7ff"), ("Camera-ready", "#8d9aa2"), ("Conference", "#eef2f3")]:
-        d.ellipse((x, y - 16, x + 14, y - 2), fill=colour)
-        d.text((x + 24, y), label, font=SANS_SB(24), fill=MUTED, anchor="ls")
-        x += 24 + d.textlength(label, font=SANS_SB(24)) + 40
-    assert x - 40 <= W - 84, f"footer overflows: {x}"
+    # Footer: the site and the repo.
+    d.text((84, 546), "ai-deadlines.ruzcko.com", font=SANS_SB(24), fill=MUTED, anchor="ls")
+    d.text((84, 579), "github.com/ruzcko/ai-deadlines", font=SANS_SB(24), fill=MUTED, anchor="ls")
 
     out = ROOT / "docs" / "banner.png"
     img.save(out, optimize=True)
