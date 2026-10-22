@@ -1,15 +1,15 @@
 {
  "key": "eurographics",
  "title": "Eurographics",
- "fetched_at": "2026-10-17T12:42:42Z",
+ "fetched_at": "2026-10-22T14:25:08Z",
  "urls": [
   "https://eg2027.isti.cnr.it/"
  ],
  "errors": [],
- "content_hash": "f5c0de9d11944ce3",
+ "content_hash": "363c23be2bdcc94d",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 784,
+  "input": 787,
   "output": 198
  },
  "found_dates": true,
@@ -21,9 +21,9 @@
  "conference_end": "2027-05-14",
  "milestones": [
   {
-   "label": "STAR abstract submission deadline",
-   "type": "abstract",
-   "date": "2026-10-13",
+   "label": "full STAR submission deadline",
+   "type": "other",
+   "date": "2026-10-19",
    "time": "23:59",
    "timezone": "AoE",
    "tentative": false

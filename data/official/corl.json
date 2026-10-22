@@ -1,22 +1,22 @@
 {
  "key": "corl",
  "title": "CoRL",
- "fetched_at": "2026-10-15T14:05:41Z",
+ "fetched_at": "2026-10-22T14:22:17Z",
  "urls": [
   "https://2026.corl.org/contributions/call-for-papers",
   "https://www.corl.org/"
  ],
  "errors": [],
- "content_hash": "7d7362b3eec086f1",
+ "content_hash": "ec19ea4c18eb3c6f",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1395,
-  "output": 109
+  "input": 1433,
+  "output": 108
  },
  "found_dates": true,
  "year": 2026,
  "city": "Austin",
- "country": "United States",
+ "country": "US",
  "venue": null,
  "conference_start": "2026-11-09",
  "conference_end": "2026-11-12",
