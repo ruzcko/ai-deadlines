@@ -1,7 +1,7 @@
-"""Second source: the venues' own pages, read weekly by pipeline/scrape_official.py.
+"""Second source: the venues' own pages, read daily by pipeline/scrape_official.py.
 
-Each data/official/<venue>.json holds what Claude extracted from the official
-site. Here it is merged into the series the same way PaperRush used to be:
+Each data/official/<venue>.json holds the dates scrape_official.py extracted from the
+official site. Here it is merged into the series the same way PaperRush used to be:
   - fill gaps the Hugging Face data has (host city, conference dates, deadlines
     of editions not listed yet),
   - cross-check dates both list, so the page can say whether they agree.

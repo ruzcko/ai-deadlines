@@ -13,7 +13,7 @@ The rules for how the site looks and sounds. Read this before you change `site/s
 - **Signature detail:** the row of milestone lamps under the hero readout; the next one is lit teal.
 - **Colour is rationed.** Panels are white and grey (slate at night). Colour appears only as a lamp, a milestone dot, a status word, the teal keys and the last-week readout. No red anywhere, and no coloured accent stripes down the left edge of cards: a small dot carries the colour instead.
 - **Colour always means something:** teal = act now (submission, "now"), amber at night / orange by day = attention (reviews, the last week, estimates), blue = decision, grey = done (camera-ready), ink/white = the conference itself. Never add colour for decoration.
-- **Deliberate exceptions to Claude's defaults:** ALL-CAPS for small labels, eyebrows and buttons, like the engraved labels on an instrument. **Venue names are never uppercased**: "NeurIPS" and "ICLR" keep their own casing.
+- **Deliberate choice:** ALL-CAPS for small labels, eyebrows and buttons, like the engraved labels on an instrument. **Venue names are never uppercased**: "NeurIPS" and "ICLR" keep their own casing.
 - How we got here: `design/directions.html` (round one: Badge, Mission control, Signal) and `design/directions-2.html` (round two: Amber board, Apollo console, Phosphor). Apollo console was live from 2026-10-15; on 2026-10-21 its coral red and black screens were replaced by this teal palette with light panels.
 
 What doesn't change, whatever the look:
@@ -257,7 +257,7 @@ These were fixed on the Signal palette. The **tokens** they created (`--accent-i
 
 ### How to check
 
-Use the design-brief skill's scripts (`~/.claude/skills/design-brief/references/contrast-check.js` and `tap-target-check.js`). They also measure placeholders, small icons and the real tappable area via `elementFromPoint`.
+Two browser scripts run in the page: a contrast check that measures every visible text element, input placeholder and small icon against the background behind it, and a tap-target check that measures each control's real tappable area via `elementFromPoint`, plus overlaps between neighbours.
 
 **2026-10-14, second pass (Signal):** both themes, at 375 px (touch) and 1100 px (mouse), eight states each: List with a row, its sources menu and the gaps card open; the Filters, Areas, About, Credits and Share dialogs; Map with a popup open; Calendar. At 375 px: 3,576 text elements and 258 controls. At 1100 px: 3,826 text elements and 430 controls. Result: 0 contrast failures, 0 controls under 44 px, 0 overlaps. Design lint: 0 errors, 2 warnings (the off-white `--bg` and the round `.pill`; both go away with Apollo).
 
@@ -271,7 +271,7 @@ Use the design-brief skill's scripts (`~/.claude/skills/design-brief/references/
 
 ## History
 
-- **2026-10-14: Signal**, "a departures board for papers": an off-white page, a black hero with amber digits on split-flap tiles, Chivo + Chivo Mono. Comparisons: `design/palettes.html`, `design/font-options.html`; `design/palettes.css` keeps the candidates.
+- **2026-10-14: Signal**, "a departures board for papers": an off-white page, a black hero with amber digits on split-flap tiles, Chivo + Chivo Mono. Its palette and font comparison files were removed once the later looks replaced it; they are in the git history.
 - **2026-10-15: Apollo console** replaces it, after a full design brief (researchers on phones; the countdown first; concepts considered: a conference badge, mission control, the departures board). Signal's off-white page and orange-red accent were close to Claude's own look, and green-on-black (Phosphor) is the terminal cliché, so both were set aside.
 - **2026-10-21: Teal instrument** replaces Apollo's colours (same fonts, layout and lamps). The coral red read as a default, and the black screens felt heavy, especially in light mode: the hero is now a white panel in light mode and slate at night, teal replaces red as the "now" colour, amber marks the last week, and camera-ready becomes grey. Compared against a sage LCD and a forest-green console.
 - **2026-10-22:** by day the warm colour is orange instead of dark gold (amber dark enough for white turns brown); accent stripes on cards removed in favour of milestone dots; venue names link to their official sites.
