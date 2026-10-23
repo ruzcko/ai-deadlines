@@ -1,18 +1,18 @@
 {
  "key": "wacv",
  "title": "WACV",
- "fetched_at": "2026-10-21T14:23:39Z",
+ "fetched_at": "2026-10-23T14:16:07Z",
  "urls": [
   "https://wacv.thecvf.com/Conferences/2027/CallForPapers",
   "https://wacv.thecvf.com/Conferences/2027/Dates",
   "https://wacv.thecvf.com/"
  ],
  "errors": [],
- "content_hash": "6094a5befcfe9857",
+ "content_hash": "20a719f1460b10cb",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 2452,
-  "output": 1089
+  "input": 2472,
+  "output": 1084
  },
  "found_dates": true,
  "year": 2027,
@@ -47,17 +47,17 @@
    "tentative": false
   },
   {
-   "label": "Workshop Proposal Deadline",
-   "type": "workshop",
-   "date": "2026-08-08",
+   "label": "Round 1 Reviews and Decisions To Authors",
+   "type": "review_release",
+   "date": "2026-08-09",
    "time": null,
    "timezone": "AoE",
    "tentative": false
   },
   {
-   "label": "Round 1 Reviews and Decisions To Authors",
-   "type": "notification",
-   "date": "2026-08-09",
+   "label": "Workshop Proposal Deadline",
+   "type": "workshop",
+   "date": "2026-08-08",
    "time": null,
    "timezone": "AoE",
    "tentative": false
@@ -135,6 +135,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Submissions are accepted in two cycles (Round 1 and Round 2) across the Applications, Algorithms, and Evaluations & Datasets tracks.",
+ "tracks_note": "WACV 2027 operates with two review cycles: Round 1 and Round 2.",
  "follow_url": null
 }

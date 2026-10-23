@@ -1,17 +1,17 @@
 {
  "key": "coling",
  "title": "COLING",
- "fetched_at": "2026-10-21T14:30:19Z",
+ "fetched_at": "2026-10-23T14:34:29Z",
  "urls": [
   "https://www.aclweb.org/portal/content/32nd-international-conference-computational-linguistics-coling-2027",
   "https://2027.coling-iccl.org/"
  ],
  "errors": [],
- "content_hash": "e3151f0107f3b919",
+ "content_hash": "0f9ac28e0e3ef7b5",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1625,
-  "output": 322
+  "input": 1620,
+  "output": 341
  },
  "found_dates": true,
  "year": 2027,
@@ -31,7 +31,7 @@
   },
   {
    "label": "Commitment after meta-reviews",
-   "type": "other",
+   "type": "paper",
    "date": "2026-12-23",
    "time": "23:59",
    "timezone": "AoE",
@@ -46,6 +46,6 @@
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Submissions are reviewed via the ACL Rolling Review (ARR) October 2026 cycle.",
  "follow_url": null
 }

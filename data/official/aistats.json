@@ -1,18 +1,18 @@
 {
  "key": "aistats",
  "title": "AISTATS",
- "fetched_at": "2026-10-21T14:29:33Z",
+ "fetched_at": "2026-10-23T14:31:35Z",
  "urls": [
   "https://virtual.aistats.org/Conferences/2027/CallForPapers",
   "https://virtual.aistats.org/Conferences/2027/Dates",
   "https://virtual.aistats.org/Conferences/2027"
  ],
  "errors": [],
- "content_hash": "142c9483711a8e90",
+ "content_hash": "d25c0c095b099872",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 6814,
-  "output": 596
+  "input": 6816,
+  "output": 672
  },
  "found_dates": true,
  "year": 2027,
@@ -23,7 +23,7 @@
  "conference_end": "2027-05-06",
  "milestones": [
   {
-   "label": "Abstract submission deadline",
+   "label": "Abstract Submission Deadline",
    "type": "abstract",
    "date": "2026-09-29",
    "time": "23:59",
@@ -31,7 +31,7 @@
    "tentative": false
   },
   {
-   "label": "Full paper submission deadline (including all supplementary material)",
+   "label": "Full Paper Submission Deadline (including all supplementary material)",
    "type": "paper",
    "date": "2026-10-06",
    "time": "23:59",
@@ -39,23 +39,31 @@
    "tentative": false
   },
   {
-   "label": "Workshop submission deadline",
+   "label": "Workshop Submission Deadline",
    "type": "workshop",
    "date": "2026-10-30",
-   "time": "23:59",
-   "timezone": "AoE",
+   "time": "21:59",
+   "timezone": "UTC",
    "tentative": false
   },
   {
-   "label": "Reviews and AI review released to authors; author rebuttal period begins",
-   "type": "rebuttal_start",
+   "label": "Reviews Released",
+   "type": "review_release",
    "date": "2026-11-16",
    "time": null,
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "Author–reviewer discussion period end",
+   "label": "Author Reviewer Discussion Period Begins",
+   "type": "rebuttal_start",
+   "date": "2026-11-23",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author Reviewer Discussion Period Ends",
    "type": "rebuttal_end",
    "date": "2026-12-03",
    "time": null,
@@ -66,12 +74,12 @@
    "label": "Journal To Conference Submission Deadline",
    "type": "paper",
    "date": "2027-01-18",
-   "time": null,
+   "time": "23:59",
    "timezone": "AoE",
    "tentative": false
   },
   {
-   "label": "Paper decision notifications",
+   "label": "Paper Decision Notifications",
    "type": "notification",
    "date": "2027-01-20",
    "time": null,
@@ -79,6 +87,6 @@
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Dates cover both the main Proceedings Track and the Journal-to-Conference track.",
  "follow_url": null
 }
