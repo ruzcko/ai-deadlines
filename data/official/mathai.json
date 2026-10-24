@@ -1,101 +1,45 @@
 {
  "key": "mathai",
  "title": "MathAI",
- "fetched_at": "2026-10-20T14:08:08Z",
+ "fetched_at": "2026-10-24T13:07:51Z",
  "urls": [
   "https://mathai.club"
  ],
  "errors": [],
- "content_hash": "10e908cbfb6f4414",
+ "content_hash": "4a4ea44434e239b4",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 2068,
-  "output": 808
+  "input": 2356,
+  "output": 312
  },
  "found_dates": true,
  "year": 2027,
  "city": "Abu Dhabi",
  "country": "United Arab Emirates",
  "venue": null,
- "conference_start": "2027-03-15",
- "conference_end": "2027-03-17",
+ "conference_start": "2027-03-22",
+ "conference_end": "2027-03-24",
  "milestones": [
   {
-   "label": "Submission opens (AoE)",
+   "label": "Submissions open on OpenReview",
    "type": "other",
-   "date": "2026-10-15",
+   "date": "2026-11-01",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   },
   {
-   "label": "Abstract submission deadline",
-   "type": "abstract",
-   "date": "2026-12-01",
-   "time": "23:59",
-   "timezone": "Europe/London",
-   "tentative": false
-  },
-  {
-   "label": "Full paper submission deadline",
-   "type": "paper",
+   "label": "Early rate registration until",
+   "type": "registration",
    "date": "2026-12-15",
-   "time": "23:59",
-   "timezone": "Europe/London",
-   "tentative": false
-  },
-  {
-   "label": "Review period begins",
-   "type": "other",
-   "date": "2026-12-16",
    "time": null,
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "Reviews due (AoE)",
-   "type": "review_release",
-   "date": "2027-01-25",
-   "time": null,
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Discussion period · author responses",
-   "type": "rebuttal_start",
-   "date": "2027-01-26",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Discussion period · author responses",
-   "type": "rebuttal_end",
-   "date": "2027-02-05",
-   "time": "23:59",
-   "timezone": "Europe/London",
-   "tentative": false
-  },
-  {
-   "label": "Meta-reviews due",
-   "type": "other",
-   "date": "2027-02-12",
-   "time": "23:59",
-   "timezone": "Europe/London",
-   "tentative": false
-  },
-  {
-   "label": "Decision notification",
-   "type": "notification",
-   "date": "2027-02-20",
-   "time": "23:59",
-   "timezone": "Europe/London",
-   "tentative": false
-  },
-  {
-   "label": "Camera-ready deadline",
-   "type": "camera_ready",
-   "date": "2027-03-01",
+   "label": "Paper submission deadline",
+   "type": "paper",
+   "date": "2027-01-15",
    "time": "23:59",
    "timezone": "Europe/London",
    "tentative": false

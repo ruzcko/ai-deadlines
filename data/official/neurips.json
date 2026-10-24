@@ -1,18 +1,18 @@
 {
  "key": "neurips",
  "title": "NeurIPS",
- "fetched_at": "2026-10-23T14:23:25Z",
+ "fetched_at": "2026-10-24T13:08:54Z",
  "urls": [
   "https://neurips.cc/Conferences/2026/CallForPapers",
   "https://neurips.cc/Conferences/2026/Dates",
   "https://neurips.cc/"
  ],
  "errors": [],
- "content_hash": "3c3b5cf76c17f18c",
+ "content_hash": "e025b712fc20fc5a",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 5874,
-  "output": 809
+  "input": 5865,
+  "output": 745
  },
  "found_dates": true,
  "year": 2026,
@@ -71,14 +71,6 @@
    "tentative": false
   },
   {
-   "label": "Workshop Application Deadline",
-   "type": "workshop",
-   "date": "2026-06-06",
-   "time": null,
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Tutorial Submission Deadline",
    "type": "tutorial",
    "date": "2026-07-04",
@@ -87,11 +79,11 @@
    "tentative": false
   },
   {
-   "label": "Registration Open",
-   "type": "registration",
-   "date": "2026-09-03",
-   "time": "13:00",
-   "timezone": "UTC",
+   "label": "Workshop Application Deadline",
+   "type": "workshop",
+   "date": "2026-06-06",
+   "time": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -103,6 +95,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates shown are for the Main Conference Paper Submission; satellite events take place Dec 9-13, 2026 in Atlanta and Paris.",
+ "tracks_note": "Dates are for the Main Conference Paper Submission track; satellite locations are also held in Atlanta and Paris (Dec 9–13, 2026).",
  "follow_url": null
 }

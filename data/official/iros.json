@@ -1,7 +1,7 @@
 {
  "key": "iros",
  "title": "IROS",
- "fetched_at": "2026-10-18T12:59:58Z",
+ "fetched_at": "2026-10-24T13:06:52Z",
  "urls": [
   "https://2026.ieee-iros.org/contribute/call-for-papers/",
   "https://2026.ieee-iros.org/"
@@ -9,11 +9,11 @@
  "errors": [
   "https://iros-pittsburgh.org/: HTTPSConnectionPool(host='iros-pittsburgh.org', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'iros-pittsburgh.org'. (_ssl.c:1010)\")))"
  ],
- "content_hash": "078981b30f4e07c2",
+ "content_hash": "ec6827b919ea579a",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4037,
-  "output": 1099
+  "input": 4041,
+  "output": 1169
  },
  "found_dates": true,
  "year": 2026,
@@ -43,6 +43,14 @@
    "label": "Deadline for Paper submissions",
    "type": "paper",
    "date": "2026-03-02",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Submissions may be modified, but not started, through",
+   "type": "paper",
+   "date": "2026-03-05",
    "time": null,
    "timezone": null,
    "tentative": false
@@ -81,7 +89,7 @@
   },
   {
    "label": "Notification of Workshop/Tutorial proposal acceptance",
-   "type": "other",
+   "type": "workshop",
    "date": "2026-06-16",
    "time": null,
    "timezone": null,

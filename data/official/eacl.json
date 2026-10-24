@@ -1,17 +1,17 @@
 {
  "key": "eacl",
  "title": "EACL",
- "fetched_at": "2026-10-17T12:40:34Z",
+ "fetched_at": "2026-10-24T13:05:55Z",
  "urls": [
   "https://2027.eacl.org/calls/papers/",
   "https://2027.eacl.org"
  ],
  "errors": [],
- "content_hash": "1466b273962485ec",
+ "content_hash": "5469294ba9051357",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 3782,
-  "output": 840
+  "input": 3817,
+  "output": 843
  },
  "found_dates": true,
  "year": 2027,
@@ -38,7 +38,7 @@
    "tentative": false
   },
   {
-   "label": "Author response period start",
+   "label": "Author response period (start)",
    "type": "rebuttal_start",
    "date": "2026-09-14",
    "time": null,
@@ -46,7 +46,7 @@
    "tentative": false
   },
   {
-   "label": "Author response period end",
+   "label": "Author response period (end)",
    "type": "rebuttal_end",
    "date": "2026-09-19",
    "time": "23:59",
@@ -54,7 +54,7 @@
    "tentative": false
   },
   {
-   "label": "Reviewer engagement and Author-reviewer discussion start",
+   "label": "Reviewer engagement and Author-reviewer discussion (start)",
    "type": "other",
    "date": "2026-09-20",
    "time": null,
@@ -62,7 +62,7 @@
    "tentative": false
   },
   {
-   "label": "Reviewer engagement and Author-reviewer discussion end",
+   "label": "Reviewer engagement and Author-reviewer discussion (end)",
    "type": "other",
    "date": "2026-09-24",
    "time": "23:59",
