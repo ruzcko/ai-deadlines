@@ -1,15 +1,15 @@
 {
  "key": "bis",
  "title": "BIS",
- "fetched_at": "2026-10-12T18:48:25Z",
+ "fetched_at": "2026-10-29T16:01:06Z",
  "urls": [
   "https://bisconf.org/2026"
  ],
  "errors": [],
- "content_hash": "196881f98160a712",
+ "content_hash": "f0dec6dc1ccc66ad",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1456,
+  "input": 1457,
   "output": 316
  },
  "found_dates": true,

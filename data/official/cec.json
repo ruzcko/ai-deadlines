@@ -1,21 +1,21 @@
 {
  "key": "cec",
  "title": "CEC",
- "fetched_at": "2026-10-15T13:54:32Z",
+ "fetched_at": "2026-10-29T16:13:27Z",
  "urls": [
   "http://ieeecec.org"
  ],
  "errors": [],
- "content_hash": "7a433515e9dc6ee1",
+ "content_hash": "1142a9198baffeef",
  "model": "gemini-3.8-flash",
  "usage": {
   "input": 2522,
-  "output": 497
+  "output": 508
  },
  "found_dates": true,
  "year": 2027,
  "city": "Edinburgh",
- "country": "UK",
+ "country": "United Kingdom",
  "venue": null,
  "conference_start": "2027-07-25",
  "conference_end": "2027-07-28",
@@ -23,7 +23,7 @@
   {
    "label": "Special Session & Workshop Proposals Deadline",
    "type": "workshop",
-   "date": "2026-11-15",
+   "date": "2026-11-29",
    "time": null,
    "timezone": null,
    "tentative": false
@@ -69,6 +69,6 @@
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Deadlines provided for both Full Paper and Short Paper submissions.",
  "follow_url": null
 }

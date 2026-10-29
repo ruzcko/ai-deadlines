@@ -1,16 +1,16 @@
 {
  "key": "aamas",
  "title": "AAMAS",
- "fetched_at": "2026-10-14T14:24:55Z",
+ "fetched_at": "2026-10-29T16:09:20Z",
  "urls": [
   "https://warwick.ac.uk/fac/sci/dcs/aamas2027/"
  ],
  "errors": [],
- "content_hash": "0abfc09e88a5533a",
+ "content_hash": "6d1fe666b126de84",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1127,
-  "output": 720
+  "input": 1178,
+  "output": 691
  },
  "found_dates": true,
  "year": 2027,
@@ -37,7 +37,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal period (start)",
+   "label": "Rebuttal period",
    "type": "rebuttal_start",
    "date": "2026-11-20",
    "time": null,
@@ -45,7 +45,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal period (end)",
+   "label": "Rebuttal period",
    "type": "rebuttal_end",
    "date": "2026-11-24",
    "time": null,
@@ -77,22 +77,22 @@
    "tentative": false
   },
   {
-   "label": "AAMAS 2027 Early Registration Deadline",
-   "type": "registration",
-   "date": "2027-03-17",
-   "time": null,
-   "timezone": null,
-   "tentative": true
-  },
-  {
    "label": "Proposal Submission",
    "type": "tutorial",
    "date": "2026-12-10",
    "time": null,
    "timezone": null,
    "tentative": false
+  },
+  {
+   "label": "AAMAS 2027 Early Registration Deadline",
+   "type": "registration",
+   "date": "2027-03-17",
+   "time": null,
+   "timezone": null,
+   "tentative": true
   }
  ],
- "tracks_note": "Dates are reported for the Main Track; Blue Sky Ideas, AAAI Fast Tracks, and Workshops/Tutorials are also listed.",
+ "tracks_note": null,
  "follow_url": null
 }

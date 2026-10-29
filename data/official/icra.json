@@ -1,17 +1,17 @@
 {
  "key": "icra",
  "title": "ICRA",
- "fetched_at": "2026-10-18T12:58:45Z",
+ "fetched_at": "2026-10-29T16:44:09Z",
  "urls": [
   "https://2027.ieee-icra.org/contribute/call-for-icra-2027-papers-now-accepting-submissions/",
   "https://2027.ieee-icra.org/"
  ],
  "errors": [],
- "content_hash": "358e5f3cf88afa43",
+ "content_hash": "c1b72752eac06b24",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4115,
-  "output": 719
+  "input": 4116,
+  "output": 718
  },
  "found_dates": true,
  "year": 2027,
@@ -30,7 +30,7 @@
    "tentative": false
   },
   {
-   "label": "Submission of accompanying videos (Open 1)",
+   "label": "Submission of accompanying videos (window 1)",
    "type": "supplementary",
    "date": "2026-09-09",
    "time": null,
@@ -38,7 +38,7 @@
    "tentative": false
   },
   {
-   "label": "Submission of accompanying videos (Open 2)",
+   "label": "Submission of accompanying videos (window 2)",
    "type": "supplementary",
    "date": "2026-09-22",
    "time": "23:59",
@@ -47,7 +47,7 @@
   },
   {
    "label": "Deadline for transfer of journal papers to ICRA 2027",
-   "type": "other",
+   "type": "paper",
    "date": "2026-12-31",
    "time": null,
    "timezone": null,
@@ -70,7 +70,7 @@
    "tentative": false
   },
   {
-   "label": "Author registration deadline",
+   "label": "Author Registration deadline",
    "type": "registration",
    "date": "2027-03-05",
    "time": null,
@@ -86,7 +86,7 @@
    "tentative": false
   },
   {
-   "label": "Deadline Standard Registration deadline",
+   "label": "Standard Registration deadline",
    "type": "registration",
    "date": "2027-05-14",
    "time": null,

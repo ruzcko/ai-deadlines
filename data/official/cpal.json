@@ -1,16 +1,16 @@
 {
  "key": "cpal",
  "title": "CPAL",
- "fetched_at": "2026-10-17T12:40:23Z",
+ "fetched_at": "2026-10-29T16:24:51Z",
  "urls": [
   "https://cpal.cc/"
  ],
  "errors": [],
- "content_hash": "961c66c0a9f35339",
+ "content_hash": "9bb9b4cfb1c5e531",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 899,
-  "output": 335
+  "input": 896,
+  "output": 268
  },
  "found_dates": true,
  "year": 2027,
@@ -21,17 +21,9 @@
  "conference_end": "2027-03-26",
  "milestones": [
   {
-   "label": "Abstract registration",
-   "type": "abstract",
-   "date": "2026-11-13",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Proceedings paper deadline",
    "type": "paper",
-   "date": "2026-11-25",
+   "date": "2026-12-05",
    "time": "23:59",
    "timezone": "AoE",
    "tentative": false
@@ -45,6 +37,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Includes deadlines for both the Proceedings Track and the Recent Spotlight Track.",
+ "tracks_note": "Dates are listed for both the Proceedings Track and the Recent Spotlight Track.",
  "follow_url": null
 }

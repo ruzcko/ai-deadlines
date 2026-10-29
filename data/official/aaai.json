@@ -1,18 +1,18 @@
 {
  "key": "aaai",
  "title": "AAAI",
- "fetched_at": "2026-10-12T18:38:00Z",
+ "fetched_at": "2026-10-29T15:52:29Z",
  "urls": [
   "https://aaai.org/conference/aaai/aaai-27/main-technical-track-call/",
   "https://aaai.org/conference/aaai/aaai-27/submission-instructions",
   "https://aaai.org/conference/aaai/aaai-27/"
  ],
  "errors": [],
- "content_hash": "cba57dedc40b72b6",
+ "content_hash": "ba10e86d672a9c13",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 9389,
-  "output": 823
+  "input": 9419,
+  "output": 818
  },
  "found_dates": true,
  "year": 2027,
@@ -27,7 +27,7 @@
    "type": "other",
    "date": "2026-06-17",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   },
   {
@@ -35,7 +35,7 @@
    "type": "other",
    "date": "2026-06-30",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   },
   {
@@ -67,23 +67,23 @@
    "type": "notification",
    "date": "2026-09-24",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   },
   {
-   "label": "Author feedback window start",
+   "label": "Author feedback window (start)",
    "type": "rebuttal_start",
    "date": "2026-10-24",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   },
   {
-   "label": "Author feedback window end",
+   "label": "Author feedback window (end)",
    "type": "rebuttal_end",
    "date": "2026-10-31",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   },
   {
@@ -91,7 +91,7 @@
    "type": "notification",
    "date": "2026-11-30",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   },
   {
@@ -99,10 +99,10 @@
    "type": "camera_ready",
    "date": "2026-12-14",
    "time": null,
-   "timezone": "AoE",
+   "timezone": null,
    "tentative": false
   }
  ],
- "tracks_note": "Dates are for the Main Technical Track; other tracks follow separate schedules.",
+ "tracks_note": "Dates are for the Main Technical Track; note that special tracks such as AI Alignment may follow separate schedules.",
  "follow_url": null
 }
