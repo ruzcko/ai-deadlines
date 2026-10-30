@@ -1,18 +1,18 @@
 {
  "key": "mlsys",
  "title": "MLSys",
- "fetched_at": "2026-10-20T14:13:37Z",
+ "fetched_at": "2026-10-30T15:56:01Z",
  "urls": [
   "https://mlsys.org/Conferences/2027/CallForResearchPapers",
   "https://mlsys.org/Conferences/2027/Dates",
   "https://mlsys.org/Conferences/2027"
  ],
  "errors": [],
- "content_hash": "7a6cd14526957e86",
+ "content_hash": "fc922b55134c771f",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4638,
-  "output": 465
+  "input": 4745,
+  "output": 460
  },
  "found_dates": true,
  "year": 2027,
@@ -23,23 +23,23 @@
  "conference_end": "2027-06-25",
  "milestones": [
   {
-   "label": "Paper Submissions Open",
+   "label": "Submission start",
    "type": "other",
    "date": "2026-10-19",
-   "time": "12:00",
-   "timezone": "PDT",
+   "time": "20:00",
+   "timezone": "UTC",
    "tentative": false
   },
   {
-   "label": "Paper Submission Deadline",
+   "label": "Paper submission deadline",
    "type": "paper",
    "date": "2026-10-30",
-   "time": "12:00",
-   "timezone": "PDT",
+   "time": "20:00",
+   "timezone": "UTC",
    "tentative": false
   },
   {
-   "label": "Author Reviews Available",
+   "label": "Reviews available",
    "type": "review_release",
    "date": "2027-01-18",
    "time": "12:00",
@@ -47,7 +47,7 @@
    "tentative": false
   },
   {
-   "label": "Author Responses Due",
+   "label": "Author responses due",
    "type": "rebuttal_end",
    "date": "2027-01-21",
    "time": "12:00",
@@ -55,7 +55,7 @@
    "tentative": false
   },
   {
-   "label": "Author Notifications",
+   "label": "Author notifications",
    "type": "notification",
    "date": "2027-02-28",
    "time": "13:00",

@@ -1,17 +1,17 @@
 {
  "key": "icassp",
  "title": "ICASSP",
- "fetched_at": "2026-10-22T14:25:26Z",
+ "fetched_at": "2026-10-30T16:43:32Z",
  "urls": [
   "https://2027.ieeeicassp.org/call-for-papers/",
   "https://2027.ieeeicassp.org/important-dates/",
   "https://2027.ieeeicassp.org"
  ],
  "errors": [],
- "content_hash": "a42b790032d46d78",
+ "content_hash": "47833be361f77ae1",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 2477,
+  "input": 2486,
   "output": 678
  },
  "found_dates": true,
