@@ -1,17 +1,17 @@
 {
  "key": "coling",
  "title": "COLING",
- "fetched_at": "2026-10-24T13:09:53Z",
+ "fetched_at": "2026-10-31T15:25:16Z",
  "urls": [
   "https://www.aclweb.org/portal/content/32nd-international-conference-computational-linguistics-coling-2027",
   "https://2027.coling-iccl.org/"
  ],
  "errors": [],
- "content_hash": "2924d7cfc0112266",
+ "content_hash": "2c1f9c9d84eb6966",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1622,
-  "output": 322
+  "input": 1669,
+  "output": 336
  },
  "found_dates": true,
  "year": 2027,
@@ -46,6 +46,6 @@
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Submissions are reviewed via the ARR 2026 October cycle.",
  "follow_url": null
 }

@@ -1,16 +1,16 @@
 {
  "key": "3dv",
  "title": "3DV",
- "fetched_at": "2026-10-21T14:29:44Z",
+ "fetched_at": "2026-10-31T15:13:19Z",
  "urls": [
   "https://3dvconf.github.io/2027/"
  ],
  "errors": [],
- "content_hash": "914540d5e85b51e8",
+ "content_hash": "965740bc5eed25cd",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 976,
-  "output": 246
+  "input": 953,
+  "output": 186
  },
  "found_dates": true,
  "year": 2027,
@@ -20,14 +20,6 @@
  "conference_start": "2027-04-06",
  "conference_end": "2027-04-09",
  "milestones": [
-  {
-   "label": "Preliminary Notification",
-   "type": "notification",
-   "date": "2026-10-27",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
   {
    "label": "Final Notification",
    "type": "notification",

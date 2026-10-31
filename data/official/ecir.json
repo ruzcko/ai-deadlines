@@ -1,15 +1,15 @@
 {
  "key": "ecir",
  "title": "ECIR",
- "fetched_at": "2026-10-17T12:41:23Z",
+ "fetched_at": "2026-10-31T15:01:44Z",
  "urls": [
   "https://www.ecir2027.co.uk/"
  ],
  "errors": [],
- "content_hash": "210a5996c9782e43",
+ "content_hash": "5df034bdc056c3d5",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1441,
+  "input": 1451,
   "output": 1399
  },
  "found_dates": true,
@@ -93,14 +93,6 @@
    "tentative": false
   },
   {
-   "label": "Doctoral Consortium abstract submission",
-   "type": "abstract",
-   "date": "2026-10-26",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
    "label": "Demo submission",
    "type": "paper",
    "date": "2026-11-02",
@@ -109,8 +101,8 @@
    "tentative": false
   },
   {
-   "label": "Doctoral Consortium paper submission",
-   "type": "paper",
+   "label": "Doctoral Consortium abstract submission",
+   "type": "abstract",
    "date": "2026-11-02",
    "time": null,
    "timezone": null,
@@ -118,7 +110,7 @@
   },
   {
    "label": "Industry day submission",
-   "type": "paper",
+   "type": "other",
    "date": "2026-11-02",
    "time": null,
    "timezone": null,
@@ -141,17 +133,17 @@
    "tentative": false
   },
   {
-   "label": "Notifications: Full & Short papers, Demo, Reproducibility, IR for Good, Tutorials, Doctoral Consortium, Resource, Industry Day",
-   "type": "notification",
-   "date": "2026-12-07",
+   "label": "Doctoral Consortium paper submission",
+   "type": "paper",
+   "date": "2026-11-09",
    "time": null,
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "Author registration deadline",
-   "type": "registration",
-   "date": "2026-12-21",
+   "label": "Notifications: Full & Short papers, Demo, Reproducibility, IR for Good, Tutorials, Doctoral Consortium, Resource, Industry Day",
+   "type": "notification",
+   "date": "2026-12-07",
    "time": null,
    "timezone": null,
    "tentative": false
@@ -168,6 +160,14 @@
    "label": "Tutorial Camera Ready Deadline",
    "type": "camera_ready",
    "date": "2027-01-10",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Author registration deadline",
+   "type": "registration",
+   "date": "2027-01-17",
    "time": null,
    "timezone": null,
    "tentative": false

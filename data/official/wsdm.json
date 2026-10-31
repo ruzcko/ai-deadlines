@@ -1,21 +1,21 @@
 {
  "key": "wsdm",
  "title": "WSDM",
- "fetched_at": "2026-10-21T14:25:02Z",
+ "fetched_at": "2026-10-31T15:09:08Z",
  "urls": [
   "https://www.wsdm-conference.org/2027/"
  ],
  "errors": [],
- "content_hash": "891d7533885784b7",
+ "content_hash": "482007c8d3c42ab2",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1342,
-  "output": 322
+  "input": 1288,
+  "output": 196
  },
  "found_dates": true,
  "year": 2027,
  "city": "Hong Kong",
- "country": "Hong Kong",
+ "country": null,
  "venue": "Cordis, Hong Kong, 555 Shanghai St, Mong Kok",
  "conference_start": "2027-02-15",
  "conference_end": "2027-02-19",
@@ -24,24 +24,8 @@
    "label": "Full Paper Notifications",
    "type": "notification",
    "date": "2026-11-02",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Short Papers Submission deadline",
-   "type": "paper",
-   "date": "2026-11-17",
    "time": "23:59",
    "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Short Papers Notification",
-   "type": "notification",
-   "date": "2026-12-18",
-   "time": null,
-   "timezone": null,
    "tentative": false
   }
  ],

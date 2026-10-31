@@ -1,18 +1,18 @@
 {
  "key": "neurips",
  "title": "NeurIPS",
- "fetched_at": "2026-10-24T13:08:54Z",
+ "fetched_at": "2026-10-31T15:21:44Z",
  "urls": [
   "https://neurips.cc/Conferences/2026/CallForPapers",
   "https://neurips.cc/Conferences/2026/Dates",
   "https://neurips.cc/"
  ],
  "errors": [],
- "content_hash": "e025b712fc20fc5a",
+ "content_hash": "9f0d5cdf636bd7a7",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 5865,
-  "output": 745
+  "input": 5901,
+  "output": 1002
  },
  "found_dates": true,
  "year": 2026,
@@ -71,9 +71,41 @@
    "tentative": false
   },
   {
-   "label": "Tutorial Submission Deadline",
-   "type": "tutorial",
-   "date": "2026-07-04",
+   "label": "Paper Presentation Site Preference Form Deadline",
+   "type": "other",
+   "date": "2026-09-30",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Accepted papers must be imported",
+   "type": "other",
+   "date": "2026-10-04",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Paper Location Assignment Notifications",
+   "type": "other",
+   "date": "2026-10-06",
+   "time": "17:00",
+   "timezone": "UTC",
+   "tentative": false
+  },
+  {
+   "label": "Early Registration Deadline",
+   "type": "registration",
+   "date": "2026-10-30",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Poster Topics Deadline",
+   "type": "other",
+   "date": "2026-11-15",
    "time": null,
    "timezone": "AoE",
    "tentative": false
@@ -87,14 +119,14 @@
    "tentative": false
   },
   {
-   "label": "Early Registration Deadline",
-   "type": "registration",
-   "date": "2026-10-30",
+   "label": "Tutorial Submission Deadline",
+   "type": "tutorial",
+   "date": "2026-07-04",
    "time": null,
    "timezone": "AoE",
    "tentative": false
   }
  ],
- "tracks_note": "Dates are for the Main Conference Paper Submission track; satellite locations are also held in Atlanta and Paris (Dec 9–13, 2026).",
+ "tracks_note": "Dates listed are for the Main Conference Paper Submission; satellite locations run Dec 9–13 in Atlanta and Paris.",
  "follow_url": null
 }

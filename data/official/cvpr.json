@@ -1,18 +1,18 @@
 {
  "key": "cvpr",
  "title": "CVPR",
- "fetched_at": "2026-10-25T13:36:25Z",
+ "fetched_at": "2026-10-31T15:26:23Z",
  "urls": [
   "https://cvpr.thecvf.com/Conferences/2027/CallForPapers",
   "https://cvpr.thecvf.com/Conferences/2027/Dates",
   "https://cvpr.thecvf.com/"
  ],
  "errors": [],
- "content_hash": "53ac9b2cbde37da9",
+ "content_hash": "87b24faa91a0ec2d",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 2177,
-  "output": 719
+  "input": 2196,
+  "output": 718
  },
  "found_dates": true,
  "year": 2027,
@@ -56,7 +56,7 @@
   },
   {
    "label": "Workshop Proposal Decision",
-   "type": "workshop",
+   "type": "other",
    "date": "2026-12-23",
    "time": "02:00",
    "timezone": "UTC",
@@ -71,7 +71,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal Period start",
+   "label": "Rebuttal Period",
    "type": "rebuttal_start",
    "date": "2027-01-25",
    "time": null,

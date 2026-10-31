@@ -1,18 +1,18 @@
 {
  "key": "aistats",
  "title": "AISTATS",
- "fetched_at": "2026-10-23T14:31:35Z",
+ "fetched_at": "2026-10-31T15:14:14Z",
  "urls": [
   "https://virtual.aistats.org/Conferences/2027/CallForPapers",
   "https://virtual.aistats.org/Conferences/2027/Dates",
   "https://virtual.aistats.org/Conferences/2027"
  ],
  "errors": [],
- "content_hash": "d25c0c095b099872",
+ "content_hash": "b30385e771436551",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 6816,
-  "output": 672
+  "input": 6834,
+  "output": 682
  },
  "found_dates": true,
  "year": 2027,
@@ -23,7 +23,7 @@
  "conference_end": "2027-05-06",
  "milestones": [
   {
-   "label": "Abstract Submission Deadline",
+   "label": "Abstract submission deadline",
    "type": "abstract",
    "date": "2026-09-29",
    "time": "23:59",
@@ -31,7 +31,7 @@
    "tentative": false
   },
   {
-   "label": "Full Paper Submission Deadline (including all supplementary material)",
+   "label": "Full paper submission deadline (including all supplementary material)",
    "type": "paper",
    "date": "2026-10-06",
    "time": "23:59",
@@ -39,7 +39,7 @@
    "tentative": false
   },
   {
-   "label": "Workshop Submission Deadline",
+   "label": "Workshop submission deadline",
    "type": "workshop",
    "date": "2026-10-30",
    "time": "21:59",
@@ -47,7 +47,7 @@
    "tentative": false
   },
   {
-   "label": "Reviews Released",
+   "label": "Reviews and AI review released to authors; author rebuttal period begins",
    "type": "review_release",
    "date": "2026-11-16",
    "time": null,
@@ -55,7 +55,7 @@
    "tentative": false
   },
   {
-   "label": "Author Reviewer Discussion Period Begins",
+   "label": "Author–reviewer discussion period begins",
    "type": "rebuttal_start",
    "date": "2026-11-23",
    "time": null,
@@ -63,7 +63,7 @@
    "tentative": false
   },
   {
-   "label": "Author Reviewer Discussion Period Ends",
+   "label": "Author–reviewer discussion period ends",
    "type": "rebuttal_end",
    "date": "2026-12-03",
    "time": null,
@@ -79,7 +79,7 @@
    "tentative": false
   },
   {
-   "label": "Paper Decision Notifications",
+   "label": "Paper decision notifications",
    "type": "notification",
    "date": "2027-01-20",
    "time": null,
@@ -87,6 +87,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates cover both the main Proceedings Track and the Journal-to-Conference track.",
+ "tracks_note": "Dates include the main Proceedings Track and the Journal-to-Conference Track deadline.",
  "follow_url": null
 }
