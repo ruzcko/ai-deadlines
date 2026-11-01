@@ -1,16 +1,16 @@
 {
  "key": "naacl",
  "title": "NAACL",
- "fetched_at": "2026-10-20T14:14:08Z",
+ "fetched_at": "2026-11-01T15:44:26Z",
  "urls": [
   "https://2027.naacl.org/"
  ],
  "errors": [],
- "content_hash": "79a66454fc78c610",
+ "content_hash": "4df406dd1e44d1d6",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 883,
-  "output": 918
+  "input": 891,
+  "output": 1039
  },
  "found_dates": true,
  "year": 2027,
@@ -24,6 +24,14 @@
    "label": "Workshop proposal deadline",
    "type": "workshop",
    "date": "2026-09-04",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop notification of acceptance",
+   "type": "workshop",
+   "date": "2026-10-02",
    "time": "23:59",
    "timezone": "AoE",
    "tentative": false
@@ -53,6 +61,14 @@
    "tentative": false
   },
   {
+   "label": "Notification of acceptance (tutorials)",
+   "type": "tutorial",
+   "date": "2026-11-25",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
    "label": "System demo submission deadline",
    "type": "paper",
    "date": "2026-12-04",
@@ -62,7 +78,7 @@
   },
   {
    "label": "NAACL commitment deadline",
-   "type": "other",
+   "type": "paper",
    "date": "2026-12-23",
    "time": "23:59",
    "timezone": "AoE",
@@ -109,6 +125,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Includes dates for the main track (ARR), industry track, system demonstrations, and workshop/tutorial proposals.",
+ "tracks_note": null,
  "follow_url": null
 }

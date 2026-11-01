@@ -1,16 +1,16 @@
 {
  "key": "aamas",
  "title": "AAMAS",
- "fetched_at": "2026-10-29T16:09:20Z",
+ "fetched_at": "2026-11-01T15:53:55Z",
  "urls": [
   "https://warwick.ac.uk/fac/sci/dcs/aamas2027/"
  ],
  "errors": [],
- "content_hash": "6d1fe666b126de84",
+ "content_hash": "8c5fb71548e24d0e",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1178,
-  "output": 691
+  "input": 1184,
+  "output": 697
  },
  "found_dates": true,
  "year": 2027,
@@ -37,7 +37,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal period",
+   "label": "Rebuttal period (start)",
    "type": "rebuttal_start",
    "date": "2026-11-20",
    "time": null,
@@ -45,7 +45,7 @@
    "tentative": false
   },
   {
-   "label": "Rebuttal period",
+   "label": "Rebuttal period (end)",
    "type": "rebuttal_end",
    "date": "2026-11-24",
    "time": null,
@@ -77,7 +77,7 @@
    "tentative": false
   },
   {
-   "label": "Proposal Submission",
+   "label": "Tutorials Proposal Submission",
    "type": "tutorial",
    "date": "2026-12-10",
    "time": null,

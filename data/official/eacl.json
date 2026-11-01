@@ -1,17 +1,17 @@
 {
  "key": "eacl",
  "title": "EACL",
- "fetched_at": "2026-10-24T13:05:55Z",
+ "fetched_at": "2026-11-01T15:47:12Z",
  "urls": [
   "https://2027.eacl.org/calls/papers/",
   "https://2027.eacl.org"
  ],
  "errors": [],
- "content_hash": "5469294ba9051357",
+ "content_hash": "bceb860c07fb22e5",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 3817,
-  "output": 843
+  "input": 3918,
+  "output": 864
  },
  "found_dates": true,
  "year": 2027,
@@ -38,7 +38,7 @@
    "tentative": false
   },
   {
-   "label": "Author response period (start)",
+   "label": "Author response period",
    "type": "rebuttal_start",
    "date": "2026-09-14",
    "time": null,
@@ -102,6 +102,6 @@
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Dates reflect the ARR August 2026 cycle submission and commitment path for EACL 2027.",
  "follow_url": null
 }

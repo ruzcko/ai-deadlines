@@ -1,15 +1,15 @@
 {
  "key": "icdm",
  "title": "ICDM",
- "fetched_at": "2026-10-29T16:33:52Z",
+ "fetched_at": "2026-11-01T15:55:28Z",
  "urls": [
   "http://icdm2026.neu.edu.cn/"
  ],
  "errors": [],
- "content_hash": "571b7fad68eeddce",
+ "content_hash": "87f3400a9636eed2",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 3305,
+  "input": 3324,
   "output": 361
  },
  "found_dates": true,

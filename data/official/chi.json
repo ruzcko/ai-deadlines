@@ -1,17 +1,17 @@
 {
  "key": "chi",
  "title": "CHI",
- "fetched_at": "2026-10-29T16:05:51Z",
+ "fetched_at": "2026-11-01T15:51:51Z",
  "urls": [
   "https://chi2027.acm.org/authors/papers/",
   "https://chi2027.acm.org/"
  ],
  "errors": [],
- "content_hash": "d3d00f6d15c40057",
+ "content_hash": "6e7a3007b69b9380",
  "model": "gemini-3.8-flash",
  "usage": {
   "input": 4901,
-  "output": 942
+  "output": 1006
  },
  "found_dates": true,
  "year": 2027,
@@ -57,6 +57,14 @@
    "label": "Revise papers",
    "type": "rebuttal_start",
    "date": "2026-11-05",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshops Notification",
+   "type": "workshop",
+   "date": "2026-11-19",
    "time": null,
    "timezone": "AoE",
    "tentative": false
