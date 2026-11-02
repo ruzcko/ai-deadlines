@@ -1,16 +1,16 @@
 {
  "key": "cikm",
  "title": "CIKM",
- "fetched_at": "2026-10-15T13:56:58Z",
+ "fetched_at": "2026-11-02T19:12:16Z",
  "urls": [
   "https://cikm2026.diag.uniroma1.it/"
  ],
  "errors": [],
- "content_hash": "77c72895260044b4",
+ "content_hash": "8934a80624df6772",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1347,
-  "output": 1691
+  "input": 1444,
+  "output": 900
  },
  "found_dates": true,
  "year": 2026,
@@ -29,23 +29,7 @@
    "tentative": false
   },
   {
-   "label": "Applied Research Papers Abstract Deadline",
-   "type": "abstract",
-   "date": "2026-05-16",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Full Research Papers Submission Deadline",
-   "type": "paper",
-   "date": "2026-05-23",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Applied Research Papers Submission Deadline",
    "type": "paper",
    "date": "2026-05-23",
    "time": "23:59",
@@ -61,89 +45,9 @@
    "tentative": false
   },
   {
-   "label": "Resource Papers Abstract Deadline",
-   "type": "abstract",
-   "date": "2026-05-30",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Demo Papers Abstract Deadline",
-   "type": "abstract",
-   "date": "2026-05-30",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Short Research Papers Submission Deadline",
    "type": "paper",
    "date": "2026-06-06",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Resource Papers Submission Deadline",
-   "type": "paper",
-   "date": "2026-06-06",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Demo Papers Submission Deadline",
-   "type": "paper",
-   "date": "2026-06-06",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "PhD Symposium Submission Deadline",
-   "type": "paper",
-   "date": "2026-06-29",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Industry Day Submission Deadline",
-   "type": "paper",
-   "date": "2026-06-29",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Tutorial Proposal Submission",
-   "type": "tutorial",
-   "date": "2026-06-29",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Workshops Proposal Submission",
-   "type": "workshop",
-   "date": "2026-06-29",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Tutorial Proposal Notification",
-   "type": "tutorial",
-   "date": "2026-07-08",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Workshops Proposal Notification",
-   "type": "workshop",
-   "date": "2026-07-08",
    "time": "23:59",
    "timezone": "AoE",
    "tentative": false
@@ -165,35 +69,43 @@
    "tentative": false
   },
   {
+   "label": "Tutorial Proposal Submission",
+   "type": "tutorial",
+   "date": "2026-06-29",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshops Proposal Submission",
+   "type": "workshop",
+   "date": "2026-06-29",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
    "label": "Authors’ registration deadline",
    "type": "registration",
    "date": "2026-08-23",
-   "time": "23:59",
-   "timezone": "AoE",
+   "time": null,
+   "timezone": null,
    "tentative": false
   },
   {
    "label": "Early bird registration deadline",
    "type": "registration",
    "date": "2026-09-18",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Regular registration opening",
-   "type": "registration",
-   "date": "2026-09-19",
-   "time": "23:59",
-   "timezone": "AoE",
+   "time": null,
+   "timezone": null,
    "tentative": false
   },
   {
    "label": "Regular registration deadline",
    "type": "registration",
    "date": "2026-10-23",
-   "time": "23:59",
-   "timezone": "AoE",
+   "time": null,
+   "timezone": null,
    "tentative": false
   }
  ],

@@ -1,16 +1,16 @@
 {
  "key": "wsdm",
  "title": "WSDM",
- "fetched_at": "2026-10-31T15:09:08Z",
+ "fetched_at": "2026-11-02T19:25:16Z",
  "urls": [
   "https://www.wsdm-conference.org/2027/"
  ],
  "errors": [],
- "content_hash": "482007c8d3c42ab2",
+ "content_hash": "fcc16f1f1f1536de",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1288,
-  "output": 196
+  "input": 1221,
+  "output": 321
  },
  "found_dates": true,
  "year": 2027,
@@ -24,8 +24,24 @@
    "label": "Full Paper Notifications",
    "type": "notification",
    "date": "2026-11-02",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Short Papers Submission deadline",
+   "type": "paper",
+   "date": "2026-11-17",
    "time": "23:59",
    "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Short Papers Notification",
+   "type": "notification",
+   "date": "2026-12-18",
+   "time": null,
+   "timezone": null,
    "tentative": false
   }
  ],
