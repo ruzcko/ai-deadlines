@@ -1,16 +1,16 @@
 {
  "key": "hicss",
  "title": "HICSS",
- "fetched_at": "2026-10-18T12:57:37Z",
+ "fetched_at": "2026-11-07T15:37:42Z",
  "urls": [
   "https://hicss.hawaii.edu/"
  ],
  "errors": [],
- "content_hash": "596b5f12ebec929b",
+ "content_hash": "cc21b41ceeb65024",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 829,
-  "output": 529
+  "input": 728,
+  "output": 407
  },
  "found_dates": true,
  "year": 2027,
@@ -21,9 +21,9 @@
  "conference_end": "2027-01-08",
  "milestones": [
   {
-   "label": "Paper submission deadline",
-   "type": "paper",
-   "date": "2026-06-15",
+   "label": "Deadline for proposal",
+   "type": "other",
+   "date": "2026-12-01",
    "time": "23:59",
    "timezone": "HST",
    "tentative": false
@@ -31,44 +31,28 @@
   {
    "label": "Notification of acceptance/rejection",
    "type": "notification",
-   "date": "2026-08-17",
+   "date": "2026-12-09",
    "time": null,
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "[Conditionally Accepted] Submission deadline for revised manuscript",
-   "type": "paper",
-   "date": "2026-09-04",
-   "time": "23:59",
-   "timezone": "HST",
-   "tentative": false
-  },
-  {
-   "label": "[Conditionally Accepted] Notification of acceptance/rejection",
-   "type": "notification",
-   "date": "2026-09-11",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Deadline for final manuscript submissions",
+   "label": "Deadline for slides for your talk, if your proposal is accepted",
    "type": "camera_ready",
-   "date": "2026-09-22",
-   "time": "23:59",
-   "timezone": "HST",
+   "date": "2026-12-30",
+   "time": null,
+   "timezone": null,
    "tentative": false
   },
   {
-   "label": "Author registration deadline",
-   "type": "registration",
-   "date": "2026-10-01",
-   "time": null,
-   "timezone": null,
+   "label": "Ignite Talks",
+   "type": "other",
+   "date": "2027-01-06",
+   "time": "08:00",
+   "timezone": "HST",
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Dates are for the Digital and Social Media Track's Ignite Talks session.",
  "follow_url": null
 }

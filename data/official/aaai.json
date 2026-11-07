@@ -1,18 +1,18 @@
 {
  "key": "aaai",
  "title": "AAAI",
- "fetched_at": "2026-10-29T15:52:29Z",
+ "fetched_at": "2026-11-07T15:48:49Z",
  "urls": [
   "https://aaai.org/conference/aaai/aaai-27/main-technical-track-call/",
   "https://aaai.org/conference/aaai/aaai-27/submission-instructions",
   "https://aaai.org/conference/aaai/aaai-27/"
  ],
  "errors": [],
- "content_hash": "ba10e86d672a9c13",
+ "content_hash": "085cc91f6e77c0a6",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 9419,
-  "output": 818
+  "input": 9464,
+  "output": 829
  },
  "found_dates": true,
  "year": 2027,
@@ -27,7 +27,7 @@
    "type": "other",
    "date": "2026-06-17",
    "time": null,
-   "timezone": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -35,7 +35,7 @@
    "type": "other",
    "date": "2026-06-30",
    "time": null,
-   "timezone": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -67,23 +67,23 @@
    "type": "notification",
    "date": "2026-09-24",
    "time": null,
-   "timezone": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {
-   "label": "Author feedback window (start)",
+   "label": "Author feedback window start",
    "type": "rebuttal_start",
    "date": "2026-10-24",
    "time": null,
-   "timezone": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {
-   "label": "Author feedback window (end)",
+   "label": "Author feedback window end",
    "type": "rebuttal_end",
    "date": "2026-10-31",
    "time": null,
-   "timezone": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -91,7 +91,7 @@
    "type": "notification",
    "date": "2026-11-30",
    "time": null,
-   "timezone": null,
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -99,10 +99,10 @@
    "type": "camera_ready",
    "date": "2026-12-14",
    "time": null,
-   "timezone": null,
+   "timezone": "AoE",
    "tentative": false
   }
  ],
- "tracks_note": "Dates are for the Main Technical Track; note that special tracks such as AI Alignment may follow separate schedules.",
+ "tracks_note": "Dates are for the Main Technical Track; deadlines are track-specific and may differ for special tracks.",
  "follow_url": null
 }

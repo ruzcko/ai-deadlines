@@ -1,16 +1,16 @@
 {
  "key": "www",
  "title": "WWW",
- "fetched_at": "2026-10-23T14:19:49Z",
+ "fetched_at": "2026-11-07T15:45:03Z",
  "urls": [
   "https://www2027.thewebconf.org/"
  ],
  "errors": [],
- "content_hash": "75d75dc25c0a8b2e",
+ "content_hash": "1bcd4da79198dd26",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1030,
-  "output": 517
+  "input": 1151,
+  "output": 510
  },
  "found_dates": true,
  "year": 2027,
@@ -69,6 +69,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates are provided for full paper and short paper submissions, as well as tutorial and workshop proposals.",
+ "tracks_note": "Dates are provided separately for full paper and short paper submissions.",
  "follow_url": null
 }

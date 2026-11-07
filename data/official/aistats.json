@@ -1,18 +1,18 @@
 {
  "key": "aistats",
  "title": "AISTATS",
- "fetched_at": "2026-10-31T15:14:14Z",
+ "fetched_at": "2026-11-07T15:58:24Z",
  "urls": [
   "https://virtual.aistats.org/Conferences/2027/CallForPapers",
   "https://virtual.aistats.org/Conferences/2027/Dates",
   "https://virtual.aistats.org/Conferences/2027"
  ],
  "errors": [],
- "content_hash": "b30385e771436551",
+ "content_hash": "d45df87c043e7144",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 6834,
-  "output": 682
+  "input": 6887,
+  "output": 798
  },
  "found_dates": true,
  "year": 2027,
@@ -41,9 +41,25 @@
   {
    "label": "Workshop submission deadline",
    "type": "workshop",
-   "date": "2026-10-30",
+   "date": "2026-11-06",
    "time": "21:59",
    "timezone": "UTC",
+   "tentative": false
+  },
+  {
+   "label": "Review Period Begins",
+   "type": "other",
+   "date": "2026-10-15",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Review Period Ends",
+   "type": "other",
+   "date": "2026-11-05",
+   "time": "23:59",
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -55,7 +71,7 @@
    "tentative": false
   },
   {
-   "label": "Author–reviewer discussion period begins",
+   "label": "Author Reviewer Discussion Period Begins",
    "type": "rebuttal_start",
    "date": "2026-11-23",
    "time": null,
@@ -63,7 +79,7 @@
    "tentative": false
   },
   {
-   "label": "Author–reviewer discussion period ends",
+   "label": "Author Reviewer Discussion Period Ends",
    "type": "rebuttal_end",
    "date": "2026-12-03",
    "time": null,
@@ -87,6 +103,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates include the main Proceedings Track and the Journal-to-Conference Track deadline.",
+ "tracks_note": null,
  "follow_url": null
 }

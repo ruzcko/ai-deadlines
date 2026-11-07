@@ -1,17 +1,17 @@
 {
  "key": "emnlp",
  "title": "EMNLP",
- "fetched_at": "2026-10-17T12:41:41Z",
+ "fetched_at": "2026-11-07T15:29:19Z",
  "urls": [
   "https://2026.emnlp.org/calls/main_conference_papers/",
   "https://2026.emnlp.org/"
  ],
  "errors": [],
- "content_hash": "a63b75f36d33df48",
+ "content_hash": "6b9be370c094372c",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 3651,
-  "output": 702
+  "input": 3699,
+  "output": 732
  },
  "found_dates": true,
  "year": 2026,
@@ -41,8 +41,8 @@
    "label": "Author response and author-reviewer discussion (start)",
    "type": "rebuttal_start",
    "date": "2026-07-07",
-   "time": null,
-   "timezone": null,
+   "time": "23:59",
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -86,6 +86,6 @@
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Dates reflect the ARR May 2026 submission cycle and commitment to EMNLP 2026.",
  "follow_url": null
 }

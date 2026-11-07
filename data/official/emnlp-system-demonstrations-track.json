@@ -1,16 +1,16 @@
 {
  "key": "emnlp-system-demonstrations-track",
  "title": "EMNLP (System Demonstrations Track)",
- "fetched_at": "2026-10-17T12:42:14Z",
+ "fetched_at": "2026-11-07T15:35:46Z",
  "urls": [
   "https://2026.emnlp.org/"
  ],
  "errors": [],
- "content_hash": "826f46e48ffc4cac",
+ "content_hash": "a521595be01297fb",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1057,
-  "output": 738
+  "input": 1105,
+  "output": 728
  },
  "found_dates": true,
  "year": 2026,
@@ -37,7 +37,7 @@
    "tentative": false
   },
   {
-   "label": "Author response and author-reviewer discussion (start)",
+   "label": "Author response and author-reviewer discussion",
    "type": "rebuttal_start",
    "date": "2026-07-07",
    "time": "23:59",
@@ -45,7 +45,7 @@
    "tentative": false
   },
   {
-   "label": "Author response and author-reviewer discussion (end)",
+   "label": "Author response and author-reviewer discussion",
    "type": "rebuttal_end",
    "date": "2026-07-13",
    "time": "23:59",
@@ -85,6 +85,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates are for the main research track (long & short papers via ARR); dates specific to the System Demonstrations track are not listed on this page.",
+ "tracks_note": "Dates provided are for the main research track (long & short papers); System Demonstrations track dates are not listed.",
  "follow_url": null
 }

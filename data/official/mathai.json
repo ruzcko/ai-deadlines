@@ -1,21 +1,21 @@
 {
  "key": "mathai",
  "title": "MathAI",
- "fetched_at": "2026-10-24T13:07:51Z",
+ "fetched_at": "2026-11-07T15:47:31Z",
  "urls": [
   "https://mathai.club"
  ],
  "errors": [],
- "content_hash": "4a4ea44434e239b4",
+ "content_hash": "5642023dd13b06c9",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 2356,
-  "output": 312
+  "input": 3380,
+  "output": 780
  },
  "found_dates": true,
  "year": 2027,
  "city": "Abu Dhabi",
- "country": "United Arab Emirates",
+ "country": "UAE",
  "venue": null,
  "conference_start": "2027-03-22",
  "conference_end": "2027-03-24",
@@ -24,22 +24,70 @@
    "label": "Submissions open on OpenReview",
    "type": "other",
    "date": "2026-11-01",
-   "time": null,
-   "timezone": null,
+   "time": "23:59",
+   "timezone": "Europe/London",
    "tentative": false
   },
   {
-   "label": "Early rate registration until",
-   "type": "registration",
-   "date": "2026-12-15",
-   "time": null,
-   "timezone": null,
+   "label": "Abstract registration: title, abstract and track on OpenReview; the PDF may follow",
+   "type": "abstract",
+   "date": "2026-12-20",
+   "time": "23:59",
+   "timezone": "Europe/London",
    "tentative": false
   },
   {
-   "label": "Paper submission deadline",
+   "label": "Full paper deadline: PDF uploaded to the registered submission",
    "type": "paper",
    "date": "2027-01-15",
+   "time": "23:59",
+   "timezone": "Europe/London",
+   "tentative": false
+  },
+  {
+   "label": "Reviews",
+   "type": "other",
+   "date": "2027-02-10",
+   "time": "23:59",
+   "timezone": "Europe/London",
+   "tentative": false
+  },
+  {
+   "label": "author responses start",
+   "type": "rebuttal_start",
+   "date": "2027-02-24",
+   "time": "23:59",
+   "timezone": "Europe/London",
+   "tentative": false
+  },
+  {
+   "label": "author responses end",
+   "type": "rebuttal_end",
+   "date": "2027-03-03",
+   "time": "23:59",
+   "timezone": "Europe/London",
+   "tentative": false
+  },
+  {
+   "label": "Notification of acceptance",
+   "type": "notification",
+   "date": "2027-03-06",
+   "time": "23:59",
+   "timezone": "Europe/London",
+   "tentative": false
+  },
+  {
+   "label": "camera-ready papers",
+   "type": "camera_ready",
+   "date": "2027-03-20",
+   "time": "23:59",
+   "timezone": "Europe/London",
+   "tentative": false
+  },
+  {
+   "label": "registration of at least one author per accepted paper",
+   "type": "registration",
+   "date": "2027-03-20",
    "time": "23:59",
    "timezone": "Europe/London",
    "tentative": false

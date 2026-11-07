@@ -1,15 +1,15 @@
 {
  "key": "ecir",
  "title": "ECIR",
- "fetched_at": "2026-10-31T15:01:44Z",
+ "fetched_at": "2026-11-07T15:55:04Z",
  "urls": [
   "https://www.ecir2027.co.uk/"
  ],
  "errors": [],
- "content_hash": "5df034bdc056c3d5",
+ "content_hash": "69dd194bc3e6d3cc",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1451,
+  "input": 1453,
   "output": 1399
  },
  "found_dates": true,
@@ -78,7 +78,7 @@
   },
   {
    "label": "Workshop proposal notifications",
-   "type": "notification",
+   "type": "workshop",
    "date": "2026-10-19",
    "time": null,
    "timezone": null,
@@ -109,22 +109,6 @@
    "tentative": false
   },
   {
-   "label": "Industry day submission",
-   "type": "other",
-   "date": "2026-11-02",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Tutorial proposals",
-   "type": "tutorial",
-   "date": "2026-11-02",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
    "label": "Resource paper submission",
    "type": "paper",
    "date": "2026-11-02",
@@ -135,6 +119,22 @@
   {
    "label": "Doctoral Consortium paper submission",
    "type": "paper",
+   "date": "2026-11-09",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Industry Day submission",
+   "type": "paper",
+   "date": "2026-11-09",
+   "time": null,
+   "timezone": null,
+   "tentative": false
+  },
+  {
+   "label": "Tutorial proposals",
+   "type": "tutorial",
    "date": "2026-11-09",
    "time": null,
    "timezone": null,

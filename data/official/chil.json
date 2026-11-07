@@ -1,15 +1,15 @@
 {
  "key": "chil",
  "title": "CHIL",
- "fetched_at": "2026-10-21T14:29:56Z",
+ "fetched_at": "2026-11-07T15:40:33Z",
  "urls": [
   "https://chil.ahli.cc/submit/call-for-papers/"
  ],
  "errors": [],
- "content_hash": "ec238b9876f72833",
+ "content_hash": "9768e12ef25c9ffb",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 3634,
+  "input": 3628,
   "output": 613
  },
  "found_dates": true,

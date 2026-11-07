@@ -1,16 +1,16 @@
 {
  "key": "emnlp-industry-track",
  "title": "EMNLP (Industry Track)",
- "fetched_at": "2026-10-17T12:41:54Z",
+ "fetched_at": "2026-11-07T15:33:52Z",
  "urls": [
   "https://2026.emnlp.org/"
  ],
  "errors": [],
- "content_hash": "826f46e48ffc4cac",
+ "content_hash": "a521595be01297fb",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1055,
-  "output": 724
+  "input": 1103,
+  "output": 650
  },
  "found_dates": true,
  "year": 2026,
@@ -37,17 +37,9 @@
    "tentative": false
   },
   {
-   "label": "Author response and author-reviewer discussion (start)",
+   "label": "Author response and author-reviewer discussion",
    "type": "rebuttal_start",
    "date": "2026-07-07",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Author response and author-reviewer discussion (end)",
-   "type": "rebuttal_end",
-   "date": "2026-07-13",
    "time": "23:59",
    "timezone": "AoE",
    "tentative": false
@@ -85,6 +77,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates listed are for the main research track via ARR; specific Industry Track dates are not detailed on this page.",
+ "tracks_note": "Dates listed on page appear to be for the main research track via ARR; Industry Track specific dates are not detailed.",
  "follow_url": null
 }

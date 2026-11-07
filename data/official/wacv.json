@@ -1,18 +1,18 @@
 {
  "key": "wacv",
  "title": "WACV",
- "fetched_at": "2026-10-23T14:16:07Z",
+ "fetched_at": "2026-11-07T15:43:08Z",
  "urls": [
   "https://wacv.thecvf.com/Conferences/2027/CallForPapers",
   "https://wacv.thecvf.com/Conferences/2027/Dates",
   "https://wacv.thecvf.com/"
  ],
  "errors": [],
- "content_hash": "20a719f1460b10cb",
+ "content_hash": "2841b69ddb9582f1",
  "model": "gemini-3.8-flash",
  "usage": {
   "input": 2472,
-  "output": 1084
+  "output": 1074
  },
  "found_dates": true,
  "year": 2027,
@@ -22,6 +22,14 @@
  "conference_start": "2027-01-04",
  "conference_end": "2027-01-08",
  "milestones": [
+  {
+   "label": "Early Registration Deadline",
+   "type": "registration",
+   "date": "2026-11-08",
+   "time": "04:59",
+   "timezone": "UTC",
+   "tentative": false
+  },
   {
    "label": "Round 1 Paper Registration Deadline",
    "type": "abstract",
@@ -55,22 +63,6 @@
    "tentative": false
   },
   {
-   "label": "Workshop Proposal Deadline",
-   "type": "workshop",
-   "date": "2026-08-08",
-   "time": null,
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Workshop Acceptance Notification",
-   "type": "workshop",
-   "date": "2026-08-16",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
    "label": "Round 2 New Paper Registration",
    "type": "abstract",
    "date": "2026-08-21",
@@ -80,7 +72,7 @@
   },
   {
    "label": "Round 1 Rebuttal and Revision Submission",
-   "type": "rebuttal_end",
+   "type": "rebuttal_start",
    "date": "2026-08-28",
    "time": null,
    "timezone": "AoE",
@@ -127,14 +119,22 @@
    "tentative": false
   },
   {
-   "label": "Early Registration Deadline",
-   "type": "registration",
-   "date": "2026-11-03",
-   "time": "04:59",
-   "timezone": "UTC",
+   "label": "Workshop Proposal Deadline",
+   "type": "workshop",
+   "date": "2026-08-08",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Workshop Acceptance Notification",
+   "type": "workshop",
+   "date": "2026-08-16",
+   "time": null,
+   "timezone": null,
    "tentative": false
   }
  ],
- "tracks_note": "WACV 2027 operates with two review cycles: Round 1 and Round 2.",
+ "tracks_note": "Dates cover Round 1 and Round 2 submission cycles.",
  "follow_url": null
 }
