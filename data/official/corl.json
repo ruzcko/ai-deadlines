@@ -1,23 +1,23 @@
 {
  "key": "corl",
  "title": "CoRL",
- "fetched_at": "2026-11-01T15:47:45Z",
+ "fetched_at": "2026-11-08T16:00:05Z",
  "urls": [
   "https://2026.corl.org/contributions/call-for-papers",
   "https://www.corl.org/"
  ],
  "errors": [],
- "content_hash": "cde86fdca6aa5898",
+ "content_hash": "a7b8dc4cf3b25d3a",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1532,
-  "output": 109
+  "input": 1595,
+  "output": 95
  },
  "found_dates": true,
  "year": 2026,
  "city": "Austin",
- "country": "United States",
- "venue": null,
+ "country": "USA",
+ "venue": "JW Marriott Austin, Hilton Austin, Bass Hall",
  "conference_start": "2026-11-09",
  "conference_end": "2026-11-12",
  "milestones": [],

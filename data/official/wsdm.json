@@ -1,16 +1,16 @@
 {
  "key": "wsdm",
  "title": "WSDM",
- "fetched_at": "2026-11-02T19:25:16Z",
+ "fetched_at": "2026-11-08T16:42:16Z",
  "urls": [
   "https://www.wsdm-conference.org/2027/"
  ],
  "errors": [],
- "content_hash": "fcc16f1f1f1536de",
+ "content_hash": "f8a17a2cbc9790f5",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1221,
-  "output": 321
+  "input": 1229,
+  "output": 638
  },
  "found_dates": true,
  "year": 2027,
@@ -24,8 +24,24 @@
    "label": "Full Paper Notifications",
    "type": "notification",
    "date": "2026-11-02",
-   "time": null,
-   "timezone": null,
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Doctoral Consortium Submission deadline",
+   "type": "other",
+   "date": "2026-11-12",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "Doctoral Consortium Notification",
+   "type": "notification",
+   "date": "2026-12-02",
+   "time": "23:59",
+   "timezone": "AoE",
    "tentative": false
   },
   {
@@ -40,11 +56,27 @@
    "label": "Short Papers Notification",
    "type": "notification",
    "date": "2026-12-18",
-   "time": null,
-   "timezone": null,
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "WSDM Day Presentations Submission deadline",
+   "type": "other",
+   "date": "2026-11-30",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
+   "label": "WSDM Day Presentations Notification",
+   "type": "notification",
+   "date": "2026-12-21",
+   "time": "23:59",
+   "timezone": "AoE",
    "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Includes full paper notification, short papers track, doctoral consortium, and WSDM Day presentations.",
  "follow_url": null
 }

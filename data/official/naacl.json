@@ -1,16 +1,16 @@
 {
  "key": "naacl",
  "title": "NAACL",
- "fetched_at": "2026-11-01T15:44:26Z",
+ "fetched_at": "2026-11-08T15:56:51Z",
  "urls": [
   "https://2027.naacl.org/"
  ],
  "errors": [],
- "content_hash": "4df406dd1e44d1d6",
+ "content_hash": "06b2d1056389773d",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 891,
-  "output": 1039
+  "input": 903,
+  "output": 679
  },
  "found_dates": true,
  "year": 2027,
@@ -53,25 +53,9 @@
    "tentative": false
   },
   {
-   "label": "Industry track submission deadline",
-   "type": "paper",
-   "date": "2026-10-31",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Notification of acceptance (tutorials)",
    "type": "tutorial",
    "date": "2026-11-25",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "System demo submission deadline",
-   "type": "paper",
-   "date": "2026-12-04",
    "time": "23:59",
    "timezone": "AoE",
    "tentative": false
@@ -93,31 +77,7 @@
    "tentative": false
   },
   {
-   "label": "Notification of acceptance (system demos)",
-   "type": "notification",
-   "date": "2027-02-10",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Notification of acceptance (industry track)",
-   "type": "notification",
-   "date": "2027-02-24",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Camera-ready papers due (main)",
-   "type": "camera_ready",
-   "date": "2027-03-03",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Camera-ready papers due (system demos)",
    "type": "camera_ready",
    "date": "2027-03-03",
    "time": "23:59",

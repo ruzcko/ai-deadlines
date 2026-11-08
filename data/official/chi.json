@@ -1,17 +1,17 @@
 {
  "key": "chi",
  "title": "CHI",
- "fetched_at": "2026-11-01T15:51:51Z",
+ "fetched_at": "2026-11-08T16:10:20Z",
  "urls": [
   "https://chi2027.acm.org/authors/papers/",
   "https://chi2027.acm.org/"
  ],
  "errors": [],
- "content_hash": "6e7a3007b69b9380",
+ "content_hash": "5acbdab40b77bb9b",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4901,
-  "output": 1006
+  "input": 4967,
+  "output": 906
  },
  "found_dates": true,
  "year": 2027,
@@ -54,16 +54,8 @@
    "tentative": false
   },
   {
-   "label": "Revise papers",
-   "type": "rebuttal_start",
-   "date": "2026-11-05",
-   "time": null,
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Workshops Notification",
-   "type": "workshop",
+   "type": "notification",
    "date": "2026-11-19",
    "time": null,
    "timezone": "AoE",
@@ -94,7 +86,7 @@
    "tentative": false
   },
   {
-   "label": "TAPS submission deadline (Author must upload their final paper source to TAPS for processing)",
+   "label": "TAPS submission deadline",
    "type": "camera_ready",
    "date": "2027-01-14",
    "time": null,
@@ -102,7 +94,7 @@
    "tentative": false
   },
   {
-   "label": "Publication-Ready deadline (Authors upload final TAPS-approved version to PCS, including supplemental materials and optional video previews)",
+   "label": "Publication-Ready deadline",
    "type": "camera_ready",
    "date": "2027-02-18",
    "time": null,
