@@ -1,16 +1,16 @@
 {
  "key": "coling",
  "title": "COLING",
- "fetched_at": "2026-11-08T15:53:44Z",
+ "fetched_at": "2026-11-09T19:58:03Z",
  "urls": [
   "https://www.aclweb.org/portal/content/32nd-international-conference-computational-linguistics-coling-2027",
   "https://2027.coling-iccl.org/"
  ],
  "errors": [],
- "content_hash": "cbc28dac93927615",
+ "content_hash": "e57dba2af1bc2973",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1682,
+  "input": 1678,
   "output": 322
  },
  "found_dates": true,
@@ -31,7 +31,7 @@
   },
   {
    "label": "Commitment after meta-reviews",
-   "type": "other",
+   "type": "paper",
    "date": "2026-12-23",
    "time": "23:59",
    "timezone": "AoE",
