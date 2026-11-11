@@ -1,16 +1,16 @@
 {
  "key": "eurographics",
  "title": "Eurographics",
- "fetched_at": "2026-11-07T15:42:06Z",
+ "fetched_at": "2026-11-11T17:25:35Z",
  "urls": [
   "https://eg2027.isti.cnr.it/"
  ],
  "errors": [],
- "content_hash": "19c8f43cd19b65ac",
+ "content_hash": "0f87dda129e7a5bb",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 785,
-  "output": 192
+  "input": 796,
+  "output": 200
  },
  "found_dates": true,
  "year": 2027,
@@ -29,6 +29,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates extracted are for the STAR track.",
+ "tracks_note": "Dates listed include the STAR (State of the Art Reports) track submission deadline.",
  "follow_url": null
 }

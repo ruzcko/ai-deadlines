@@ -1,21 +1,21 @@
 {
  "key": "hicss",
  "title": "HICSS",
- "fetched_at": "2026-11-07T15:37:42Z",
+ "fetched_at": "2026-11-11T17:13:09Z",
  "urls": [
   "https://hicss.hawaii.edu/"
  ],
  "errors": [],
- "content_hash": "cc21b41ceeb65024",
+ "content_hash": "64dba7674abb63cd",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 728,
-  "output": 407
+  "input": 954,
+  "output": 339
  },
  "found_dates": true,
  "year": 2027,
  "city": "Big Island",
- "country": "United States",
+ "country": "USA",
  "venue": "Hilton Waikoloa Village",
  "conference_start": "2027-01-05",
  "conference_end": "2027-01-08",
@@ -38,21 +38,13 @@
   },
   {
    "label": "Deadline for slides for your talk, if your proposal is accepted",
-   "type": "camera_ready",
-   "date": "2026-12-30",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Ignite Talks",
    "type": "other",
-   "date": "2027-01-06",
-   "time": "08:00",
+   "date": "2026-12-30",
+   "time": "23:59",
    "timezone": "HST",
    "tentative": false
   }
  ],
- "tracks_note": "Dates are for the Digital and Social Media Track's Ignite Talks session.",
+ "tracks_note": "Dates are for the Digital and Social Media Track Ignite presentations.",
  "follow_url": null
 }

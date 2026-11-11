@@ -1,16 +1,16 @@
 {
  "key": "aamas",
  "title": "AAMAS",
- "fetched_at": "2026-11-01T15:53:55Z",
+ "fetched_at": "2026-11-11T17:06:45Z",
  "urls": [
   "https://warwick.ac.uk/fac/sci/dcs/aamas2027/"
  ],
  "errors": [],
- "content_hash": "8c5fb71548e24d0e",
+ "content_hash": "03bf24d6497f74e7",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1184,
-  "output": 697
+  "input": 1298,
+  "output": 716
  },
  "found_dates": true,
  "year": 2027,
@@ -77,22 +77,22 @@
    "tentative": false
   },
   {
-   "label": "Tutorials Proposal Submission",
-   "type": "tutorial",
-   "date": "2026-12-10",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
    "label": "AAMAS 2027 Early Registration Deadline",
    "type": "registration",
    "date": "2027-03-17",
    "time": null,
    "timezone": null,
    "tentative": true
+  },
+  {
+   "label": "Tutorials Proposal Submission",
+   "type": "tutorial",
+   "date": "2026-12-10",
+   "time": null,
+   "timezone": null,
+   "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Dates listed are for the Main Track, plus general early registration, workshop proposals, and tutorial proposals.",
  "follow_url": null
 }
