@@ -1,18 +1,18 @@
 {
  "key": "icassp",
  "title": "ICASSP",
- "fetched_at": "2026-11-07T15:54:39Z",
+ "fetched_at": "2026-11-15T16:44:04Z",
  "urls": [
   "https://2027.ieeeicassp.org/call-for-papers/",
   "https://2027.ieeeicassp.org/important-dates/",
   "https://2027.ieeeicassp.org"
  ],
  "errors": [],
- "content_hash": "366055d78f41c430",
+ "content_hash": "234006fe7333e1e6",
  "model": "gemini-3.8-flash",
  "usage": {
   "input": 2477,
-  "output": 678
+  "output": 724
  },
  "found_dates": true,
  "year": 2027,
@@ -26,7 +26,7 @@
    "label": "Special Session Proposal Deadline",
    "type": "other",
    "date": "2026-07-24",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
@@ -34,7 +34,7 @@
    "label": "Full Paper Submission Deadline",
    "type": "paper",
    "date": "2026-09-23",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
@@ -42,7 +42,7 @@
    "label": "Tutorials Proposal Deadline",
    "type": "tutorial",
    "date": "2026-11-02",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
@@ -50,7 +50,7 @@
    "label": "Published Journal Papers and Letters Due",
    "type": "paper",
    "date": "2027-01-06",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
@@ -58,15 +58,15 @@
    "label": "Paper Acceptance Notification",
    "type": "notification",
    "date": "2027-01-13",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "Final Paper Deadline",
+   "label": "Final Paper Submission",
    "type": "camera_ready",
    "date": "2027-01-27",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
@@ -74,7 +74,7 @@
    "label": "Show & Tell Proposals",
    "type": "other",
    "date": "2027-02-01",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
@@ -82,7 +82,7 @@
    "label": "Author Registration Deadline",
    "type": "registration",
    "date": "2027-02-10",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   },
@@ -90,7 +90,7 @@
    "label": "Open Preview Starts",
    "type": "other",
    "date": "2027-04-16",
-   "time": null,
+   "time": "14:30",
    "timezone": null,
    "tentative": false
   }

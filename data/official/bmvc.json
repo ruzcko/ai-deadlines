@@ -1,18 +1,18 @@
 {
  "key": "bmvc",
  "title": "BMVC",
- "fetched_at": "2026-10-22T14:21:20Z",
+ "fetched_at": "2026-11-15T16:14:29Z",
  "urls": [
   "https://bmvc2026.bmva.org/calls/call-for-papers/",
   "https://bmvc2026.bmva.org/dates/",
   "https://bmvc2026.bmva.org/"
  ],
  "errors": [],
- "content_hash": "2f741b67d304057e",
+ "content_hash": "964ca56d24fd74aa",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4475,
-  "output": 898
+  "input": 4478,
+  "output": 759
  },
  "found_dates": true,
  "year": 2026,
@@ -50,22 +50,6 @@
    "label": "Workshop Proposal Submission Deadline",
    "type": "workshop",
    "date": "2026-06-05",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Workshop Acceptance Notification",
-   "type": "workshop",
-   "date": "2026-06-12",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Reviews Submitted",
-   "type": "review_release",
-   "date": "2026-06-26",
    "time": "23:59",
    "timezone": "AoE",
    "tentative": false

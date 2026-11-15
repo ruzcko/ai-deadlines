@@ -1,16 +1,16 @@
 {
  "key": "cpal",
  "title": "CPAL",
- "fetched_at": "2026-11-07T15:52:29Z",
+ "fetched_at": "2026-11-15T16:40:18Z",
  "urls": [
   "https://cpal.cc/"
  ],
  "errors": [],
- "content_hash": "fce440f244238053",
+ "content_hash": "9eb86e8c971dbf88",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 919,
-  "output": 267
+  "input": 975,
+  "output": 265
  },
  "found_dates": true,
  "year": 2027,
@@ -37,6 +37,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates are listed for both the Proceedings Track and Recent Spotlight Track.",
+ "tracks_note": "Dates cover the Proceedings Track and the Recent Spotlight Track.",
  "follow_url": null
 }

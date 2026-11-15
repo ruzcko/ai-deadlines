@@ -1,16 +1,16 @@
 {
  "key": "www",
  "title": "WWW",
- "fetched_at": "2026-11-07T15:45:03Z",
+ "fetched_at": "2026-11-15T16:29:51Z",
  "urls": [
   "https://www2027.thewebconf.org/"
  ],
  "errors": [],
- "content_hash": "1bcd4da79198dd26",
+ "content_hash": "97d8f95edbf30565",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1151,
-  "output": 510
+  "input": 1192,
+  "output": 508
  },
  "found_dates": true,
  "year": 2027,
@@ -21,17 +21,17 @@
  "conference_end": "2027-05-14",
  "milestones": [
   {
-   "label": "Tutorial proposal submission deadline",
-   "type": "tutorial",
-   "date": "2026-10-19",
+   "label": "Workshop proposal submission deadline",
+   "type": "workshop",
+   "date": "2026-09-28",
    "time": null,
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "Call for Workshop proposal submission deadline",
-   "type": "workshop",
-   "date": "2026-09-28",
+   "label": "Tutorial proposal submission deadline (extended)",
+   "type": "tutorial",
+   "date": "2026-10-19",
    "time": null,
    "timezone": null,
    "tentative": false
@@ -45,7 +45,7 @@
    "tentative": false
   },
   {
-   "label": "Full paper submissions submission deadline",
+   "label": "Full paper submissions deadline",
    "type": "paper",
    "date": "2026-10-25",
    "time": null,
@@ -61,7 +61,7 @@
    "tentative": false
   },
   {
-   "label": "Short paper submissions submission deadline",
+   "label": "Short paper submissions deadline",
    "type": "paper",
    "date": "2026-11-16",
    "time": null,
@@ -69,6 +69,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates are provided separately for full paper and short paper submissions.",
+ "tracks_note": "Dates are reported for Full paper and Short paper submission tracks.",
  "follow_url": null
 }

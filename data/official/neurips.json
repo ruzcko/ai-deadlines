@@ -1,18 +1,18 @@
 {
  "key": "neurips",
  "title": "NeurIPS",
- "fetched_at": "2026-11-08T15:48:55Z",
+ "fetched_at": "2026-11-15T16:46:51Z",
  "urls": [
   "https://neurips.cc/Conferences/2026/CallForPapers",
   "https://neurips.cc/Conferences/2026/Dates",
   "https://neurips.cc/"
  ],
  "errors": [],
- "content_hash": "05caf5f7f6442eda",
+ "content_hash": "b584e7eea3a14bd5",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 5892,
-  "output": 846
+  "input": 5851,
+  "output": 872
  },
  "found_dates": true,
  "year": 2026,
@@ -71,22 +71,6 @@
    "tentative": false
   },
   {
-   "label": "Registration Open",
-   "type": "registration",
-   "date": "2026-09-03",
-   "time": "13:00",
-   "timezone": "UTC",
-   "tentative": false
-  },
-  {
-   "label": "Early Registration Deadline",
-   "type": "registration",
-   "date": "2026-10-30",
-   "time": null,
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
    "label": "Paper Camera Ready Deadline",
    "type": "camera_ready",
    "date": "2026-11-06",
@@ -109,8 +93,24 @@
    "time": null,
    "timezone": "AoE",
    "tentative": false
+  },
+  {
+   "label": "Registration Open",
+   "type": "registration",
+   "date": "2026-09-03",
+   "time": "13:00",
+   "timezone": "UTC",
+   "tentative": false
+  },
+  {
+   "label": "Early Registration Deadline",
+   "type": "registration",
+   "date": "2026-10-30",
+   "time": null,
+   "timezone": "AoE",
+   "tentative": false
   }
  ],
- "tracks_note": null,
+ "tracks_note": "Dates reported are for the Main Conference Paper Submission; satellite sites take place in Atlanta and Paris (Dec 9-13).",
  "follow_url": null
 }

@@ -1,16 +1,16 @@
 {
  "key": "esann",
  "title": "ESANN",
- "fetched_at": "2026-10-17T12:42:23Z",
+ "fetched_at": "2026-11-15T16:05:26Z",
  "urls": [
   "https://www.esann.org/"
  ],
  "errors": [],
- "content_hash": "c168ac49595296d6",
+ "content_hash": "fa887b73ae4e77c9",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1006,
-  "output": 234
+  "input": 1010,
+  "output": 236
  },
  "found_dates": true,
  "year": 2027,
@@ -21,9 +21,9 @@
  "conference_end": "2027-04-23",
  "milestones": [
   {
-   "label": "Submission deadline",
+   "label": "Extended submission deadline",
    "type": "paper",
-   "date": "2026-11-18",
+   "date": "2026-11-25",
    "time": null,
    "timezone": null,
    "tentative": false

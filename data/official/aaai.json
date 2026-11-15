@@ -1,18 +1,18 @@
 {
  "key": "aaai",
  "title": "AAAI",
- "fetched_at": "2026-11-07T15:48:49Z",
+ "fetched_at": "2026-11-15T16:36:50Z",
  "urls": [
   "https://aaai.org/conference/aaai/aaai-27/main-technical-track-call/",
   "https://aaai.org/conference/aaai/aaai-27/submission-instructions",
   "https://aaai.org/conference/aaai/aaai-27/"
  ],
  "errors": [],
- "content_hash": "085cc91f6e77c0a6",
+ "content_hash": "ebb0d5ff19d9bc72",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 9464,
-  "output": 829
+  "input": 9503,
+  "output": 822
  },
  "found_dates": true,
  "year": 2027,
@@ -71,7 +71,7 @@
    "tentative": false
   },
   {
-   "label": "Author feedback window start",
+   "label": "Author feedback window",
    "type": "rebuttal_start",
    "date": "2026-10-24",
    "time": null,
@@ -79,7 +79,7 @@
    "tentative": false
   },
   {
-   "label": "Author feedback window end",
+   "label": "Author feedback window",
    "type": "rebuttal_end",
    "date": "2026-10-31",
    "time": null,
@@ -103,6 +103,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Dates are for the Main Technical Track; deadlines are track-specific and may differ for special tracks.",
+ "tracks_note": "Dates correspond to the Main Technical Track; deadlines are track-specific.",
  "follow_url": null
 }
