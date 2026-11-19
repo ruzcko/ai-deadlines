@@ -1,16 +1,16 @@
 {
  "key": "cec",
  "title": "CEC",
- "fetched_at": "2026-10-29T16:13:27Z",
+ "fetched_at": "2026-11-19T18:07:48Z",
  "urls": [
   "http://ieeecec.org"
  ],
  "errors": [],
- "content_hash": "1142a9198baffeef",
+ "content_hash": "1bedab1efa5057d2",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 2522,
-  "output": 508
+  "input": 2805,
+  "output": 302
  },
  "found_dates": true,
  "year": 2027,
@@ -69,6 +69,6 @@
    "tentative": false
   }
  ],
- "tracks_note": "Deadlines provided for both Full Paper and Short Paper submissions.",
+ "tracks_note": null,
  "follow_url": null
 }

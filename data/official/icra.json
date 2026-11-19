@@ -1,17 +1,17 @@
 {
  "key": "icra",
  "title": "ICRA",
- "fetched_at": "2026-11-08T16:35:19Z",
+ "fetched_at": "2026-11-19T18:30:14Z",
  "urls": [
   "https://2027.ieee-icra.org/contribute/call-for-icra-2027-papers-now-accepting-submissions/",
   "https://2027.ieee-icra.org/"
  ],
  "errors": [],
- "content_hash": "038f17903bd0bda0",
+ "content_hash": "67232a4502f36723",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4122,
-  "output": 856
+  "input": 4112,
+  "output": 716
  },
  "found_dates": true,
  "year": 2027,
@@ -30,15 +30,7 @@
    "tentative": false
   },
   {
-   "label": "Submission of accompanying videos: Open (1)",
-   "type": "supplementary",
-   "date": "2026-08-05",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Submission of accompanying videos: Open (1) closes",
+   "label": "Submission of accompanying videos (window 1)",
    "type": "supplementary",
    "date": "2026-09-09",
    "time": null,
@@ -46,15 +38,7 @@
    "tentative": false
   },
   {
-   "label": "Submission of accompanying videos: (2)",
-   "type": "supplementary",
-   "date": "2026-09-18",
-   "time": null,
-   "timezone": null,
-   "tentative": false
-  },
-  {
-   "label": "Submission of accompanying videos: (2) closes",
+   "label": "Submission of accompanying videos (window 2)",
    "type": "supplementary",
    "date": "2026-09-22",
    "time": "23:59",
@@ -79,7 +63,7 @@
   },
   {
    "label": "Paperplaza opens for final submission",
-   "type": "camera_ready",
+   "type": "other",
    "date": "2027-02-06",
    "time": null,
    "timezone": null,

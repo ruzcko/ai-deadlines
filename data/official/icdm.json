@@ -1,15 +1,15 @@
 {
  "key": "icdm",
  "title": "ICDM",
- "fetched_at": "2026-11-08T16:30:19Z",
+ "fetched_at": "2026-11-19T18:19:29Z",
  "urls": [
   "http://icdm2026.neu.edu.cn/"
  ],
  "errors": [],
- "content_hash": "a250dd8dd31ea6c1",
+ "content_hash": "09c5a52a56f6ae68",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 3329,
+  "input": 3336,
   "output": 361
  },
  "found_dates": true,
@@ -29,16 +29,16 @@
    "tentative": false
   },
   {
-   "label": "Tutorial proposals",
-   "type": "tutorial",
+   "label": "Main Conference Full Paper Submission",
+   "type": "paper",
    "date": "2026-06-06",
    "time": null,
    "timezone": null,
    "tentative": false
   },
   {
-   "label": "Main Conference Full Paper Submission",
-   "type": "paper",
+   "label": "Tutorial proposals",
+   "type": "tutorial",
    "date": "2026-06-06",
    "time": null,
    "timezone": null,

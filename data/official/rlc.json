@@ -1,19 +1,19 @@
 {
  "key": "rlc",
  "title": "RLC",
- "fetched_at": "2026-11-09T19:30:59Z",
+ "fetched_at": "2026-11-19T18:35:32Z",
  "urls": [
   "https://rl-conference.cc/"
  ],
  "errors": [],
- "content_hash": "b5451b90dd004ab8",
+ "content_hash": "5d8d1b164573ed8c",
  "model": "gemini-3.8-flash",
  "usage": {
   "input": 305,
-  "output": 60
+  "output": 64
  },
  "found_dates": false,
- "year": null,
+ "year": 2027,
  "city": null,
  "country": null,
  "venue": null,

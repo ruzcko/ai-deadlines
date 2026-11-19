@@ -1,67 +1,27 @@
 {
  "key": "wsdm",
  "title": "WSDM",
- "fetched_at": "2026-11-08T16:42:16Z",
+ "fetched_at": "2026-11-19T18:34:12Z",
  "urls": [
   "https://www.wsdm-conference.org/2027/"
  ],
  "errors": [],
- "content_hash": "f8a17a2cbc9790f5",
+ "content_hash": "9bdadeeb803ba5f5",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 1229,
-  "output": 638
+  "input": 1245,
+  "output": 264
  },
  "found_dates": true,
  "year": 2027,
  "city": "Hong Kong",
- "country": null,
+ "country": "Hong Kong",
  "venue": "Cordis, Hong Kong, 555 Shanghai St, Mong Kok",
  "conference_start": "2027-02-15",
  "conference_end": "2027-02-19",
  "milestones": [
   {
-   "label": "Full Paper Notifications",
-   "type": "notification",
-   "date": "2026-11-02",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Doctoral Consortium Submission deadline",
-   "type": "other",
-   "date": "2026-11-12",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Doctoral Consortium Notification",
-   "type": "notification",
-   "date": "2026-12-02",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Short Papers Submission deadline",
-   "type": "paper",
-   "date": "2026-11-17",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "Short Papers Notification",
-   "type": "notification",
-   "date": "2026-12-18",
-   "time": "23:59",
-   "timezone": "AoE",
-   "tentative": false
-  },
-  {
-   "label": "WSDM Day Presentations Submission deadline",
+   "label": "Submission deadline",
    "type": "other",
    "date": "2026-11-30",
    "time": "23:59",
@@ -69,14 +29,14 @@
    "tentative": false
   },
   {
-   "label": "WSDM Day Presentations Notification",
+   "label": "Notification",
    "type": "notification",
    "date": "2026-12-21",
-   "time": "23:59",
-   "timezone": "AoE",
+   "time": null,
+   "timezone": null,
    "tentative": false
   }
  ],
- "tracks_note": "Includes full paper notification, short papers track, doctoral consortium, and WSDM Day presentations.",
+ "tracks_note": "Dates are for WSDM Day Presentations.",
  "follow_url": null
 }
