@@ -1,16 +1,16 @@
 {
  "key": "chi",
  "title": "CHI",
- "fetched_at": "2026-11-09T20:01:48Z",
+ "fetched_at": "2026-11-25T19:14:26Z",
  "urls": [
   "https://chi2027.acm.org/authors/papers/",
   "https://chi2027.acm.org/"
  ],
  "errors": [],
- "content_hash": "84e26b5255dcc62a",
+ "content_hash": "23b1a3848eaa8763",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4967,
+  "input": 5043,
   "output": 938
  },
  "found_dates": true,
