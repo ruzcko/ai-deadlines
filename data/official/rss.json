@@ -1,16 +1,16 @@
 {
  "key": "rss",
  "title": "RSS",
- "fetched_at": "2026-11-15T16:10:19Z",
+ "fetched_at": "2026-11-27T18:57:03Z",
  "urls": [
   "https://roboticsconference.org"
  ],
  "errors": [],
- "content_hash": "9e6ff54ccc69ffa4",
+ "content_hash": "d5ae5914b1b86e63",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 782,
-  "output": 700
+  "input": 826,
+  "output": 770
  },
  "found_dates": true,
  "year": 2027,
@@ -29,8 +29,16 @@
    "tentative": false
   },
   {
+   "label": "Workshop pre-proposal submission deadline",
+   "type": "workshop",
+   "date": "2026-12-20",
+   "time": "23:59",
+   "timezone": "AoE",
+   "tentative": false
+  },
+  {
    "label": "Decision Stage 1 (Reject or Invitation to Rebuttal)",
-   "type": "rebuttal_start",
+   "type": "review_release",
    "date": "2027-02-05",
    "time": "23:59",
    "timezone": "AoE",

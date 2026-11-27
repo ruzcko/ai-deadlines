@@ -1,21 +1,21 @@
 {
  "key": "mathai",
  "title": "MathAI",
- "fetched_at": "2026-11-15T16:34:42Z",
+ "fetched_at": "2026-11-27T19:09:15Z",
  "urls": [
   "https://mathai.club"
  ],
  "errors": [],
- "content_hash": "f15c05cd66e10fc0",
+ "content_hash": "e8ab1071e790dadc",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 3617,
-  "output": 685
+  "input": 4912,
+  "output": 688
  },
  "found_dates": true,
  "year": 2027,
  "city": "Abu Dhabi",
- "country": "UAE",
+ "country": "United Arab Emirates",
  "venue": null,
  "conference_start": "2027-03-22",
  "conference_end": "2027-03-24",
@@ -24,12 +24,12 @@
    "label": "Submissions open on OpenReview",
    "type": "other",
    "date": "2026-11-01",
-   "time": "23:59",
-   "timezone": "Europe/London",
+   "time": null,
+   "timezone": null,
    "tentative": false
   },
   {
-   "label": "Abstract registration",
+   "label": "Abstract registration: title, abstract and track on OpenReview",
    "type": "abstract",
    "date": "2026-12-20",
    "time": "23:59",
@@ -37,7 +37,7 @@
    "tentative": false
   },
   {
-   "label": "Full paper deadline",
+   "label": "Full paper deadline: PDF uploaded to the registered submission",
    "type": "paper",
    "date": "2027-01-15",
    "time": "23:59",
@@ -45,7 +45,7 @@
    "tentative": false
   },
   {
-   "label": "Reviews",
+   "label": "Reviews end",
    "type": "review_release",
    "date": "2027-02-20",
    "time": "23:59",
@@ -56,8 +56,8 @@
    "label": "Author responses start",
    "type": "rebuttal_start",
    "date": "2027-02-24",
-   "time": "23:59",
-   "timezone": "Europe/London",
+   "time": null,
+   "timezone": null,
    "tentative": false
   },
   {

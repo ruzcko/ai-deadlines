@@ -1,17 +1,17 @@
 {
  "key": "bmvc",
  "title": "BMVC",
- "fetched_at": "2026-11-15T16:14:29Z",
+ "fetched_at": "2026-11-27T18:58:11Z",
  "urls": [
   "https://bmvc2026.bmva.org/calls/call-for-papers/",
   "https://bmvc2026.bmva.org/dates/",
   "https://bmvc2026.bmva.org/"
  ],
  "errors": [],
- "content_hash": "964ca56d24fd74aa",
+ "content_hash": "ba334eab68c37e76",
  "model": "gemini-3.8-flash",
  "usage": {
-  "input": 4478,
+  "input": 4479,
   "output": 759
  },
  "found_dates": true,
